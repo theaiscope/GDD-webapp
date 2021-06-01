@@ -1,0 +1,20 @@
+{
+  "name": "gdd-webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "install:all": "npm i && concurrently -n \"Client Install,Server Install\" -c \"blue,green\"  \"npm run install:client\" \"npm run install:server\"",
+    "start:client": "cd client && npm run start",
+    "start:server": "cd server && npm run start",
+    "start:all": "concurrently -n \"Client Start,Server Start\" -c \"blue,green\"  \"npm run start:client\" \"npm run start:server\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  }
+}
