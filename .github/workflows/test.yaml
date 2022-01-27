@@ -1,0 +1,29 @@
+name: Test client workflow
+
+on:
+  push:
+    paths:
+      - 'client/**'
+  pull_request:
+    paths:
+      - 'client/**'
+
+jobs:
+  test-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+      - name: Install npm packages
+        run: |
+          cd client
+          npm install
+      - name: Test functions
+        run: |
+          cd client
+          npm test
