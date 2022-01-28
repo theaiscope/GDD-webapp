@@ -16,12 +16,12 @@ export const LogIn = (): ReactElement => {
 
   useEffect(() => {
     if (loading) {
-      // maybe trigger a loading screen
       return;
     }
     if (user) {
+      //TODO: write test for redirecting to location.state.from.pathname
       const state = location.state as { from: Location };
-      const from = state ? state.from.pathname : '/';
+      const from = state ? state.from.pathname : '/dashboard';
       navigate(from)
     }
   }, [user, loading]);
