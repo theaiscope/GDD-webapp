@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./components/Dashboard";
-import {SignIn, RequireAuth} from "./Auth";
+import {LogIn, RequireAuth} from "./Auth";
 
 export const App = (): ReactElement =>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<LogIn />} />
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

@@ -17,7 +17,7 @@ const HomeElement = () => <div>{homeText}</div>
 const ProtectedElement = () => <div>{protectedText}</div>
 
 describe(RequireAuth, () => {
-  it('should redirect to home if no user but save the location in the router', () => {
+  it('should redirect to home if no user', () => {
     mockedAuthState.mockReturnValue([undefined, false, undefined])
 
     render(

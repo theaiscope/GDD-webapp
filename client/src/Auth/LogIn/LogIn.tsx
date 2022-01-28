@@ -1,9 +1,9 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import { config } from "./config";
+import { config } from "../config";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
-export const SignIn = (): ReactElement => {
+export const LogIn = (): ReactElement => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [

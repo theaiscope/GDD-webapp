@@ -1,4 +1,4 @@
 export * from './config'
-export * from './SignIn'
+export * from './LogIn/LogIn'
 export * from './RequireAuth/RequireAuth'
-export * from './SignOut/SignOut'
+export * from './LogOut/LogOut'
