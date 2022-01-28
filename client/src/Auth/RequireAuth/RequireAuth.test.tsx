@@ -1,10 +1,10 @@
 import React from "react";
-import {RequireAuth} from "./RequireAuth";
+import { RequireAuth } from "./RequireAuth";
 import { render, screen } from '@testing-library/react';
-import {Location, MemoryRouter, Route, Routes, useLocation} from "react-router-dom";
-import {useAuthState} from "react-firebase-hooks/auth";
+import { Location, MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { mocked } from 'jest-mock';
-import {User} from "@firebase/auth";
+import { User } from "@firebase/auth";
 
 jest.mock("react-firebase-hooks/auth")
 
@@ -23,8 +23,8 @@ describe(RequireAuth, () => {
     render(
       <MemoryRouter initialEntries={["/protected"]}>
         <Routes>
-          <Route path="/" element={<HomeElement />}/>
-          <Route element={<RequireAuth />}>
+          <Route path="/" element={<HomeElement/>}/>
+          <Route element={<RequireAuth/>}>
             <Route path="/protected" element={<ProtectedElement/>}/>
           </Route>
         </Routes>
@@ -49,8 +49,8 @@ describe(RequireAuth, () => {
     render(
       <MemoryRouter initialEntries={["/protected"]}>
         <Routes>
-          <Route path="/" element={<HomeElementWithPreviousLocation />}/>
-          <Route element={<RequireAuth />}>
+          <Route path="/" element={<HomeElementWithPreviousLocation/>}/>
+          <Route element={<RequireAuth/>}>
             <Route path="/protected" element={<ProtectedElement/>}/>
           </Route>
         </Routes>
@@ -66,8 +66,8 @@ describe(RequireAuth, () => {
     render(
       <MemoryRouter initialEntries={["/protected"]}>
         <Routes>
-          <Route path="/" element={<HomeElement />} />
-          <Route element={<RequireAuth />}>
+          <Route path="/" element={<HomeElement/>}/>
+          <Route element={<RequireAuth/>}>
             <Route path="/protected" element={<ProtectedElement/>}/>
           </Route>
         </Routes>
@@ -83,8 +83,8 @@ describe(RequireAuth, () => {
     render(
       <MemoryRouter initialEntries={["/protected"]}>
         <Routes>
-          <Route path="/" element={<HomeElement />} />
-          <Route element={<RequireAuth />}>
+          <Route path="/" element={<HomeElement/>}/>
+          <Route element={<RequireAuth/>}>
             <Route path="/protected" element={<ProtectedElement/>}/>
           </Route>
         </Routes>

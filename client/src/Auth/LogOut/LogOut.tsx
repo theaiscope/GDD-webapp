@@ -1,6 +1,6 @@
-import React, {ReactElement} from 'react'
-import {signOut} from "firebase/auth";
-import {config} from "../config";
+import React, { ReactElement } from 'react'
+import { signOut } from "firebase/auth";
+import { config } from "../config";
 
 export const LogOut = (): ReactElement =>
   <>

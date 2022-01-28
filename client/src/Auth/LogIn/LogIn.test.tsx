@@ -1,11 +1,11 @@
 import React from "react";
-import {LogIn} from "./LogIn";
-import {fireEvent, render, screen} from "@testing-library/react";
-import {MemoryRouter, Route, Routes} from "react-router-dom";
+import { LogIn } from "./LogIn";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import userEvent from '@testing-library/user-event';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import {mocked} from "jest-mock";
-import {UserCredential} from "@firebase/auth/dist/auth-public"
+import { mocked } from "jest-mock";
+import { UserCredential } from "@firebase/auth/dist/auth-public"
 
 jest.mock("react-firebase-hooks/auth")
 const mockSignIn = mocked(useSignInWithEmailAndPassword, true)
@@ -41,7 +41,7 @@ describe(LogIn, () => {
     render(
       <MemoryRouter initialEntries={["/login"]}>
         <Routes>
-          <Route path="/login" element={<LogIn />}/>
+          <Route path="/login" element={<LogIn/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
         </Routes>
       </MemoryRouter>

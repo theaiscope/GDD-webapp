@@ -1,5 +1,5 @@
-import React, {ReactElement, useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { config } from "../config";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
