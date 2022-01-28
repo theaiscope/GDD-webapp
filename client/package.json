@@ -26,8 +26,8 @@
     "test": "react-scripts test --watchAll=false",
     "test:watch": "react-scripts",
     "eject": "react-scripts eject",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet",
-    "fix": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "prettier": "prettier --loglevel=warn --config ../.prettierrc.js --write \"src/**/*.{js,ts,tsx}\""
   },
   "eslintConfig": {
