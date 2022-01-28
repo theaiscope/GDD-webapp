@@ -14,11 +14,11 @@ version to use.
 
 1. Install all dependencies.
     
-    `npm run install:all`
+    `yarn install:all`
 
 2. Start server and client.
 
-    `npm run start:all`
+    `yarn start:all`
 
 3. Open `localhost:4000` for GraphQL Server and `localhost:3000` for react client.
 
