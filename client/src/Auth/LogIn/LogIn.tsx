@@ -1,7 +1,8 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { config } from "../config";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth"
+import styles from "./Login.module.css"
 
 export const LogIn = (): ReactElement => {
   const [email, setEmail] = useState("");
@@ -27,21 +28,24 @@ export const LogIn = (): ReactElement => {
   }, [user, loading]);
 
 
-  return <div>
-    <h3>Login</h3>
+  return <div className={styles.container}>
+    <h2 className={styles.header}>Login</h2>
     <input
       type="text"
+      className={`${styles.input} ${styles.formItem}`}
       value={email}
       onChange={(e) => setEmail(e.target.value)}
       placeholder="email"
     />
     <input
       type="password"
+      className={`${styles.input} ${styles.formItem}`}
       value={password}
       onChange={(e) => setPassword(e.target.value)}
       placeholder="password"
     />
     <button
+      className={`${styles.loginButton} ${styles.formItem}`}
       onClick={() => signInWithEmailAndPassword(email, password)}
     >
       LOGIN

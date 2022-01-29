@@ -1,0 +1,37 @@
+.container {
+    margin: 25vh 25vw;
+    padding: 40px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.formItem {
+    border-width: 0;
+    border-radius: 2px;
+    margin: 10px;
+    width: 230px;
+    height: 35px;
+    box-shadow: 3px 3px 5px #e7e7e7;
+}
+
+.input {
+    padding-left: 10px;
+}
+
+.input::placeholder {
+    color: #b2b2b2;
+}
+
+.loginButton {
+    color: white;
+    background-color: #8e73b9;
+}
+
+.header {
+    color: #67c2c7;
+
+}
