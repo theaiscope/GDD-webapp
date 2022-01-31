@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import './App.css'
 import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
 import { Dashboard, Navbar } from './components'
 import { LogIn, RequireAuth } from './Auth'
