@@ -48,8 +48,8 @@
 }
 
 .loader {
-    border: 2px solid white; /* Light grey */
-    border-top: 2px solid #7743cb; /* Blue */
+    border: 2px solid white;
+    border-top: 2px solid #7743cb;
     border-radius: 50%;
     width: 16px;
     height: 16px;

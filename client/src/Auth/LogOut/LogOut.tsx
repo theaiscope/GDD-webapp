@@ -1,12 +1,9 @@
 import React, { ReactElement } from 'react'
-import { signOut } from "firebase/auth";
-import { config } from "../config";
+import { signOut } from 'firebase/auth'
+import { config } from '../config'
 
-export const LogOut = (): ReactElement =>
+export const LogOut = (): ReactElement => (
   <>
-    <button
-      onClick={() => signOut(config)}
-    >
-      Logout
-    </button>
+    <button onClick={() => signOut(config)}>Logout</button>
   </>
+)
