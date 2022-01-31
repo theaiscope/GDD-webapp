@@ -1,4 +1,4 @@
-import { Screen } from "@testing-library/react";
+import { Screen } from '@testing-library/react'
 
 export const assertLogOutPresent = (screen: Screen, present = true): void => {
   present

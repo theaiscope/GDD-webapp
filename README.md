@@ -14,18 +14,18 @@ version to use.
 
 1. Install all dependencies.
     
-    `yarn install:client`
+    `yarn install`
 
 2. Start server and client.
 
-    `yarn start:client`
+    `yarn start`
 
-3. Open `localhost:4000` for GraphQL Server and `localhost:3000` for react client.
+3. Open `localhost:3000` for frontend.
 
 
 ## Auto Formatting and Linting
 
-[Prettier](https://prettier.io/) can be run with `npm run prettier:all`.
-[ESLint](https://eslint.org/) can be run with `npm run lint:all`.
+[Prettier](https://prettier.io/) can be run with `yarn prettier`.
+[ESLint](https://eslint.org/) can be run with `yarn lint`.
 
 

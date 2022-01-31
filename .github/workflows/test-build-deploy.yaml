@@ -2,8 +2,6 @@ name: Test build deploy client workflow
 
 on:
   push:
-    paths:
-      - 'client/**'
 
 jobs:
   test-build-deploy-client:
@@ -17,25 +15,16 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: client/package-lock.json
       - name: Install node modules
-        run: |
-          cd client
-          yarn
+        run: yarn
       - name: Lint
-        run: |
-          cd client
-          yarn lint
+        run: yarn lint
       - name: Test
-        run: |
-          cd client
-          yarn test
+        run: yarn test
       - name: Build
-        run: |
-          cd client
-          yarn build
+        run: yarn build
       - name: Deploy client to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_PATH: client

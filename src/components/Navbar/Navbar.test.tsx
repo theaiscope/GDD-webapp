@@ -5,7 +5,7 @@ import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { assertLogOutPresent } from '../../Auth/LogOut/LogOut.test.assertion'
 import { Navbar } from './Navbar'
-import { assertNavbarPresent } from "./Navbar.test.assertion";
+import { assertNavbarPresent } from './Navbar.test.assertion'
 
 jest.mock('react-firebase-hooks/auth')
 

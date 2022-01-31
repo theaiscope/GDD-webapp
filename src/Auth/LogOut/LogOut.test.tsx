@@ -3,7 +3,7 @@ import { LogOut } from './LogOut'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { signOut } from 'firebase/auth'
 import { mocked } from 'jest-mock'
-import { assertLogOutPresent } from "./LogOut.test.assertion";
+import { assertLogOutPresent } from './LogOut.test.assertion'
 
 jest.mock('firebase/auth')
 
