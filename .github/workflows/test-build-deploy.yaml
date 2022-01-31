@@ -2,6 +2,8 @@ name: Test build deploy client workflow
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   test-build-deploy-client:
