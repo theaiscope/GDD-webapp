@@ -1,6 +1,6 @@
 import React from 'react'
 import { LogOut } from './LogOut'
-import { fireEvent, render, Screen, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { signOut } from 'firebase/auth'
 import { mocked } from 'jest-mock'
 import { assertLogOutPresent } from "./LogOut.test.assertion";

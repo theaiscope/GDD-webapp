@@ -3,9 +3,9 @@
 
 printf "\n\360\237\215\272\t Running pre-commit hook...  \n"
 
-printf "\n\360\237\215\272\t Running linter on client and server...  \n"
-yarn lint:all
+printf "\n\360\237\215\272\t Running linter on client...  \n"
+yarn lint:client
 
-printf "\n\360\237\215\272\t Running tests on client and server...  \n"
-yarn test:all
+printf "\n\360\237\215\272\t Running tests on client...  \n"
+yarn test:client
 
