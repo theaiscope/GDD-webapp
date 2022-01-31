@@ -13,9 +13,13 @@ const mockedAuthState = mocked(useAuthState, true);
 const mockedSignIn = mocked(useSignInWithEmailAndPassword, true);
 
 describe(App, () => {
-  it('should render the login screen when not authenticated', async () => {
-    mockedSignIn.mockReturnValue([jest.fn(), undefined, false, undefined])
 
+  beforeEach(() => {
+    mockedAuthState.mockReturnValue([undefined, false, undefined])
+    mockedSignIn.mockReturnValue([jest.fn(), undefined, false, undefined])
+  });
+
+  it('should render the login screen when not authenticated', async () => {
     render(
       <MemoryRouter>
         <App/>
@@ -25,23 +29,7 @@ describe(App, () => {
     expect(screen.queryByText("Login")).toBeInTheDocument()
   });
 
-  it('should render the dashboard when authenticated', async () => {
-    mockedAuthState.mockReturnValue([{email: "some-email"} as User, false, undefined])
-
-    render(
-      <MemoryRouter initialEntries={["/dashboard"]}>
-        <App/>
-      </MemoryRouter>
-    )
-
-    expect(screen.queryByText("I am the Dashboard - please implement me")).toBeInTheDocument()
-    expect(screen.queryByText("Login")).not.toBeInTheDocument()
-  });
-
   it('should redirect to login page when not authenticated', async () => {
-    mockedAuthState.mockReturnValue([undefined, false, undefined])
-    mockedSignIn.mockReturnValue([jest.fn(), undefined, false, undefined])
-
     render(
       <MemoryRouter initialEntries={["/dashboard"]}>
         <App/>
@@ -65,22 +53,8 @@ describe(App, () => {
 
   describe('LayoutsWithNavbar', () => {
     it('should show the navbar on login screen', () => {
-      mockedSignIn.mockReturnValue([jest.fn(), undefined, false, undefined])
-
       render(
         <MemoryRouter>
-          <App/>
-        </MemoryRouter>
-      )
-
-      assertNavbarPresent(screen)
-    });
-
-    it('should show the navbar on dashboard', () => {
-      mockedAuthState.mockReturnValue([{email: "some-email"} as User, false, undefined])
-
-      render(
-        <MemoryRouter initialEntries={["/dashboard"]}>
           <App/>
         </MemoryRouter>
       )
@@ -96,6 +70,23 @@ describe(App, () => {
       );
 
       assertNavbarPresent(screen, false)
+    });
+  });
+
+  describe('when authenticated', () => {
+    it('should render the dashboard and navbar when authenticated', async () => {
+      mockedAuthState.mockReturnValue([{email: "some-email"} as User, false, undefined])
+
+      render(
+        <MemoryRouter initialEntries={["/dashboard"]}>
+          <App/>
+        </MemoryRouter>
+      )
+
+      expect(screen.queryByText("I am the Dashboard - please implement me")).toBeInTheDocument()
+      expect(screen.queryByText("Login")).not.toBeInTheDocument()
+
+      assertNavbarPresent(screen)
     });
   });
 });
