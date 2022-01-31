@@ -1,19 +1,15 @@
 import { User } from '@firebase/auth'
-import { render, Screen, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { mocked } from 'jest-mock'
 import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { assertLogOutPresent } from '../../Auth/LogOut/LogOut.test.assertion'
 import { Navbar } from './Navbar'
+import { assertNavbarPresent } from "./Navbar.test.assertion";
 
 jest.mock('react-firebase-hooks/auth')
 
 const mockedAuthState = mocked(useAuthState, true)
-
-export const assertNavbarPresent = (screen: Screen, present = true): void => {
-  present
-    ? expect(screen.getByRole('link', { name: 'aiscope-logo' })).toHaveAttribute('href', 'https://aiscope.net/')
-    : expect(screen.queryByRole('link')).not.toBeInTheDocument()
-}
 
 describe(Navbar, () => {
   beforeEach(() => {
@@ -42,6 +38,12 @@ describe(Navbar, () => {
       render(<Navbar />)
 
       expect(screen.getByText('some-email')).toBeInTheDocument()
+    })
+
+    it('should show the logout button', () => {
+      render(<Navbar />)
+
+      assertLogOutPresent(screen)
     })
   })
 })

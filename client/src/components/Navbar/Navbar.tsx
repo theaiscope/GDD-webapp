@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { config } from '../../Auth'
+import { config, LogOut } from '../../Auth'
 import styles from './Navbar.module.css'
 
 export const Navbar = (): ReactElement => {
   const [user] = useAuthState(config)
 
   return (
-    <div className={styles.container}>
+    <div className={styles.navbar}>
       <a className={styles.link} href="https://aiscope.net/">
         <img
           className={styles.image}
@@ -16,7 +16,12 @@ export const Navbar = (): ReactElement => {
         />
       </a>
 
-      {user && <p className={styles.user}>{user.email}</p>}
+      {user && (
+        <div className={styles.loggedInContainer}>
+          <p className={styles.user}>{user.email}</p>
+          <LogOut className={styles.logOut} />
+        </div>
+      )}
     </div>
   )
 }

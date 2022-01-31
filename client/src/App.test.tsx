@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { useAuthState, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { User } from '@firebase/auth/dist/auth-public'
 import { mocked } from 'jest-mock'
-import { assertNavbarPresent } from './components/Navbar/Navbar.test'
+import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
 
 jest.mock('react-firebase-hooks/auth')
 

@@ -1,4 +1,4 @@
-.container {
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,5 +18,20 @@
 }
 
 .user {
-    color: #67c2c7
+    color: #67c2c7;
+    padding: 0.7rem 1rem;
+}
+
+.logOut {
+    background: none!important;
+    border: none;
+    font-size: 16px;
+    color: #67c2c7;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+}
+
+
+.loggedInContainer {
+    display: flex;
 }
