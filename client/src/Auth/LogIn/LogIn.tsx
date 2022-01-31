@@ -11,6 +11,7 @@ export const LogIn = (): ReactElement => {
     signInWithEmailAndPassword,
     user,
     loading,
+    error
   ] = useSignInWithEmailAndPassword(config);
   const navigate = useNavigate();
   const location = useLocation()
@@ -26,7 +27,6 @@ export const LogIn = (): ReactElement => {
       navigate(from)
     }
   }, [user, loading]);
-
 
   return <div className={styles.container}>
     <h2 className={styles.header}>Login</h2>
@@ -48,7 +48,8 @@ export const LogIn = (): ReactElement => {
       className={`${styles.loginButton} ${styles.formItem}`}
       onClick={() => signInWithEmailAndPassword(email, password)}
     >
-      LOGIN
+      {loading ? <div className={styles.loader} role={"progressbar"}/> : 'LOGIN'}
     </button>
+    {error && <p className={styles.errorText}>Incorrect email or password</p>}
   </div>
 }

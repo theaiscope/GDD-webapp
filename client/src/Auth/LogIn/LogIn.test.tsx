@@ -1,11 +1,12 @@
 import React from "react";
 import { LogIn } from "./LogIn";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import userEvent from '@testing-library/user-event';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { mocked } from "jest-mock";
 import { UserCredential } from "@firebase/auth/dist/auth-public"
+import { AuthError } from 'firebase/auth'
 
 jest.mock("react-firebase-hooks/auth")
 const mockSignIn = mocked(useSignInWithEmailAndPassword, true)
@@ -48,5 +49,35 @@ describe(LogIn, () => {
     )
 
     expect(screen.getByText("I am the dashboard")).toBeInTheDocument()
+  });
+
+  describe('when sign in is loading', () => {
+    it('should show a spinner on login button', async () => {
+      mockSignIn.mockReturnValue([jest.fn(), undefined, true, undefined])
+
+      render(
+        <MemoryRouter>
+          <LogIn/>
+        </MemoryRouter>
+      )
+
+      const loginButton = await screen.getByRole('button')
+
+      expect(within(loginButton).getByRole("progressbar")).toBeInTheDocument()
+    });
+  });
+
+  describe('when sign in fails', () => {
+    it('should show an incorrect details message', async () => {
+      mockSignIn.mockReturnValue([jest.fn(), undefined, false, {} as AuthError])
+
+      render(
+        <MemoryRouter>
+          <LogIn/>
+        </MemoryRouter>
+      )
+
+      expect(await screen.getByText("Incorrect email or password")).toBeInTheDocument()
+    });
   });
 });
