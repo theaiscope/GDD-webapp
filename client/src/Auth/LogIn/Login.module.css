@@ -20,6 +20,7 @@
 
 .input {
     padding-left: 10px;
+    width: 220px;
 }
 
 .input::placeholder {
@@ -29,9 +30,10 @@
 .loginButton {
     color: white;
     background-color: #8e73b9;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .header {
     color: #67c2c7;
-
 }
