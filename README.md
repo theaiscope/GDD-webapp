@@ -30,6 +30,6 @@ version to use.
 
 ## Contributing
 
-Contributions should be made by creating a PR and then they can be merged by an admin
+Contributions should be made by creating a fork of the repository and then make a PR against `main`. Maintainers of the project can then review and merge these PRs.
 
 
