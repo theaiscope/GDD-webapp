@@ -1,4 +1,4 @@
-name: Pust to master workflow
+name: Test and deploy
 
 on:
   push:
