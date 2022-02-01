@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    uses: ./.github/workflows/test.yaml@v1
+    uses: theaiscope/GDD-webapp/.github/workflows/test.yaml@v1
   deploy:
     needs: test
     runs-on: ubuntu-latest
