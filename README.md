@@ -1,5 +1,8 @@
 # GDD-webapp
 
+![main workflow](https://github.com/theaiscope/GDD-webapp/actions/workflows/push-to-main.yaml/badge.svg)
+
+
 AIScope labeling webapp
 
 ## Prerequisites
