@@ -28,7 +28,7 @@ version to use.
 [Prettier](https://prettier.io/) can be run with `yarn prettier`.
 [ESLint](https://eslint.org/) can be run with `yarn lint`.
 
-## Contributing
+## Contributing Guidelines
 
 Contributions should be made by creating a fork of the repository and then make a PR against `main`. Maintainers of the project can then review and merge these PRs.
 
