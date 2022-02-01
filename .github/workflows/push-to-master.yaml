@@ -1,4 +1,4 @@
-name: Test build and deploy workflow
+name: Pust to master workflow
 
 on:
   push:
@@ -6,22 +6,20 @@ on:
       - main
 
 jobs:
-  test-build-deploy:
+  test:
+    uses: ./.github/workflows/test.yaml
+  deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v2
         with:
           node-version: 16
           cache: 'yarn'
-          cache-dependency-path: client/package-lock.json
       - name: Install node modules
         run: yarn
-      - name: Lint
-        run: yarn lint
-      - name: Test
-        run: yarn test
       - name: Build
         run: yarn build
       - name: Deploy client to Firebase
