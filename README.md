@@ -28,4 +28,8 @@ version to use.
 [Prettier](https://prettier.io/) can be run with `yarn prettier`.
 [ESLint](https://eslint.org/) can be run with `yarn lint`.
 
+## Contributing
+
+Contributions should be made by creating a PR and then they can be merged by an admin
+
 
