@@ -1,12 +1,10 @@
-name: Test build and deploy workflow
+name: Test workflow
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
 
 jobs:
-  test-build-deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,11 +20,3 @@ jobs:
         run: yarn lint
       - name: Test
         run: yarn test
-      - name: Build
-        run: yarn build
-      - name: Deploy client to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
