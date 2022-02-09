@@ -6,6 +6,7 @@ import { useAuthState, useSignInWithEmailAndPassword } from 'react-firebase-hook
 import { User } from '@firebase/auth/dist/auth-public'
 import { mocked } from 'jest-mock'
 import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
+import { assertLogInPresent } from './Auth/LogIn/LogIn.test.assertion'
 
 jest.mock('react-firebase-hooks/auth')
 
@@ -25,7 +26,7 @@ describe(App, () => {
       </MemoryRouter>,
     )
 
-    expect(screen.queryByText('Login')).toBeInTheDocument()
+    assertLogInPresent(screen)
   })
 
   it('should redirect to login page when not authenticated', async () => {
@@ -35,7 +36,7 @@ describe(App, () => {
       </MemoryRouter>,
     )
 
-    expect(screen.queryByText('Login')).toBeInTheDocument()
+    assertLogInPresent(screen)
     expect(screen.queryByText('Dashboard')).not.toBeInTheDocument()
   })
 

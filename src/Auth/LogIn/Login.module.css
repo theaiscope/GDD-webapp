@@ -1,12 +1,42 @@
-.container {
-    margin: 25vh 25vw;
+.pageContainer {
+    background-image: url("background.png");
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+.pageContainer > h1 {
+    margin-top: 2rem;
+    font-size: 4rem;
+}
+
+.pageContainer > .header {
+    text-transform: uppercase;
+    color: white;
+}
+
+.pageContainer > p, h1 {
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.pageContainer a {
+    color: white;
+}
+
+.loginContainer {
+    margin: auto;
     padding: 40px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    background-color: #f4f4f4;
+    background-color: rgba(244, 244, 244, 0.4);
     justify-content: space-evenly;
     align-items: center;
+    border-radius: 16px;
+    opacity: 0.8;
+    border: none;
 }
 
 .formItem {
@@ -21,30 +51,37 @@
 .input {
     padding-left: 10px;
     width: 220px;
+    background-color: transparent;
+    box-shadow: none;
+    color: white;
+    border-bottom: solid 1px white;
 }
 
 .input::placeholder {
-    color: #b2b2b2;
+    color: white;
+}
+
+.input:focus {
+    outline: none;
 }
 
 .loginButton {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    background-color: #8e73b9;
+    background-color: transparent;
     padding-left: 5px;
     padding-right: 5px;
+    box-shadow: none;
+    border: solid 1px white;
 }
 
 .errorText {
     margin: 0;
     color: red;
     font-size: 13px;
-}
-
-.header {
-    color: #67c2c7;
 }
 
 .loader {
@@ -54,6 +91,14 @@
     width: 16px;
     height: 16px;
     animation: spin 0.5s linear infinite;
+}
+
+.text {
+    color: white;
+}
+
+.logo {
+    width: 140px;
 }
 
 @keyframes spin {
