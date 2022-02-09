@@ -12,10 +12,9 @@ jest.mock('react-firebase-hooks/auth')
 const mockSignIn = mocked(useSignInWithEmailAndPassword, true)
 
 const Dashboard = () => <div>I am the dashboard</div>
-const CreateAccount = 'If you do not have an account, click here</a> to contact us and create it'
 
 describe(LogIn, () => {
-  it('It allows for user creation', async () => {
+  it('allows for user creation', async () => {
     const mockSignInWithEmailAndPassword = jest.fn()
     mockSignIn.mockReturnValue([mockSignInWithEmailAndPassword, undefined, false, undefined])
     render(
