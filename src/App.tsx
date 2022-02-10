@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
 import { Dashboard, Navbar } from './components'
 import { LogIn, RequireAuth } from './Auth'
+import styles from './App.module.css'
 
 export const App = (): ReactElement => (
   <Routes>
@@ -16,7 +17,7 @@ export const App = (): ReactElement => (
 )
 
 export const AppWithRouter = (): ReactElement => (
-  <div className="App">
+  <div className={styles.app}>
     <Router>
       <App />
     </Router>
@@ -32,6 +33,6 @@ const NotFound = (): ReactElement => (
 const LayoutsWithNavbar = () => (
   <>
     <Navbar />
-    <Outlet />
+    <div className={styles.main}><Outlet /></div>
   </>
 )
