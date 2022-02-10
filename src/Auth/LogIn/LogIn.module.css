@@ -10,7 +10,7 @@
 }
 
 .logInContainer {
-    margin: auto;
+    margin: auto auto 50px;
     padding: 40px;
     display: flex;
     flex-direction: column;
