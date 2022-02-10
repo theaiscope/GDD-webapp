@@ -1,8 +1,9 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { LoadingButton } from '../../components'
 import { config } from '../config'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
-import styles from './Login.module.css'
+import styles from './LogIn.module.css'
 import logo from './logo.png'
 import { Banner } from './Banner/Banner'
 
@@ -29,7 +30,7 @@ export const LogIn = (): ReactElement => {
   return (
     <div className={styles.pageContainer}>
       <Banner />
-      <fieldset className={styles.loginContainer}>
+      <fieldset className={styles.logInContainer}>
         <h2 className={styles.header}>
           <img className={styles.logo} src={logo} alt="login-header" />
         </h2>
@@ -54,12 +55,14 @@ export const LogIn = (): ReactElement => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="password"
         />
-        <button
-          className={`${styles.loginButton} ${styles.formItem}`}
+        <LoadingButton
+          className={styles.formItem}
           onClick={() => signInWithEmailAndPassword(email, password)}
+          loading={loading}
         >
-          {loading ? <div className={styles.loader} role={'progressbar'} /> : 'LOGIN'}
-        </button>
+          LOGIN
+        </LoadingButton>
+
         {error && <p className={styles.errorText}>Incorrect email or password</p>}
       </fieldset>
     </div>
