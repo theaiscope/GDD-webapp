@@ -9,7 +9,14 @@ type Props = {
 }
 
 export const LoadingButton = ({ children, loading = false, onClick, className }: Props): ReactElement => (
-  <button className={`${className} ${styles.loginButton}`} onClick={() => onClick()} disabled={loading}>
+  <button
+    className={`${className} ${styles.loginButton}`}
+    onClick={(event) => {
+      event.preventDefault()
+      onClick()
+    }}
+    disabled={loading}
+  >
     {loading ? <div className={styles.loader} role={'progressbar'} /> : children}
   </button>
 )
