@@ -1,0 +1,20 @@
+
+.container > h1 {
+    margin-top: 2rem;
+    font-size: 4rem;
+}
+
+.container > .header {
+    text-transform: uppercase;
+    color: white;
+}
+
+.container > p, h1 {
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.container a {
+    color: white;
+}
