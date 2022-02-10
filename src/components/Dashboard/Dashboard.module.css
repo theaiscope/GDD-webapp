@@ -1,6 +1,97 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('./background.png');
+  flex: 1 1 auto;
+  padding: 1.5rem;
+  max-width: 100vw;
+  max-height: 100%;
+  align-content: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  overflow: hidden;
+}
+
+.canvasContainer {
+  height: 70%;
+  width: 100%;
+  flex: 1 1 auto;
+  overflow: auto;
+  border-radius: 4px;
+  position: relative;
+}
+
+.tools {
+  width: 100%;
+  background: rgba(244, 244, 244, 0.9);
+  height: 4rem;
+  position: sticky;
+  top: 0;
+  align-content: center;
+  align-items: center;
+  z-index: 1000;
+  justify-content: flex-end;
+}
+
+.footer {
+  display: flex;
+  flex: 0 1 auto;
+  align-content: center;
+  justify-content: flex-end;
+  margin: 1.5rem 1.5rem;
+  padding: 0.5rem 1.5rem;
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+}
+
+button {
+  outline: none;
+  text-transform: uppercase;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.tools > button,
+.tools > button > img {
+  height: 1.5rem;
+}
+
+.tools > button:active {
+  outline: #7E65A7;
+}
+
+.tools > button {
+  background: transparent;
+}
+
+.footer > button {
+  margin-left: 0.75rem;
+  height: 2.5rem;
+  width: 10rem;
+  border-radius: 4px;
+}
+
+.skip {
+  background: #7E65A7;
+}
+
+.save {
+  background: #65C3CA;
+}
+
+.invalid {
+  background: #B11818;
+}
+
+.tools {
+  display: flex;
+}
+
+.canvas {
+  display: flex !important;
+  position: relative;
 }

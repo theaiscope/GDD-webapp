@@ -12,8 +12,6 @@ declare module "react-canvas-draw" {
     brushColor?: string | undefined;
     catenaryColor?: string | undefined;
     gridColor?: string | undefined;
-    //available?
-    backgroundColor?: string | undefined;
     hideGrid?: boolean | undefined;
     hideGridX?: boolean | undefined;
     hideGridY?: boolean | undefined;
@@ -24,16 +22,17 @@ declare module "react-canvas-draw" {
     saveData?: string | undefined;
     immediateLoading?: boolean | undefined;
     hideInterface?: boolean | undefined;
-    //available?
-    className?: string | undefined;
-    //available?
-    style?: React.CSSProperties | undefined;
     gridSizeX?: number | undefined;
     gridSizeY?: number | undefined;
     gridLineWidth?: number | undefined;
     enablePanAndZoom?: boolean | undefined;
     mouseZoomFactor?: number | undefined;
     zoomExtents?: ZoomExtents | undefined;
+    //TODO: are this properties available?
+    backgroundColor?: string | undefined;
+    className?: string | undefined;
+    style?: React.CSSProperties | undefined;
+    clampLinesToDocument?: boolean | undefined;
   }
 
   export default class CanvasDraw extends React.Component<CanvasDrawProps> {
