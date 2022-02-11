@@ -3,15 +3,14 @@ import styles from './Dashboard.module.css'
 import CanvasDraw from "react-canvas-draw";
 import malaria from './malaria.png';
 import {ActionToolbar} from "./ActionToolbar/ActionToolbar";
+import {ImageToolbar} from "./ImageToolbar/ImageToolbar";
 
 
 export const Dashboard = (): ReactElement => {
   let canvas: CanvasDraw | null;
 
-  //TODO: Move toolbar to a component. Some controls are missing
   //TODO: Are pictures of a fixed size? we might need to adjust the canvas when the picture size changes
-  //TODO: Move footer to a component. Some controls are missing
-  //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not greate UX.
+  //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
   const saveAction = () => {
     if (canvas) {
       localStorage.setItem(
@@ -27,6 +26,10 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
+  const editAction = () => {
+    alert('Not implemented')
+  }
+
   const clearAction = () => {
     if (canvas) {
       canvas.clear()
@@ -40,11 +43,19 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
+  const skipAction = () => {
+    alert('Skip action not implemented yet')
+  }
+
+  const invalidAction = () => {
+    alert('Invalid action not implemented yet')
+  }
+
   return (
       <div className={styles.container}>
         <div className={styles.canvasContainer}>
           <ActionToolbar
-              saveAction={saveAction}
+              editAction={editAction}
               clearAction={clearAction}
               undoAction={undoAction}
               redoAction={redoAction}
@@ -59,11 +70,7 @@ export const Dashboard = (): ReactElement => {
               className={styles.canvas}
           />
         </div>
-        <div className={styles.footer}>
-          <button className={styles.invalid}>Invalid</button>
-          <button className={styles.skip}>Skip</button>
-          <button className={styles.save}>Save</button>
-        </div>
+        <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction} />
       </div>
   )
 }
