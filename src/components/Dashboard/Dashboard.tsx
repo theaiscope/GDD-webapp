@@ -12,33 +12,43 @@ export const Dashboard = (): ReactElement => {
   //TODO: Are pictures of a fixed size? we might need to adjust the canvas when the picture size changes
   //TODO: Move footer to a component. Some controls are missing
   //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not greate UX.
+  const saveAction = () => {
+    if (canvas) {
+      localStorage.setItem(
+          "savedDrawing",
+          canvas.getSaveData()
+      )
+    }
+  }
+
+  const undoAction = () => {
+    if (canvas) {
+      canvas.undo()
+    }
+  }
+
+  const clearAction = () => {
+    if (canvas) {
+      canvas.clear()
+    }
+  }
+
+  const redoAction = () => {
+    if (canvas) {
+      const savedData : string = localStorage.getItem('savedDrawing') ?? ''
+      canvas.loadSaveData(savedData, true);
+    }
+  }
+
   return (
       <div className={styles.container}>
         <div className={styles.canvasContainer}>
-          <ActionToolbar saveAction={() => {
-            if (canvas) {
-              //TODO: Unsure that this is working.
-              localStorage.setItem(
-                  "savedDrawing",
-                  canvas.getSaveData()
-              );
-            }
-          }} clearAction={() => {
-            if (canvas) {
-              canvas.clear()
-            }
-          }} undoAction={() => {
-            if (canvas) {
-              canvas.undo()
-            }
-          }} redoAction={() => {
-            if (canvas) {
-              localStorage.setItem(
-                  "savedDrawing",
-                  canvas.getSaveData()
-              );
-            }
-          }}/>
+          <ActionToolbar
+              saveAction={saveAction}
+              clearAction={clearAction}
+              undoAction={undoAction}
+              redoAction={redoAction}
+          />
           <CanvasDraw
               ref={canvasDraw => (canvas = canvasDraw)}
               canvasWidth={2962}
