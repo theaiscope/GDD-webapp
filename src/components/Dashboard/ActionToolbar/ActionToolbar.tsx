@@ -6,15 +6,15 @@ import redoIcon from './redo-icon.png'
 import clearIcon from './clear-icon.png'
 
 type Props = {
-  saveAction: () => void, clearAction: () => void, undoAction: () => void, redoAction: () => void
+  editAction: () => void, clearAction: () => void, undoAction: () => void, redoAction: () => void
 }
 
-export const ActionToolbar = ({saveAction, clearAction, undoAction, redoAction}: Props): ReactElement => (
+export const ActionToolbar = ({editAction, clearAction, undoAction, redoAction}: Props): ReactElement => (
     <div role="toolbar" className={styles.tools}>
       <button
-          onClick={saveAction}
+          onClick={editAction}
       >
-        <img src={saveIcon} alt={'save'}/>
+        <img src={saveIcon} alt={'edit'}/>
       </button>
       <button
           onClick={clearAction}
