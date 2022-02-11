@@ -33,6 +33,8 @@ const NotFound = (): ReactElement => (
 const LayoutsWithNavbar = () => (
   <>
     <Navbar />
-    <div className={styles.main}><Outlet /></div>
+    <div className={styles.main}>
+      <Outlet />
+    </div>
   </>
 )
