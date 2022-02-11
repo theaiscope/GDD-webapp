@@ -2,10 +2,8 @@ import React, {ReactElement} from 'react'
 import styles from './Dashboard.module.css'
 import CanvasDraw from "react-canvas-draw";
 import malaria from './malaria.png';
-import saveIcon from './save-icon.png'
-import undoIcon from './undo-icon.png'
-import redoIcon from './redo-icon.png'
-import clearIcon from './clear-icon.png'
+import {ActionToolbar} from "./ActionToolbar/ActionToolbar";
+
 
 export const Dashboard = (): ReactElement => {
   let canvas: CanvasDraw | null;
@@ -17,51 +15,30 @@ export const Dashboard = (): ReactElement => {
   return (
       <div className={styles.container}>
         <div className={styles.canvasContainer}>
-          <div role='toolbar' className={styles.tools}>
-            <button
-                onClick={() => {
-                  if (canvas) {
-                    //TODO: Unsure that this is working.
-                    localStorage.setItem(
-                        "savedDrawing",
-                        canvas.getSaveData()
-                    );
-                  }
-                }}
-            >
-              <img src={saveIcon}/>
-            </button>
-            <button
-                onClick={() => {
-                  if (canvas) {
-                    canvas.clear()
-                  }
-                }}
-            >
-              <img src={clearIcon}/>
-            </button>
-            <button
-                onClick={() => {
-                  if (canvas) {
-                    canvas.undo()
-                  }
-                }}
-            >
-              <img src={undoIcon}/>
-            </button>
-            <button
-                onClick={() => {
-                  if (canvas) {
-                    localStorage.setItem(
-                        "savedDrawing",
-                        canvas.getSaveData()
-                    );
-                  }
-                }}
-            >
-              <img src={redoIcon}/>
-            </button>
-          </div>
+          <ActionToolbar saveAction={() => {
+            if (canvas) {
+              //TODO: Unsure that this is working.
+              localStorage.setItem(
+                  "savedDrawing",
+                  canvas.getSaveData()
+              );
+            }
+          }} clearAction={() => {
+            if (canvas) {
+              canvas.clear()
+            }
+          }} undoAction={() => {
+            if (canvas) {
+              canvas.undo()
+            }
+          }} redoAction={() => {
+            if (canvas) {
+              localStorage.setItem(
+                  "savedDrawing",
+                  canvas.getSaveData()
+              );
+            }
+          }}/>
           <CanvasDraw
               ref={canvasDraw => (canvas = canvasDraw)}
               canvasWidth={2962}

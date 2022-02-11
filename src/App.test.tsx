@@ -9,6 +9,7 @@ import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
 import { assertLogInPresent } from './Auth/LogIn/LogIn.test.assertion'
 
 jest.mock('react-firebase-hooks/auth')
+jest.mock("react-canvas-draw")
 
 const mockedAuthState = mocked(useAuthState, true)
 const mockedSignIn = mocked(useSignInWithEmailAndPassword, true)
@@ -83,7 +84,7 @@ describe(App, () => {
         </MemoryRouter>,
       )
 
-      expect(screen.queryByText('I am the Dashboard - please implement me')).toBeInTheDocument()
+      expect(screen.queryByRole('toolbar')).toBeInTheDocument()
       expect(screen.queryByText('Login')).not.toBeInTheDocument()
 
       assertNavbarPresent(screen)
