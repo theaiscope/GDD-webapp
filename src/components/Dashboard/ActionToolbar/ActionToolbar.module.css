@@ -24,3 +24,7 @@
   justify-content: flex-end;
   display: flex;
 }
+
+.redo, .edit {
+  visibility: hidden;
+}
