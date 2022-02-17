@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "sh -ac '. ./.env.test; react-scripts start'",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-scripts build'",
+    "build:test": "REACT_APP_ENV=test yarn build",
+    "build:production": "REACT_APP_ENV=production yarn build",
     "test": "react-scripts test --watchAll=false",
     "test:watch": "react-scripts",
     "eject": "react-scripts eject",

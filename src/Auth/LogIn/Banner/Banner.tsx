@@ -3,10 +3,10 @@ import styles from './Banner.module.css'
 
 export const Banner = (): ReactElement => {
   return (
-    <div className={styles.container}>
-      <h1 className={styles.header}>Cross Labeling</h1>
-      <p className={styles.header}>Related info - Who and how can they help?</p>
-      <p className={styles.header}>
+    <header className={styles.container}>
+      <h1>Cross Labeling</h1>
+      <p>Related info - Who and how can they help?</p>
+      <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
         magna aliqua.
         <br />
@@ -18,6 +18,6 @@ export const Banner = (): ReactElement => {
         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est{' '}
         <a href="/FAQ">FAQ</a>.
       </p>
-    </div>
+    </header>
   )
 }

@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     uses: theaiscope/GDD-webapp/.github/workflows/test.yaml@v1
-  deploy:
+  deploy-test:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -21,10 +21,30 @@ jobs:
       - name: Install node modules
         run: yarn
       - name: Build
-        run: yarn build
+        run: yarn build:test
       - name: Deploy client to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy
+          args: deploy -P test
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY_TEST }}
+  deploy-prod:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: 'yarn'
+      - name: Install node modules
+        run: yarn
+      - name: Build
+        run: yarn build:production
+      - name: Deploy client to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy -P default
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}

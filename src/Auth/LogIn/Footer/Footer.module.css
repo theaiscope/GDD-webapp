@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.container > a {
+    text-decoration: unset;
+    font-size: 14px;
+}
