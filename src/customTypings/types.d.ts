@@ -28,7 +28,6 @@ declare module "react-canvas-draw" {
     enablePanAndZoom?: boolean | undefined;
     mouseZoomFactor?: number | undefined;
     zoomExtents?: ZoomExtents | undefined;
-    //TODO: are this properties available?
     backgroundColor?: string | undefined;
     className?: string | undefined;
     style?: React.CSSProperties | undefined;

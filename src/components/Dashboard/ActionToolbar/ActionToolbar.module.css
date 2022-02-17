@@ -1,6 +1,8 @@
 .tools > button,
 .tools > button > img {
   height: 1.5rem;
+  outline: none;
+  border: none;
 }
 
 .tools > button:active {

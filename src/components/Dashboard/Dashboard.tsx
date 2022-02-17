@@ -61,6 +61,7 @@ export const Dashboard = (): ReactElement => {
               redoAction={redoAction}
           />
           <CanvasDraw
+              lazyRadius={0}
               ref={canvasDraw => (canvas = canvasDraw)}
               canvasWidth={2962}
               canvasHeight={1512}

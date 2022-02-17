@@ -7,6 +7,8 @@ import { User } from '@firebase/auth/dist/auth-public'
 import { mocked } from 'jest-mock'
 import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
 import { assertLogInPresent } from './Auth/LogIn/LogIn.test.assertion'
+import {actionToolbarPresent} from './components/Dashboard/ActionToolbar/ActionToolbar.test.assertion'
+import {imageToolbarPresent} from "./components/Dashboard/ImageToolbar/ImageToolbar.test.assertion";
 
 jest.mock('react-firebase-hooks/auth')
 jest.mock("react-canvas-draw")
@@ -84,7 +86,8 @@ describe(App, () => {
         </MemoryRouter>,
       )
 
-      expect(screen.queryByRole('toolbar')).toBeInTheDocument()
+      actionToolbarPresent(screen, true)
+      imageToolbarPresent(screen, true)
       expect(screen.queryByText('Login')).not.toBeInTheDocument()
 
       assertNavbarPresent(screen)
