@@ -2,8 +2,8 @@ import {Screen} from '@testing-library/react'
 
 export const actionToolbarPresent = (screen: Screen, present = true): void => {
   present
-      ? expect(screen.getByRole('button', {name: 'redo'})).toBeInTheDocument()
-      : expect(screen.getByRole('button', {name: 'redo'})).not.toBeInTheDocument()
+      ? expect(screen.getByRole('button', {name: 'edit'})).toBeInTheDocument()
+      : expect(screen.getByRole('button', {name: 'edit'})).not.toBeInTheDocument()
 
   present
       ? expect(screen.getByRole('button', {name: 'undo'})).toBeInTheDocument()

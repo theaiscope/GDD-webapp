@@ -25,6 +25,14 @@
     border-radius: 4px;
 }
 
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    outline: #7E65A7 1px solid;
+}
+
 .skip {
     background: #7E65A7;
 }

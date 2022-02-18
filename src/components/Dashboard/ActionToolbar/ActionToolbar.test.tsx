@@ -11,7 +11,6 @@ describe(ActionToolbar, () => {
     render(<ActionToolbar
         editAction={testedAction}
         clearAction={emptyAction}
-        redoAction={emptyAction}
         undoAction={emptyAction}
     />)
 
@@ -25,8 +24,11 @@ describe(ActionToolbar, () => {
   it('should have a button for the clear action', () => {
     const testedAction = jest.fn()
 
-    render(<ActionToolbar clearAction={testedAction} editAction={emptyAction} redoAction={emptyAction}
-                          undoAction={emptyAction}/>)
+    render(<ActionToolbar
+        clearAction={testedAction}
+        editAction={emptyAction}
+        undoAction={emptyAction}
+    />)
 
     const clearButton = screen.getByRole('button', {name: 'clear'})
     clearButton.click()
@@ -36,23 +38,13 @@ describe(ActionToolbar, () => {
   it('should have a button for the undo action', () => {
     const testedAction = jest.fn()
 
-    render(<ActionToolbar clearAction={emptyAction} editAction={emptyAction} redoAction={emptyAction}
-                          undoAction={testedAction}/>)
+    render(<ActionToolbar
+        clearAction={emptyAction}
+        editAction={emptyAction}
+        undoAction={testedAction}/>)
 
     const undoButton = screen.getByRole('button', {name: 'undo'})
     undoButton.click()
-
-    expect(testedAction).toBeCalledTimes(1)
-  })
-
-  it('should have a button for the redo action', () => {
-    const testedAction = jest.fn()
-
-    render(<ActionToolbar clearAction={emptyAction} editAction={emptyAction} redoAction={testedAction}
-                          undoAction={emptyAction}/>)
-
-    const redoButton = screen.getByRole('button', {name: 'redo'})
-    redoButton.click()
 
     expect(testedAction).toBeCalledTimes(1)
   })

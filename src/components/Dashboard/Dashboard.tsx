@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react'
+import React, {ReactElement, useState} from 'react'
 import styles from './Dashboard.module.css'
 import CanvasDraw from "react-canvas-draw";
 import malaria from './malaria.png';
@@ -7,6 +7,7 @@ import {ImageToolbar} from "./ImageToolbar/ImageToolbar";
 
 
 export const Dashboard = (): ReactElement => {
+  const [disabled, toggleDisabled] = useState(true)
   let canvas: CanvasDraw | null;
 
   //TODO: Are pictures of a fixed size? we might need to adjust the canvas when the picture size changes
@@ -17,6 +18,7 @@ export const Dashboard = (): ReactElement => {
           "savedDrawing",
           canvas.getSaveData()
       )
+      toggleDisabled(true);
     }
   }
 
@@ -27,7 +29,7 @@ export const Dashboard = (): ReactElement => {
   }
 
   const editAction = () => {
-    alert('Not implemented')
+    toggleDisabled(false);
   }
 
   const clearAction = () => {
@@ -36,19 +38,12 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
-  const redoAction = () => {
-    if (canvas) {
-      const savedData : string = localStorage.getItem('savedDrawing') ?? ''
-      canvas.loadSaveData(savedData, true);
-    }
-  }
-
   const skipAction = () => {
-    alert('Skip action not implemented yet')
+    toggleDisabled(true);
   }
 
   const invalidAction = () => {
-    alert('Invalid action not implemented yet')
+    toggleDisabled(true);
   }
 
   return (
@@ -58,7 +53,6 @@ export const Dashboard = (): ReactElement => {
               editAction={editAction}
               clearAction={clearAction}
               undoAction={undoAction}
-              redoAction={redoAction}
           />
           <CanvasDraw
               lazyRadius={0}
@@ -69,6 +63,7 @@ export const Dashboard = (): ReactElement => {
               clampLinesToDocument={true}
               imgSrc={malaria}
               className={styles.canvas}
+              disabled={disabled}
           />
         </div>
         <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction} />
