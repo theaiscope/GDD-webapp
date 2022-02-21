@@ -1,9 +1,7 @@
 .app {
     height: 100vh;
+    max-height: 100vh;
     display: flex;
+    flex-grow: 0;
     flex-direction: column;
-}
-
-.main {
-    margin-top: 50px
 }
