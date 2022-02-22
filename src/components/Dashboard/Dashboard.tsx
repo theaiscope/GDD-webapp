@@ -1,16 +1,28 @@
-import React, {ReactElement, useState} from 'react'
+import React, {ReactElement, useState, useEffect} from 'react'
 import styles from './Dashboard.module.css'
-import CanvasDraw from "react-canvas-draw";
-import malaria from './malaria.png';
-import {ActionToolbar} from "./ActionToolbar/ActionToolbar";
-import {ImageToolbar} from "./ImageToolbar/ImageToolbar";
-
+import CanvasDraw from "react-canvas-draw"
+import {ActionToolbar} from "./ActionToolbar/ActionToolbar"
+import {ImageToolbar} from "./ImageToolbar/ImageToolbar"
+import {getImage, getImageDimensions} from "../../services/ImageRepositoryService"
 
 export const Dashboard = (): ReactElement => {
   const [disabled, toggleDisabled] = useState(true)
-  let canvas: CanvasDraw | null;
+  const [imageUrl, setImageUrl] = useState('')
+  const [width, setWidth] = useState(1000)
+  const [height, setHeight] = useState(1000)
 
-  //TODO: Are pictures of a fixed size? we might need to adjust the canvas when the picture size changes
+  let canvas: CanvasDraw | null
+
+  useEffect(() => {
+    getImage().then((imageUrl) => {
+      setImageUrl(imageUrl)
+      getImageDimensions(imageUrl).then((imageDimensions) => {
+        setWidth(imageDimensions.width)
+        setHeight(imageDimensions.height)
+      }).catch((error) => console.error(error))
+    })
+  }, [])
+
   //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
   const saveAction = () => {
     if (canvas) {
@@ -18,7 +30,7 @@ export const Dashboard = (): ReactElement => {
           "savedDrawing",
           canvas.getSaveData()
       )
-      toggleDisabled(true);
+      toggleDisabled(true)
     }
   }
 
@@ -28,8 +40,8 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
-  const editAction = () => {
-    toggleDisabled(false);
+  const editAction = async () => {
+    toggleDisabled(false)
   }
 
   const clearAction = () => {
@@ -39,7 +51,7 @@ export const Dashboard = (): ReactElement => {
   }
 
   const skipAction = () => {
-    toggleDisabled(true);
+    toggleDisabled(true)
   }
 
   const invalidAction = () => {
@@ -57,16 +69,16 @@ export const Dashboard = (): ReactElement => {
           <CanvasDraw
               lazyRadius={0}
               ref={canvasDraw => (canvas = canvasDraw)}
-              canvasWidth={2962}
-              canvasHeight={1512}
+              canvasWidth={width}
+              canvasHeight={height}
               enablePanAndZoom={true}
               clampLinesToDocument={true}
-              imgSrc={malaria}
+              imgSrc={imageUrl}
               className={styles.canvas}
               disabled={disabled}
           />
         </div>
-        <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction} />
+        <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction}/>
       </div>
   )
 }

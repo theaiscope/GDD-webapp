@@ -2,7 +2,6 @@ import React, {ReactElement} from 'react'
 import styles from './ActionToolbar.module.css'
 import saveIcon from './save-icon.png'
 import undoIcon from './undo-icon.png'
-import redoIcon from './redo-icon.png'
 import clearIcon from './clear-icon.png'
 
 type Props = {
