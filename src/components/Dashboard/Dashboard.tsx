@@ -15,7 +15,7 @@ export const Dashboard = (): ReactElement => {
     let canvas: CanvasDraw | null
 
     useEffect(() => {
-        const samples = GetDataAsObject("samples").then((imageArray) =>
+        GetDataAsObject("samples").then((imageArray) =>
             getImage(imageArray).then((imageUrl) => {
                 setImageUrl(imageUrl)
                 getImageDimensions(imageUrl).then((imageDimensions) => {
