@@ -1,18 +1,35 @@
-import { getStorage, ref, getDownloadURL } from 'firebase/storage'
-import { ImageContainer, ImageDimensions } from 'react-canvas-draw'
+import { getStorage, ref, getDownloadURL, uploadString, StorageReference } from 'firebase/storage'
+import { ImageContainer, ImageDimensions, SelectedSample } from 'react-canvas-draw'
 
-export async function getImage(imageArray: ImageContainer[]): Promise<string> {
+export async function getImage(imageArray: ImageContainer[]): Promise<SelectedSample> {
   const storage = getStorage()
   const flattenedArray = [...imageArray]
 
-  const sampleIndex = getArrayIndex(flattenedArray.length)
-  console.log(sampleIndex)
-  const imageIndex = getArrayIndex(flattenedArray[sampleIndex].images.length)
-  const reference = ref(
+  const sampleIndex: number = getArrayIndex(flattenedArray.length)
+  const imageIndex: number = getArrayIndex(flattenedArray[sampleIndex].images.length)
+  const reference: StorageReference = ref(
     storage,
     flattenedArray[sampleIndex].location + '/' + flattenedArray[sampleIndex].images[imageIndex].name,
   )
-  return await getDownloadURL(reference)
+  return {
+    location: flattenedArray[sampleIndex].location,
+    imageId: imageIndex,
+    maskId: flattenedArray[sampleIndex].images[imageIndex].masks.length,
+    url: await getDownloadURL(reference),
+  }
+}
+
+export async function uploadImage(
+  file: string,
+  location: string,
+  imageIndex: number,
+  maskIndex: number,
+): Promise<void> {
+  console.log(file)
+  const storage = getStorage()
+
+  const reference: StorageReference = ref(storage, `${location}/mask_${imageIndex}_${maskIndex}`)
+  await uploadString(reference, file, 'data_url')
 }
 
 export async function getImageDimensions(url: string): Promise<ImageDimensions> {

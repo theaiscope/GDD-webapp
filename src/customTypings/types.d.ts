@@ -28,6 +28,13 @@ declare module 'react-canvas-draw' {
     uploadedBy: string
   }
 
+  export interface SelectedSample {
+    location: string
+    imageId: number
+    maskId: number
+    url: string
+  }
+
   export interface CanvasDrawProps {
     onChange?: ((canvas: CanvasDraw) => void) | null | undefined
     loadTimeOffset?: number | undefined
@@ -64,11 +71,7 @@ declare module 'react-canvas-draw' {
      */
     getSaveData(): string
 
-    /**
-     * Loads a previously saved drawing using the saveData string, as well as an optional boolean
-     * flag to load it immediately, instead of live-drawing it.
-     */
-    loadSaveData(saveData: string, immediate?: boolean): void
+    getDataURL(fileType: string, useBackgroundImage?: boolean | undefined, color?: string | undefined): string
 
     /**
      * Clears the canvas completely.
