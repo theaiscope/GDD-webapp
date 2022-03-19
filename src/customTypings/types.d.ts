@@ -66,11 +66,6 @@ declare module 'react-canvas-draw' {
   }
 
   export default class CanvasDraw extends React.Component<CanvasDrawProps> {
-    /**
-     * Returns the drawing's save-data as a stringified object.
-     */
-    getSaveData(): string
-
     getDataURL(fileType: string, useBackgroundImage?: boolean | undefined, color?: string | undefined): string
 
     /**
