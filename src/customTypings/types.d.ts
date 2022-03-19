@@ -9,7 +9,7 @@ declare module 'react-canvas-draw' {
     height: number
   }
 
-  export interface ImageContainer {
+  export interface BloodSampleContainer {
     images: BloodSample[]
     location: string
     numberOfImages: 1

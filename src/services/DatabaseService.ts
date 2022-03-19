@@ -1,16 +1,16 @@
 import { databaseClient } from './firebaseService'
 import { collection, query, getDocs } from 'firebase/firestore'
-import { ImageContainer } from 'react-canvas-draw'
+import { BloodSampleContainer } from 'react-canvas-draw'
 
-export async function GetDataAsObject(container: string): Promise<ImageContainer[]> {
-  const array: ImageContainer[] = []
+export async function GetBloodSampleContainers(container: string): Promise<BloodSampleContainer[]> {
+  const array: BloodSampleContainer[] = []
 
   const samples = collection(databaseClient, container)
   const q = query(samples)
   const snapshot = await getDocs(q)
 
   snapshot.forEach((doc) => {
-    array.push(<ImageContainer>doc.data())
+    array.push(<BloodSampleContainer>doc.data())
     console.log(doc.data())
   })
 

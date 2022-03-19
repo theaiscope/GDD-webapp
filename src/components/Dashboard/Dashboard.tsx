@@ -4,7 +4,7 @@ import CanvasDraw, { SelectedSample } from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImage, getImageDimensions, uploadImage } from '../../services/ImageRepositoryService'
-import { GetDataAsObject } from '../../services/DatabaseService'
+import { GetBloodSampleContainers } from '../../services/DatabaseService'
 
 export const Dashboard = (): ReactElement => {
   const [sample, setSample] = useState<SelectedSample>()
@@ -19,7 +19,7 @@ export const Dashboard = (): ReactElement => {
   }, [])
 
   const getNewImage = () => {
-    GetDataAsObject('samples').then((imageArray) =>
+    GetBloodSampleContainers('samples').then((imageArray) =>
       getImage(imageArray).then((selectedSample) => {
         setSample(selectedSample)
         setImageUrl(selectedSample.url)

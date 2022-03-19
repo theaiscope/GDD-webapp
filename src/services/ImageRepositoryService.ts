@@ -1,7 +1,7 @@
 import { getStorage, ref, getDownloadURL, uploadString, StorageReference } from 'firebase/storage'
-import { ImageContainer, ImageDimensions, SelectedSample } from 'react-canvas-draw'
+import { BloodSampleContainer, ImageDimensions, SelectedSample } from 'react-canvas-draw'
 
-export async function getImage(imageArray: ImageContainer[]): Promise<SelectedSample> {
+export async function getImage(imageArray: BloodSampleContainer[]): Promise<SelectedSample> {
   const storage = getStorage()
   const flattenedArray = [...imageArray]
 
