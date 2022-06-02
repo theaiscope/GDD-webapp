@@ -19,8 +19,10 @@ export const Dashboard = (): ReactElement => {
   }, [])
 
   const getNewImage = () => {
-    GetBloodSampleContainers('samples').then((imageArray) =>
-      getImage(imageArray).then((selectedSample) => {
+    GetBloodSampleContainers('samples')
+    .then((imageArray) =>
+      getImage(imageArray)
+      .then((selectedSample) => {
         setSample(selectedSample)
         setImageUrl(selectedSample.url)
         getImageDimensions(selectedSample.url)
