@@ -1,5 +1,5 @@
 import { databaseClient } from './firebaseService'
-import { collection, query, getDocs } from 'firebase/firestore'
+import { collection, query, getDocs, QueryConstraint, QuerySnapshot } from 'firebase/firestore'
 import { BloodSampleContainer } from 'react-canvas-draw'
 
 export async function GetBloodSampleContainers(container: string): Promise<BloodSampleContainer[]> {
@@ -15,4 +15,11 @@ export async function GetBloodSampleContainers(container: string): Promise<Blood
   })
 
   return array
+}
+
+export async function getDocuments(collectionName: string, queryConstraints?: QueryConstraint[]): Promise<QuerySnapshot<unknown>> {
+  const collectionInstance = collection(databaseClient, collectionName)
+  const q = query(collectionInstance, ...queryConstraints || [])
+  const snapshot = await getDocs(q)
+  return snapshot
 }

@@ -14,6 +14,8 @@ declare module 'react-canvas-draw' {
     location: string
     numberOfImages: 1
     uploadedBy: string
+    createdOn: date
+    isCompleted: boolean
   }
 
   export interface BloodSample {
