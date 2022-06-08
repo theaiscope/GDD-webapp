@@ -5,6 +5,7 @@ import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImage, getImageDimensions, uploadImage } from '../../services/ImageRepositoryService'
 import { getBloodSampleContainers } from '../../services/SampleService/SampleService'
+import { GetBloodSampleContainers } from '../../services/DatabaseService'
 
 export const Dashboard = (): ReactElement => {
   const [sample, setSample] = useState<SelectedSample>()
@@ -19,7 +20,7 @@ export const Dashboard = (): ReactElement => {
   }, [])
 
   const getNewImage = () => {
-    getBloodSampleContainers()
+    GetBloodSampleContainers('samples')
     .then((imageArray) =>
       getImage(imageArray)
       .then((selectedSample) => {

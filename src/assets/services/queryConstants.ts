@@ -1,2 +1,2 @@
-export const IS_SAMPLE_COMPLETED = "isSampleCompleted"
+export const IS_COMPLETED = "isCompleted"
 export const CREATED_ON = "createdOn"
