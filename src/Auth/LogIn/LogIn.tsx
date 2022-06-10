@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { config } from '../config'
+import { firebaseService } from '../../services/firebaseService'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { Footer } from './Footer/Footer'
 import { Form } from './Form/Form'
@@ -8,7 +8,7 @@ import styles from './LogIn.module.css'
 import { Banner } from './Banner/Banner'
 
 export const LogIn = (): ReactElement => {
-  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(config)
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(firebaseService)
   const navigate = useNavigate()
   const location = useLocation()
   const contactMail = 'GDD@aiscope.net'

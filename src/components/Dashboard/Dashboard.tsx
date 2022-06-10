@@ -1,24 +1,45 @@
-import React, {ReactElement, useState} from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import styles from './Dashboard.module.css'
-import CanvasDraw from "react-canvas-draw";
-import malaria from './malaria.png';
-import {ActionToolbar} from "./ActionToolbar/ActionToolbar";
-import {ImageToolbar} from "./ImageToolbar/ImageToolbar";
-
+import CanvasDraw, { SelectedSample } from 'react-canvas-draw'
+import { ActionToolbar } from './ActionToolbar/ActionToolbar'
+import { ImageToolbar } from './ImageToolbar/ImageToolbar'
+import { getImage, getImageDimensions, uploadImage } from '../../services/ImageRepositoryService'
+import { GetBloodSampleContainers } from '../../services/DatabaseService'
 
 export const Dashboard = (): ReactElement => {
-  const [disabled, toggleDisabled] = useState(true)
-  let canvas: CanvasDraw | null;
+  const [sample, setSample] = useState<SelectedSample>()
+  const [imageUrl, setImageUrl] = useState('')
+  const [width, setWidth] = useState(1000)
+  const [height, setHeight] = useState(1000)
 
-  //TODO: Are pictures of a fixed size? we might need to adjust the canvas when the picture size changes
+  let canvas: CanvasDraw | null
+
+  useEffect(() => {
+    getNewImage()
+  }, [])
+
+  const getNewImage = () => {
+    GetBloodSampleContainers('samples').then((imageArray) =>
+      getImage(imageArray).then((selectedSample) => {
+        setSample(selectedSample)
+        setImageUrl(selectedSample.url)
+        getImageDimensions(selectedSample.url)
+          .then((imageDimensions) => {
+            setWidth(imageDimensions.width)
+            setHeight(imageDimensions.height)
+          })
+          .catch((error) => console.error(error))
+      }),
+    )
+  }
+
   //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
-  const saveAction = () => {
-    if (canvas) {
-      localStorage.setItem(
-          "savedDrawing",
-          canvas.getSaveData()
-      )
-      toggleDisabled(true);
+  const saveAction = async () => {
+    if (canvas && sample) {
+      const dataUri = canvas.getDataURL('png', false)
+      await uploadImage(dataUri, sample.location, sample?.imageId, sample.maskId)
+      getNewImage()
+      clearAction()
     }
   }
 
@@ -28,10 +49,6 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
-  const editAction = () => {
-    toggleDisabled(false);
-  }
-
   const clearAction = () => {
     if (canvas) {
       canvas.clear()
@@ -39,34 +56,29 @@ export const Dashboard = (): ReactElement => {
   }
 
   const skipAction = () => {
-    toggleDisabled(true);
+    getNewImage()
   }
 
   const invalidAction = () => {
-    toggleDisabled(true);
+    getNewImage()
   }
 
   return (
-      <div className={styles.container}>
-        <div className={styles.canvasContainer}>
-          <ActionToolbar
-              editAction={editAction}
-              clearAction={clearAction}
-              undoAction={undoAction}
-          />
-          <CanvasDraw
-              lazyRadius={0}
-              ref={canvasDraw => (canvas = canvasDraw)}
-              canvasWidth={2962}
-              canvasHeight={1512}
-              enablePanAndZoom={true}
-              clampLinesToDocument={true}
-              imgSrc={malaria}
-              className={styles.canvas}
-              disabled={disabled}
-          />
-        </div>
-        <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction} />
+    <div className={styles.container}>
+      <div className={styles.canvasContainer}>
+        <ActionToolbar clearAction={clearAction} undoAction={undoAction} />
+        <CanvasDraw
+          lazyRadius={0}
+          ref={(canvasDraw) => (canvas = canvasDraw)}
+          canvasWidth={width}
+          canvasHeight={height}
+          enablePanAndZoom={true}
+          clampLinesToDocument={true}
+          imgSrc={imageUrl}
+          className={styles.canvas}
+        />
       </div>
+      <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction} />
+    </div>
   )
 }
