@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { mocked } from 'jest-mock'
-import { UserCredential } from '@firebase/auth/dist/auth-public'
+import { userCredentialMock as user } from './userCredentialMock'
 
 jest.mock('react-firebase-hooks/auth')
 const mockSignIn = mocked(useSignInWithEmailAndPassword, true)
@@ -39,7 +39,7 @@ describe(LogIn, () => {
   })
 
   it('should redirect to /dashboard when logged in', async () => {
-    mockSignIn.mockReturnValue([jest.fn(), {} as UserCredential, false, undefined])
+    mockSignIn.mockReturnValue([jest.fn(), user, false, undefined])
 
     render(
       <MemoryRouter initialEntries={['/login']}>

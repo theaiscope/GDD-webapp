@@ -9,7 +9,7 @@
     "build:test": "REACT_APP_ENV=test yarn build",
     "build:production": "REACT_APP_ENV=production yarn build",
     "test": "react-scripts test --watchAll=false --detectOpenHandles --forceExit",
-    "test:watch": "react-scripts",
+    "test:watch": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "fix": "eslint './src/**/*.{ts,tsx}' --fix",
@@ -56,9 +56,11 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
+    "canvas": "^2.9.1",
     "eslint": "^7.27.0",
     "eslint-plugin-react": "^7.24.0",
     "husky": "^7.0.4",
+    "jsdom": "^19.0.0",
     "prettier": "^2.3.0",
     "ts-jest": "^27.1.3"
   }

@@ -9,18 +9,16 @@ declare module 'react-canvas-draw' {
     height: number
   }
 
-  export interface BloodSampleContainer {
-    images: BloodSample[]
-    location: string
-    numberOfImages: 1
-    uploadedBy: string
-  }
-
-  export interface BloodSample {
+  export interface ImageCollection {
     markedAsInvalid: number
     masks: Mask[]
     name: string
     skipped: number
+    labellers: string[]
+    createdOn: date
+    isCompleted: boolean
+    sampleLocation: string
+    sampleReference: string
   }
 
   export interface Mask {

@@ -1,46 +1,64 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import styles from './Dashboard.module.css'
-import CanvasDraw, { SelectedSample } from 'react-canvas-draw'
+import CanvasDraw, { ImageCollection } from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
-import { getImage, getImageDimensions, uploadImage } from '../../services/ImageRepositoryService'
-import { GetBloodSampleContainers } from '../../services/DatabaseService'
+import { getImageUrl } from '../../services/ImageRepositoryService'
+import { fetchImages } from '../../services/ImagesService/ImagesService'
+import { useLocation } from 'react-router-dom'
+
+type SelectedImageType = {
+  location: string
+  url: string
+  width: number
+  height: number
+}
+
+const selectedImageInitialState: SelectedImageType = {
+  location: '',
+  url: '',
+  width: 1000,
+  height: 1000
+}
 
 export const Dashboard = (): ReactElement => {
-  const [sample, setSample] = useState<SelectedSample>()
-  const [imageUrl, setImageUrl] = useState('')
-  const [width, setWidth] = useState(1000)
-  const [height, setHeight] = useState(1000)
+  const [imagesState, setImagesState] = useState<ImageCollection[]>([])
+  const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
+  const location = useLocation()
 
   let canvas: CanvasDraw | null
 
   useEffect(() => {
-    getNewImage()
+    const state = location.state as { userUid: string }
+    if (state?.userUid) {
+      fetchImages(state.userUid)
+        .then((data: ImageCollection[]) => {
+          setImagesState(data)
+        })
+    }
   }, [])
 
-  const getNewImage = () => {
-    GetBloodSampleContainers('samples').then((imageArray) =>
-      getImage(imageArray).then((selectedSample) => {
-        setSample(selectedSample)
-        setImageUrl(selectedSample.url)
-        getImageDimensions(selectedSample.url)
-          .then((imageDimensions) => {
-            setWidth(imageDimensions.width)
-            setHeight(imageDimensions.height)
+  useEffect(() => {
+    if (imagesState.length > 0) {
+      getImageUrl(imagesState[0])
+        .then(imageUrl => {
+          setSelectedImage({
+            ...selectedImage,
+            url: imageUrl
           })
-          .catch((error) => console.error(error))
-      }),
-    )
-  }
+        })
+    }
+  }, [imagesState])
 
   //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
-  const saveAction = async () => {
-    if (canvas && sample) {
-      const dataUri = canvas.getDataURL('png', false)
-      await uploadImage(dataUri, sample.location, sample?.imageId, sample.maskId)
-      getNewImage()
-      clearAction()
-    }
+  const saveAction = () => {
+    // if (canvas && sample) {
+    //   const dataUri = canvas.getDataURL('png', false)
+    //   await uploadImage(dataUri, sample.location, sample?.imageId, sample.maskId)
+    //   getNewImage()
+    //   clearAction()
+    // }
+    console.log('save action')
   }
 
   const undoAction = () => {
@@ -56,11 +74,11 @@ export const Dashboard = (): ReactElement => {
   }
 
   const skipAction = () => {
-    getNewImage()
+    console.log('skip action')
   }
 
   const invalidAction = () => {
-    getNewImage()
+    console.log('invalid action')
   }
 
   return (
@@ -70,11 +88,11 @@ export const Dashboard = (): ReactElement => {
         <CanvasDraw
           lazyRadius={0}
           ref={(canvasDraw) => (canvas = canvasDraw)}
-          canvasWidth={width}
-          canvasHeight={height}
+          canvasWidth={selectedImage.width}
+          canvasHeight={selectedImage.height}
           enablePanAndZoom={true}
           clampLinesToDocument={true}
-          imgSrc={imageUrl}
+          imgSrc={selectedImage.url}
           className={styles.canvas}
         />
       </div>
