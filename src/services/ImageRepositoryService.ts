@@ -1,22 +1,14 @@
+// TODO: rename file to clarify the functionallity that contains
 import { getStorage, ref, getDownloadURL, uploadString, StorageReference } from 'firebase/storage'
-import { BloodSampleContainer, ImageDimensions, SelectedSample } from 'react-canvas-draw'
+import { ImageCollection, ImageDimensions } from 'react-canvas-draw'
 
-export async function getImage(imageArray: BloodSampleContainer[]): Promise<SelectedSample> {
+export const getImageUrl = async (image: ImageCollection): Promise<string> => {
   const storage = getStorage()
-  const flattenedArray = [...imageArray]
-
-  const sampleIndex: number = getArrayIndex(flattenedArray.length)
-  const imageIndex: number = getArrayIndex(flattenedArray[sampleIndex].images.length)
   const reference: StorageReference = ref(
     storage,
-    flattenedArray[sampleIndex].location + '/' + flattenedArray[sampleIndex].images[imageIndex].name,
+    image.sampleLocation + '/' + image.name,
   )
-  return {
-    location: flattenedArray[sampleIndex].location,
-    imageId: imageIndex,
-    maskId: flattenedArray[sampleIndex].images[imageIndex].masks.length,
-    url: await getDownloadURL(reference),
-  }
+  return await getDownloadURL(reference)
 }
 
 export async function uploadImage(
@@ -39,10 +31,6 @@ export async function getImageDimensions(url: string): Promise<ImageDimensions> 
     width: metadata.width,
     height: metadata.height,
   }
-}
-
-function getArrayIndex(itemsInArray: number) {
-  return Math.floor(Math.random() * itemsInArray)
 }
 
 function getMeta(url: string) {

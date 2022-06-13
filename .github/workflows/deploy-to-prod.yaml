@@ -1,14 +1,16 @@
-name: Test and deploy to test
+name: Test and deploy to prod
 
 on:
   push:
-    branches:
-      - main
+    branches-ignore:
+      - '**'
+    tags:
+      - 'v*'
 
 jobs:
   test:
     uses: theaiscope/GDD-webapp/.github/workflows/test.yaml@v1
-  deploy-test:
+  deploy-prod:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -21,10 +23,10 @@ jobs:
       - name: Install node modules
         run: yarn
       - name: Build
-        run: yarn build:test
+        run: yarn build:production
       - name: Deploy client to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy -P test
+          args: deploy -P default
         env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY_TEST }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
