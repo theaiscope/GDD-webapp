@@ -9,7 +9,7 @@ describe('Images service', () => {
 
     it('should query from images collection and filter by isCompleted false and order by createdOn', async () => {
         const queryConstraints: QueryConstraint[] = [where(IS_COMPLETED, "==", false), orderBy(CREATED_ON)]
-        await fetchImages()
+        await fetchImages('1111')
         expect(getDocuments).toHaveBeenCalledWith('images', queryConstraints)
     })
 })

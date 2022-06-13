@@ -21,7 +21,7 @@ export const LogIn = (): ReactElement => {
       //TODO: write test for redirecting to location.state.from.pathname
       const state = location.state as { from: Location }
       const from = state ? state.from.pathname : '/dashboard'
-      navigate(from)
+      navigate(from, { state: { userUid: user.user.uid } })
     }
   }, [user, loading])
 

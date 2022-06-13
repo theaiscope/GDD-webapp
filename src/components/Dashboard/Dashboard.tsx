@@ -5,6 +5,7 @@ import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageRepositoryService'
 import { fetchImages } from '../../services/ImagesService/ImagesService'
+import { useLocation } from 'react-router-dom'
 
 type SelectedImageType = {
   location: string
@@ -23,14 +24,18 @@ const selectedImageInitialState: SelectedImageType = {
 export const Dashboard = (): ReactElement => {
   const [imagesState, setImagesState] = useState<ImageCollection[]>([])
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
+  const location = useLocation()
 
   let canvas: CanvasDraw | null
 
   useEffect(() => {
-    fetchImages()
-      .then((data: ImageCollection[]) => {
-        setImagesState(data)
-      })
+    const state = location.state as { userUid: string }
+    if (state?.userUid) {
+      fetchImages(state.userUid)
+        .then((data: ImageCollection[]) => {
+          setImagesState(data)
+        })
+    }
   }, [])
 
   useEffect(() => {
