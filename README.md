@@ -11,7 +11,7 @@ The app provides users with an interface where they are presented with an image.
 
 Every time a user `CONFIRMS` an image is credible they also add labelling for any disease that is present. It is this labelling that will be used for training the AI model.
 
-If enough users mark an image as `INVALID` it will be removed from the GDD and not used to train the AI.
+If three users mark an image as `INVALID` it will be removed from the GDD and not used to train the AI.
 
 ## Architecture
 
@@ -57,7 +57,10 @@ The project uses husky to run tests and lint before committing
 
 ### Deploying
 
-The app is currently deployed on every push. Github actions is used to run automated tests and if they are successful a new version of the application is deployed using the firebase cli.
+The app is currently deployed in test environment, on every push in main branch. 
+Github actions is used to run automated tests and if they are successful a new version of the application is deployed using the firebase cli.
+
+When a new release version is generated, it is published on production environment. 
 
 ## Contributing Guidelines
 
