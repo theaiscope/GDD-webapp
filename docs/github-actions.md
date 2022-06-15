@@ -2,7 +2,8 @@
 
 Currently, there are two main workflows:
 - [pull-request](/.github/workflows/pull-request.yaml) (runs on PRs)
-- [push-to-main](/.github/workflows/push-to-main.yaml) (runs when code is pushed to main or PRs are merged to main)
+- [push-to-main](/.github/workflows/push-to-main.yaml) (runs when code is pushed to main or PRs are merged to main, and deploys in test environment)
+- [deploy-to-prod](/.github/workflows/deploy-to-prod.yaml) (runs when a new tag is generated, and deploys on production environment)
 
 Both workflows use the reusable workflow [test](/.github/workflows/test.yaml) which runs the basic linting and testing. 
 
