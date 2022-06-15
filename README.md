@@ -9,7 +9,7 @@ The app provides users with an interface where they are presented with an image.
 - `SKIP` - if the user is unsure whether the image should be in the GDD
 - Mark as `INVALID` - if the user believes the image should not be used in the GDD
 
-Every time a user `CONFIRMS` an image is credible they also add labelling for any disease that is present. It is this labelling that will be used for training the AI model.
+Every time a user `CONFIRMS` an image is credible they also add labelling for any disease that is present. It is this labelling that will be used for training the AI model. Every image will be confirmed by 4 different labellers. Once 4 labellers have confirmed the image, the data will be stored for the AI model. 
 
 If three users mark an image as `INVALID` it will be removed from the GDD and not used to train the AI.
 
