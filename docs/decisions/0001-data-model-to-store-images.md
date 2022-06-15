@@ -1,4 +1,4 @@
-# [short title of solved problem and solution]
+# Data model to store images
 
 * Status: accepted
 * Date: 2022-06-14
@@ -29,7 +29,7 @@ Chosen option: "[option 2]", because we need to take into account the times we a
 
 ## Pros and Cons of the Options
 
-### [option 1]
+### Option 1
 
 All the images info is stored under samples collection. 
 
@@ -38,7 +38,7 @@ All the images info is stored under samples collection.
 * Bad, because the mobile app should not take care of generating info that only it's needed in the web app
 * Bad, because we need to load the whole sample with all the images even when some of the images have been already completed.  
 
-### [option 2]
+### Option 2
 
 Every time a new sample is added from the mobile app, a firebase function is trigered. This function will go through every sample image and will create a new image document with the required data by the web app. 
 
