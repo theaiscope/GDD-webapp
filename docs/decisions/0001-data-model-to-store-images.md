@@ -1,7 +1,7 @@
 # Data model to store images
 
 * Status: accepted
-* Date: 2022-06-14
+* Date: 2022-06-16
 
 Technical Story: Define sample data structure | https://trello.com/c/MeHPITHq/35-define-sample-data-structure
 
@@ -46,4 +46,4 @@ Every time a new sample is added from the mobile app, a firebase function is tri
 * Good, because web app has all the info that is required to treat the images
 * Good, because we save performance in terms of reading data
 * Bad, because a firebase function has its own cost. 
-* Bad, because there will some duplicated data, like the mask information. 
+* Bad, because there will some duplicated data, like the createdOn date.
