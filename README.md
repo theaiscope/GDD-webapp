@@ -9,9 +9,9 @@ The app provides users with an interface where they are presented with an image.
 - `SKIP` - if the user is unsure whether the image should be in the GDD
 - Mark as `INVALID` - if the user believes the image should not be used in the GDD
 
-Every time a user `CONFIRMS` an image is credible they also add labelling for any disease that is present. It is this labelling that will be used for training the AI model.
+Every time a user `CONFIRMS` an image is credible they also add labelling for any disease that is present. It is this labelling that will be used for training the AI model. Every image will be confirmed by 4 different labellers. Once 4 labellers have confirmed the image, the data will be stored for the AI model. 
 
-If enough users mark an image as `INVALID` it will be removed from the GDD and not used to train the AI.
+If three users mark an image as `INVALID`, this image won't be displayed to any new labeller. 
 
 ## Architecture
 
@@ -57,7 +57,10 @@ The project uses husky to run tests and lint before committing
 
 ### Deploying
 
-The app is currently deployed on every push. Github actions is used to run automated tests and if they are successful a new version of the application is deployed using the firebase cli.
+The app is currently deployed in test environment, on every push in main branch. 
+Github actions is used to run automated tests and if they are successful a new version of the application is deployed using the firebase cli.
+
+When a new tag is generated, it is published on production environment. 
 
 ## Contributing Guidelines
 
