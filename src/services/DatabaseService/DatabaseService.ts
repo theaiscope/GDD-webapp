@@ -1,4 +1,4 @@
-import { databaseClient } from './firebaseService'
+import { databaseClient } from '../firebaseService'
 import { collection, query, getDocs, QueryConstraint } from 'firebase/firestore'
 
 export async function getDocuments(collectionName: string, queryConstraints?: QueryConstraint[]): Promise<unknown[]> {
