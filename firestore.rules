@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /microscopists/{mId} {
+    	allow read: if request.auth.uid == mId;
+      allow write: if request.auth.uid == mId && !("enabled" in resource.data);
+    }
+    match /facilities/{facility} {
+    	allow read: if request.auth.uid != null;
+    	allow write: if false;
+    }
+    match /samples/{sample} {
+    	allow read: if request.auth.uid != null;
+    	allow write: if request.auth.uid != null;
+    }
+    match /images/{image} {
+    	allow read: if request.auth.uid != null;
+    	allow write: if request.auth.uid != null;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
