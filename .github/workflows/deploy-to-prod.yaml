@@ -1,11 +1,6 @@
 name: Test and deploy to prod
 
-on:
-  push:
-    branches-ignore:
-      - '**'
-    tags:
-      - 'v*'
+on: workflow_dispatch
 
 jobs:
   test:
@@ -21,10 +16,13 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - name: Install node modules
+        if: github.ref == 'refs/tags/**'
         run: yarn
       - name: Build
+        if: github.ref == 'refs/tags/**'
         run: yarn build:production
       - name: Deploy client to Firebase
+        if: github.ref == 'refs/tags/**'
         uses: w9jds/firebase-action@master
         with:
           args: deploy -P default
