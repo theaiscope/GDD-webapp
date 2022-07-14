@@ -4,4 +4,4 @@ on: [pull_request]
 
 jobs:
   test:
-    uses: theaiscope/GDD-webapp/.github/workflows/test.yaml@v1
+    uses: ./.github/workflows/test.yaml
