@@ -46,7 +46,7 @@ describe(LoadingButton, () => {
 
       const loginButton = screen.getByRole('button')
 
-      expect(within(loginButton).queryByRole('progressbar')).toBeInTheDocument()
+      expect(within(loginButton).getByRole('progressbar')).toBeInTheDocument()
     })
 
     it('should disable button', () => {

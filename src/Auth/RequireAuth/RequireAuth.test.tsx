@@ -31,7 +31,7 @@ describe(RequireAuth, () => {
       </MemoryRouter>,
     )
 
-    expect(screen.queryByText(homeText)).toBeInTheDocument()
+    expect(screen.getByText(homeText)).toBeInTheDocument()
   })
 
   it('should save location if no user', () => {
@@ -55,7 +55,7 @@ describe(RequireAuth, () => {
       </MemoryRouter>,
     )
 
-    expect(screen.queryByText('Previous location: /protected')).toBeInTheDocument()
+    expect(screen.getByText('Previous location: /protected')).toBeInTheDocument()
   })
 
   it('should go to route if there is a user', () => {

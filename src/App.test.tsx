@@ -51,7 +51,7 @@ describe(App, () => {
     )
 
     expect(screen.queryByText('Login')).not.toBeInTheDocument()
-    expect(screen.queryByText('Nothing to see here')).toBeInTheDocument()
+    expect(screen.getByText('Nothing to see here')).toBeInTheDocument()
   })
 
   describe('LayoutsWithNavbar', () => {
