@@ -1,7 +1,7 @@
 import { orderBy, QueryConstraint, where } from "firebase/firestore"
 import { ImageCollection } from "react-canvas-draw"
 import { CREATED_ON, IS_COMPLETED } from "../../assets/services/queryConstants"
-import { getDocuments } from "../DatabaseService"
+import { getDocuments } from "../DatabaseService/DatabaseService"
 
 export async function fetchImages(userUid: string): Promise<ImageCollection[]> {
   const imagesResult: ImageCollection[] = []

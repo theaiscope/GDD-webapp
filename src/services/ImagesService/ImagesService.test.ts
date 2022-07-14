@@ -1,7 +1,7 @@
 /** @jest-environment node */
 import { orderBy, QueryConstraint, where } from "firebase/firestore";
 import { CREATED_ON, IS_COMPLETED } from "../../assets/services/queryConstants";
-import * as DatabaseService from "../DatabaseService";
+import * as DatabaseService from "../DatabaseService/DatabaseService";
 import { fetchImages } from "./ImagesService"
 
 const mockImages = [

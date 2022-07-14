@@ -13,6 +13,8 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
+      - name: Install Firebase Emulator Suite
+        run: yarn global add firebase-tools
       - name: Install node modules
         run: yarn
       - name: Lint
