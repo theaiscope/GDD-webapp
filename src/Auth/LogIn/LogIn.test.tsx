@@ -17,23 +17,27 @@ describe(LogIn, () => {
     beforeEach(() => {
       const mockSignInWithEmailAndPassword = jest.fn()
       mockSignIn.mockReturnValue([mockSignInWithEmailAndPassword, undefined, false, undefined])
+    })
 
+    const setup = () =>
       render(
         <MemoryRouter>
           <LogIn />
         </MemoryRouter>,
       )
-    })
 
     it('should contain a banner', () => {
+      setup()
       expect(screen.getByRole('banner')).toBeInTheDocument()
     })
 
     it('should contain a form', () => {
+      setup()
       expect(screen.getByRole('form')).toBeInTheDocument()
     })
 
     it('should contain a footer section', () => {
+      setup()
       expect(screen.getByRole('contentinfo')).toBeInTheDocument()
     })
   })

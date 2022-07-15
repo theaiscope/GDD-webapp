@@ -24,20 +24,20 @@ describe(Form, () => {
   })
 
   describe('when sign in is loading', () => {
-    it('should show a spinner on login button', async () => {
+    it('should show a spinner on login button', () => {
       render(<Form {...props} loading={true} />)
 
-      const loginButton = await screen.getByRole('button', { name: '' })
+      const loginButton = screen.getByRole('button', { name: '' })
 
       expect(within(loginButton).getByRole('progressbar')).toBeInTheDocument()
     })
   })
 
   describe('when sign in fails', () => {
-    it('should show an incorrect details message', async () => {
+    it('should show an incorrect details message', () => {
       render(<Form {...props} error={{} as AuthError} />)
 
-      expect(await screen.getByText('Incorrect email or password')).toBeInTheDocument()
+      expect(screen.getByText('Incorrect email or password')).toBeInTheDocument()
     })
   })
 })
