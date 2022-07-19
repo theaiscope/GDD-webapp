@@ -40,7 +40,7 @@ yarn start
 
 To run unit tests:
 ```shell
-yarn test #unit tests use jest as the test runner and testing-library for interacting with the dom
+yarn test #unit tests setup and start the firebase emulator. And jest as the test runner and testing-library for interacting with the dom
 ```
 
 To run linting:
@@ -64,9 +64,7 @@ When a new tag is generated, it is published on production environment.
 
 ## Contributing Guidelines
 
-Contributions should be made by creating a fork of the repository and then make a PR against `main`. 
+Contributions should be made by creating a new branch from `main` branch, and then make a PR against `main`. 
 Maintainers of the project can then review and merge these PRs.
 
 All PRs should aim to have good unit test coverage and all tests must be passing before a PR can be merged.
-
-
