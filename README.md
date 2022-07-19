@@ -46,12 +46,12 @@ yarn test
 
 To run linting:
 ```shell
-yanr lint # uses https://eslint.org/
+yarn lint # uses https://eslint.org/
 ```
 
 To auto format use prettier:
 ```shell
-yanr prettier # uses https://prettier.io/
+yarn prettier # uses https://prettier.io/
 ```
 
 The project uses husky to run tests and lint before committing
@@ -59,7 +59,7 @@ The project uses husky to run tests and lint before committing
 ### Deploying
 
 The app is currently deployed in test environment, on every push in main branch. 
-Github actions is used to run automated tests and if they are successful a new version of the application is deployed using the firebase cli.
+Github actions are used to run automated tests, and if they are successful, a new version of the application is deployed using the firebase cli.
 
 When a new tag is generated, it is published on production environment. 
 
