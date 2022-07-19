@@ -38,19 +38,20 @@ yarn start
 
 ### Testing, formatting and linting
 
-To run unit tests:
+To run the tests:
 ```shell
-yarn test #unit tests use jest as the test runner and testing-library for interacting with the dom
+yarn test
 ```
+> Setup and start the [Firebase Emulator](https://github.com/firebase/firebase-tools#deployment-and-local-emulation), uses [Jest](https://jestjs.io/) as the test runner and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for interacting with the DOM
 
 To run linting:
 ```shell
-yanr lint # uses https://eslint.org/
+yarn lint # uses https://eslint.org/
 ```
 
 To auto format use prettier:
 ```shell
-yanr prettier # uses https://prettier.io/
+yarn prettier # uses https://prettier.io/
 ```
 
 The project uses husky to run tests and lint before committing
@@ -58,15 +59,13 @@ The project uses husky to run tests and lint before committing
 ### Deploying
 
 The app is currently deployed in test environment, on every push in main branch. 
-Github actions is used to run automated tests and if they are successful a new version of the application is deployed using the firebase cli.
+Github actions are used to run automated tests, and if they are successful, a new version of the application is deployed using the firebase cli.
 
 When a new tag is generated, it is published on production environment. 
 
 ## Contributing Guidelines
 
-Contributions should be made by creating a fork of the repository and then make a PR against `main`. 
+Contributions should be made by creating a new branch from `main` branch, and then make a PR against `main`. 
 Maintainers of the project can then review and merge these PRs.
 
 All PRs should aim to have good unit test coverage and all tests must be passing before a PR can be merged.
-
-
