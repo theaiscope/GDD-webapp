@@ -38,7 +38,7 @@ yarn start
 
 ### Testing, formatting and linting
 
-To run unit tests:
+To run the tests:
 ```shell
 yarn test # setup and start the [Firebase Emulator](https://github.com/firebase/firebase-tools#deployment-and-local-emulation), uses [Jest](https://jestjs.io/) as the test runner and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for interacting with the DOM
 ```
