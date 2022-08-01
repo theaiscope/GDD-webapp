@@ -18,7 +18,7 @@ const selectedImageInitialState: SelectedImageType = {
   location: '',
   url: '',
   width: 1000,
-  height: 1000
+  height: 1000,
 }
 
 export const Dashboard = (): ReactElement => {
@@ -31,22 +31,20 @@ export const Dashboard = (): ReactElement => {
   useEffect(() => {
     const state = location.state as { userUid: string }
     if (state?.userUid) {
-      fetchImages(state.userUid)
-        .then((data: ImageCollection[]) => {
-          setImagesState(data)
-        })
+      fetchImages(state.userUid).then((data: ImageCollection[]) => {
+        setImagesState(data)
+      })
     }
   }, [])
 
   useEffect(() => {
     if (imagesState.length > 0) {
-      getImageUrl(imagesState[0])
-        .then(imageUrl => {
-          setSelectedImage({
-            ...selectedImage,
-            url: imageUrl
-          })
+      getImageUrl(imagesState[0]).then((imageUrl) => {
+        setSelectedImage({
+          ...selectedImage,
+          url: imageUrl,
         })
+      })
     }
   }, [imagesState])
 
