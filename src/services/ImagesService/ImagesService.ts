@@ -7,16 +7,11 @@ import { getDocuments } from '../DatabaseService/DatabaseService'
 import { functionsInstance } from '../firebaseService'
 import { SkipImageRequest, SkipImageResponse } from './api/SkipImageApi'
 
-export async function fetchImages(userUid: string): Promise<Image[]> {
-  const imagesResult: Image[] = []
-  const queryConstraints: QueryConstraint[] = [where(IS_COMPLETED, '==', false), orderBy(CREATED_ON)]
-  const imageData = (await getDocuments('images', queryConstraints)) as Image[]
+export async function fetchImageToLabel(): Promise<Image> {
+  const fetchImageToLabel = httpsCallable<unknown, Image>(functionsInstance, CloudFunctions.FETCH_IMAGE_TO_LABEL)
+  const result = await fetchImageToLabel()
 
-  imageData?.forEach((image) => {
-    if (!image.labellers?.includes(userUid)) imagesResult.push(image)
-  })
-
-  return imagesResult
+  return result.data as Image
 }
 
 export async function skipImage(imageId: string): Promise<SkipImageResponse> {
