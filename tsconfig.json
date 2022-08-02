@@ -1,16 +1,8 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "es6"
-    ],
-    "typeRoots": [
-      "src/customTypings",
-      "node_modules/@types"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext", "es6"],
+    "typeRoots": ["src/customTypings", "node_modules/@types"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -25,7 +17,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

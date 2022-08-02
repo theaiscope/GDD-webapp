@@ -4,10 +4,7 @@ import { ImageCollection, ImageDimensions } from 'react-canvas-draw'
 
 export const getImageUrl = async (image: ImageCollection): Promise<string> => {
   const storage = getStorage()
-  const reference: StorageReference = ref(
-    storage,
-    image.sampleLocation + '/' + image.name,
-  )
+  const reference: StorageReference = ref(storage, image.sampleLocation + '/' + image.name)
   return await getDownloadURL(reference)
 }
 

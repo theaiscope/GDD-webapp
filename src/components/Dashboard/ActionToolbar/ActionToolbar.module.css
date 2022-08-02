@@ -6,7 +6,7 @@
 }
 
 .tools > button:active {
-  outline: #7E65A7;
+  outline: #7e65a7;
 }
 
 .tools > button {
@@ -27,6 +27,7 @@
   display: flex;
 }
 
-.redo, .edit {
+.redo,
+.edit {
   visibility: hidden;
 }
