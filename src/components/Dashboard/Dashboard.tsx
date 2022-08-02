@@ -1,11 +1,12 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import styles from './Dashboard.module.css'
-import CanvasDraw, { ImageCollection } from 'react-canvas-draw'
+import CanvasDraw from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageRepositoryService'
 import { fetchImages } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
+import { Image } from '../../model/image'
 
 type SelectedImageType = {
   location: string
@@ -22,7 +23,7 @@ const selectedImageInitialState: SelectedImageType = {
 }
 
 export const Dashboard = (): ReactElement => {
-  const [imagesState, setImagesState] = useState<ImageCollection[]>([])
+  const [imagesState, setImagesState] = useState<Image[]>([])
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
 
@@ -31,7 +32,7 @@ export const Dashboard = (): ReactElement => {
   useEffect(() => {
     const state = location.state as { userUid: string }
     if (state?.userUid) {
-      fetchImages(state.userUid).then((data: ImageCollection[]) => {
+      fetchImages(state.userUid).then((data: Image[]) => {
         setImagesState(data)
       })
     }

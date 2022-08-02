@@ -9,30 +9,12 @@ declare module 'react-canvas-draw' {
     height: number
   }
 
-  export interface ImageCollection {
-    markedAsInvalid: number
-    masks: Mask[]
-    name: string
-    skipped: number
-    labellers: string[]
-    createdOn: date
-    isCompleted: boolean
-    sampleLocation: string
-    sampleReference: string
-  }
-
-  export interface Mask {
-    name: string
-    uploadedBy: string
-  }
-
   export interface SelectedSample {
     location: string
     imageId: number
     maskId: number
     url: string
   }
-
   export interface CanvasDrawProps {
     onChange?: ((canvas: CanvasDraw) => void) | null | undefined
     loadTimeOffset?: number | undefined

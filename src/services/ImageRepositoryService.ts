@@ -1,8 +1,9 @@
 // TODO: rename file to clarify the functionallity that contains
 import { getStorage, ref, getDownloadURL, uploadString, StorageReference } from 'firebase/storage'
-import { ImageCollection, ImageDimensions } from 'react-canvas-draw'
+import { ImageDimensions } from 'react-canvas-draw'
+import { Image } from '../model/image'
 
-export const getImageUrl = async (image: ImageCollection): Promise<string> => {
+export const getImageUrl = async (image: Image): Promise<string> => {
   const storage = getStorage()
   const reference: StorageReference = ref(storage, image.sampleLocation + '/' + image.name)
   return await getDownloadURL(reference)
