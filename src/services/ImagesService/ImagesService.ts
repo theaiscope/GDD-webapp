@@ -1,9 +1,6 @@
-import { orderBy, QueryConstraint, where } from 'firebase/firestore'
 import { httpsCallable } from 'firebase/functions'
-import { CREATED_ON, IS_COMPLETED } from '../../assets/services/queryConstants'
-import Image from '../../model/image'
 import { CloudFunctions } from '../cloudFunctions'
-import { getDocuments } from '../DatabaseService/DatabaseService'
+import Image from '../../model/image'
 import { functionsInstance } from '../firebaseService'
 import { SkipImageRequest, SkipImageResponse } from './api/SkipImageApi'
 
