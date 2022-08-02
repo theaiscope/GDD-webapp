@@ -2,16 +2,16 @@
 import { connectFirestoreEmulator, QueryConstraint, where } from 'firebase/firestore'
 import { signInWithEmailAndPassword, connectAuthEmulator } from 'firebase/auth'
 import { getDocuments } from './DatabaseService'
-import { firebaseService, databaseClient } from '../firebaseService'
+import { firebaseAuth, databaseClient } from '../firebaseService'
 
 describe('Database Service', () => {
   beforeAll(() => {
     connectFirestoreEmulator(databaseClient, 'localhost', 8080)
-    connectAuthEmulator(firebaseService, 'http://localhost:9099')
+    connectAuthEmulator(firebaseAuth, 'http://localhost:9099')
   })
 
   beforeEach(async () => {
-    await signInWithEmailAndPassword(firebaseService, 'some@user.com', 'someuser')
+    await signInWithEmailAndPassword(firebaseAuth, 'some@user.com', 'someuser')
   })
 
   describe('getDocuments', () => {

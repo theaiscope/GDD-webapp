@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { firebaseService, LogOut } from '../../Auth'
+import { firebaseAuth, LogOut } from '../../Auth'
 import styles from './Navbar.module.css'
 
 export const Navbar = (): ReactElement => {
-  const [user] = useAuthState(firebaseService)
+  const [user] = useAuthState(firebaseAuth)
 
   return (
     <div className={styles.navbar}>

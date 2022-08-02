@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react'
 import { signOut } from 'firebase/auth'
-import { firebaseService } from '../../services/firebaseService'
+import { firebaseAuth } from '../../services/firebaseService'
 
 type Props = {
   className?: string
 }
 
 export const LogOut = ({ className }: Props): ReactElement => (
-  <button className={className} onClick={() => signOut(firebaseService)}>
+  <button className={className} onClick={() => signOut(firebaseAuth)}>
     Logout
   </button>
 )

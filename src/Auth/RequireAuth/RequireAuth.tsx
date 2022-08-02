@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { firebaseService } from '../../services/firebaseService'
+import { firebaseAuth } from '../../services/firebaseService'
 
 export const RequireAuth = (): ReactElement => {
-  const [user, loading] = useAuthState(firebaseService)
+  const [user, loading] = useAuthState(firebaseAuth)
 
   if (loading) {
     return <></>
