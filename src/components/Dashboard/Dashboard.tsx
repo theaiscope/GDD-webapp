@@ -4,7 +4,7 @@ import CanvasDraw from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageRepositoryService'
-import { fetchImages } from '../../services/ImagesService/ImagesService'
+import { fetchImages, skipImage } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
 import { Image } from '../../model/image'
 
@@ -72,8 +72,12 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
-  const skipAction = () => {
-    console.log('skip action')
+  const skipAction = async () => {
+    const imageId = imagesState[0]?.id
+
+    if (imageId) {
+      await skipImage(imageId)
+    }
   }
 
   const invalidAction = () => {
