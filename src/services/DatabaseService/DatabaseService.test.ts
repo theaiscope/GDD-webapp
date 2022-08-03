@@ -17,6 +17,7 @@ describe('Database Service', () => {
   describe('getDocuments', () => {
     const fakeDocuments = [
       {
+        id: 'Gbnfk091vAlhCrFE1RDA',
         markedAsInvalid: false,
         sampleLocation: '00ad4093-111e-4900-9dee-10abcc02abb7',
         name: 'image_0.jpg',
@@ -27,6 +28,7 @@ describe('Database Service', () => {
         sampleReference: 'samples/rGjt8jcwSQzGRVcViJbQ',
       },
       {
+        id: 'grNCSVza3SGlst1gigOb',
         markedAsInvalid: false,
         sampleLocation: '00ad4093-111e-4900-9dee-10abcc02abb7',
         name: 'image_1.jpg',
