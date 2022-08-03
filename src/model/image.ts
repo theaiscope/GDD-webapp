@@ -1,4 +1,4 @@
-export interface Image {
+export default interface Image {
   id?: string
   name?: string
   sampleLocation?: string

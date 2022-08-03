@@ -6,7 +6,7 @@ import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageRepositoryService'
 import { fetchImages, skipImage } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
-import { Image } from '../../model/image'
+import Image from '../../model/image'
 
 type SelectedImageType = {
   location: string

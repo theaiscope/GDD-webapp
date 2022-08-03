@@ -1,7 +1,7 @@
 import { orderBy, QueryConstraint, where } from 'firebase/firestore'
 import { httpsCallable } from 'firebase/functions'
 import { CREATED_ON, IS_COMPLETED } from '../../assets/services/queryConstants'
-import { Image } from '../../model/image'
+import Image from '../../model/image'
 import { CloudFunctions } from '../cloudFunctions'
 import { getDocuments } from '../DatabaseService/DatabaseService'
 import { functionsInstance } from '../firebaseService'
