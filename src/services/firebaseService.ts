@@ -13,6 +13,7 @@ const firebaseConfig: FirebaseOptions = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 }
+const cloudFunctionsRegion = process.env.REACT_APP_FIREBASE_FUNCTIONS_REGION
 
 // Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig)
@@ -21,4 +22,4 @@ export const databaseClient: Firestore = getFirestore(app)
 
 export const firebaseAuth: Auth = getAuth(app)
 
-export const functionsInstance: Functions = getFunctions(app)
+export const functionsInstance: Functions = getFunctions(app, cloudFunctionsRegion)
