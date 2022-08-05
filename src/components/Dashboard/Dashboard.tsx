@@ -25,6 +25,7 @@ const selectedImageInitialState: SelectedImageType = {
 
 export const Dashboard = (): ReactElement => {
   const [imagesState, setImagesState] = useState<Image[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
   const { showErrorMessage, showSuccessMessage } = useNotification()
@@ -34,9 +35,14 @@ export const Dashboard = (): ReactElement => {
   useEffect(() => {
     const state = location.state as { userUid: string }
     if (state?.userUid) {
-      fetchImages(state.userUid).then((data: Image[]) => {
-        setImagesState(data)
-      })
+      setIsLoading(true)
+      fetchImages(state.userUid)
+        .then((data: Image[]) => {
+          setImagesState(data)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
     }
   }, [])
 
@@ -79,11 +85,14 @@ export const Dashboard = (): ReactElement => {
       const imageId = imagesState[0].id
 
       if (imageId) {
+        setIsLoading(true)
         await skipImage(imageId)
         showSuccessMessage('Image skipped with success.')
       }
     } catch (error) {
       showErrorMessage('Error skipping the image.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -106,7 +115,12 @@ export const Dashboard = (): ReactElement => {
           className={styles.canvas}
         />
       </div>
-      <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction} />
+      <ImageToolbar
+        saveAction={saveAction}
+        invalidAction={invalidAction}
+        skipAction={skipAction}
+        disabled={isLoading}
+      />
     </div>
   )
 }
