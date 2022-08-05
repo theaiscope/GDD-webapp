@@ -1,9 +1,10 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 import { Dashboard } from './Dashboard'
 import * as ImagesService from '../../services/ImagesService/ImagesService'
-import userEvent from '@testing-library/user-event'
+import * as ImageRepositoryService from '../../services/ImageRepositoryService'
 import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi'
 import { SnackbarProvider } from 'notistack'
 
@@ -25,7 +26,9 @@ describe('Dashboard', () => {
 
   it('should call the skip function when clicking the skip button', async () => {
     const imageId = 'image-1'
+
     jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: imageId }])
+    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
     const skipImageSpy = jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
 
     const locationState = { userUid: 'user-1' }
@@ -46,6 +49,7 @@ describe('Dashboard', () => {
   it('should show a success message when skipping an image', async () => {
     jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
     jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
+    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
     const locationState = { userUid: 'user-1' }
     render(
@@ -65,6 +69,7 @@ describe('Dashboard', () => {
   it('should show an error message when skipping an image fails', async () => {
     jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
     jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
+    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
     const locationState = { userUid: 'user-1' }
     render(
