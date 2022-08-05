@@ -9,117 +9,146 @@ import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi
 import { SnackbarProvider } from 'notistack'
 
 describe('Dashboard', () => {
-  it('should shown a canvas', () => {
-    render(
-      <BrowserRouter>
-        <SnackbarProvider>
-          <Dashboard />
-        </SnackbarProvider>
-      </BrowserRouter>,
-    )
+  describe('Canvas', () => {
+    it('should shown a canvas', () => {
+      render(
+        <BrowserRouter>
+          <SnackbarProvider>
+            <Dashboard />
+          </SnackbarProvider>
+        </BrowserRouter>,
+      )
 
-    const canvasTagMatcher = (_content: string, element: Element | null) => element?.tagName.toLowerCase() === 'canvas'
+      const canvasTagMatcher = (_content: string, element: Element | null) =>
+        element?.tagName.toLowerCase() === 'canvas'
 
-    const myCanvas = screen.getAllByText(canvasTagMatcher)
-    expect(myCanvas.length).toBeGreaterThan(0)
-  })
-
-  it('should call the skip function when clicking the skip button', async () => {
-    const imageId = 'image-1'
-
-    jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: imageId }])
-    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
-    const skipImageSpy = jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
-
-    const locationState = { userUid: 'user-1' }
-    render(
-      <MemoryRouter initialEntries={[{ state: locationState }]}>
-        <SnackbarProvider>
-          <Dashboard />
-        </SnackbarProvider>
-      </MemoryRouter>,
-    )
-
-    const skipButton = await screen.findByRole('button', { name: 'Skip' })
-    userEvent.click(skipButton)
-
-    await waitFor(() => {
-      expect(skipImageSpy).toHaveBeenCalledWith(imageId)
+      const myCanvas = screen.getAllByText(canvasTagMatcher)
+      expect(myCanvas.length).toBeGreaterThan(0)
     })
   })
 
-  it('should show a success message when skipping an image', async () => {
-    jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
-    jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
-    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
+  describe('Actions', () => {
+    describe('Skip Action', () => {
+      it('should call the skip function when clicking the skip button', async () => {
+        const imageId = 'image-1'
 
-    const locationState = { userUid: 'user-1' }
-    render(
-      <MemoryRouter initialEntries={[{ state: locationState }]}>
-        <SnackbarProvider>
-          <Dashboard />
-        </SnackbarProvider>
-      </MemoryRouter>,
-    )
+        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: imageId }])
+        jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
+        const skipImageSpy = jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
 
-    const skipButton = await screen.findByRole('button', { name: 'Skip' })
-    userEvent.click(skipButton)
+        const locationState = { userUid: 'user-1' }
+        render(
+          <MemoryRouter initialEntries={[{ state: locationState }]}>
+            <SnackbarProvider>
+              <Dashboard />
+            </SnackbarProvider>
+          </MemoryRouter>,
+        )
 
-    expect(await screen.findByText('Image skipped with success.')).toBeInTheDocument()
-  })
+        const skipButton = await screen.findByRole('button', { name: 'Skip' })
+        userEvent.click(skipButton)
 
-  it('should show an error message when skipping an image fails', async () => {
-    jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
-    jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
-    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
+        await waitFor(() => {
+          expect(skipImageSpy).toHaveBeenCalledWith(imageId)
+        })
+      })
 
-    const locationState = { userUid: 'user-1' }
-    render(
-      <MemoryRouter initialEntries={[{ state: locationState }]}>
-        <SnackbarProvider>
-          <Dashboard />
-        </SnackbarProvider>
-      </MemoryRouter>,
-    )
+      it('should show a success message when skip image succeed', async () => {
+        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
+        jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
-    const skipButton = await screen.findByRole('button', { name: 'Skip' })
-    userEvent.click(skipButton)
+        const locationState = { userUid: 'user-1' }
+        render(
+          <MemoryRouter initialEntries={[{ state: locationState }]}>
+            <SnackbarProvider>
+              <Dashboard />
+            </SnackbarProvider>
+          </MemoryRouter>,
+        )
 
-    expect(await screen.findByText('Error skipping the image.')).toBeInTheDocument()
-  })
+        const skipButton = await screen.findByRole('button', { name: 'Skip' })
+        userEvent.click(skipButton)
 
-  it('should disable the buttons while skipping an image', async () => {
-    jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
-    jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
-    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
+        expect(await screen.findByText('Image skipped with success.')).toBeInTheDocument()
+      })
 
-    const locationState = { userUid: 'user-1' }
-    render(
-      <MemoryRouter initialEntries={[{ state: locationState }]}>
-        <SnackbarProvider>
-          <Dashboard />
-        </SnackbarProvider>
-      </MemoryRouter>,
-    )
+      it('should show an error message when skip image fails', async () => {
+        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
+        jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
-    const skipButton = await screen.findByRole('button', { name: 'Skip' })
-    const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
-    const saveButton = await screen.findByRole('button', { name: 'Save' })
+        const locationState = { userUid: 'user-1' }
+        render(
+          <MemoryRouter initialEntries={[{ state: locationState }]}>
+            <SnackbarProvider>
+              <Dashboard />
+            </SnackbarProvider>
+          </MemoryRouter>,
+        )
 
-    // Start skipping the image
-    userEvent.click(skipButton)
+        const skipButton = await screen.findByRole('button', { name: 'Skip' })
+        userEvent.click(skipButton)
 
-    // Check that the buttons are DISABLED before the skip action is completed
-    expect(skipButton).toHaveAttribute('disabled')
-    expect(saveButton).toHaveAttribute('disabled')
-    expect(invalidButton).toHaveAttribute('disabled')
+        expect(await screen.findByText('Error skipping the image.')).toBeInTheDocument()
+      })
 
-    // Wait for the skip action to be completed and
-    // check that the buttons are ENABLED
-    await waitFor(() => {
-      expect(skipButton).not.toHaveAttribute('disabled')
+      it('should disable the buttons while skipping an image', async () => {
+        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
+        jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
+
+        const locationState = { userUid: 'user-1' }
+        render(
+          <MemoryRouter initialEntries={[{ state: locationState }]}>
+            <SnackbarProvider>
+              <Dashboard />
+            </SnackbarProvider>
+          </MemoryRouter>,
+        )
+
+        const skipButton = await screen.findByRole('button', { name: 'Skip' })
+        const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+
+        // Start skipping the image
+        userEvent.click(skipButton)
+
+        // Check that the buttons are DISABLED before the skip action is completed
+        expect(skipButton).toHaveAttribute('disabled')
+        expect(saveButton).toHaveAttribute('disabled')
+        expect(invalidButton).toHaveAttribute('disabled')
+
+        // Wait for the skip action to be completed and
+        // check that the buttons are ENABLED
+        await waitFor(() => {
+          expect(skipButton).not.toHaveAttribute('disabled')
+        })
+        expect(saveButton).not.toHaveAttribute('disabled')
+        expect(invalidButton).not.toHaveAttribute('disabled')
+      })
+
+      it('should fetch the next image to label when skip image succeed', async () => {
+        const fetchSpy = jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
+        jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
+
+        const locationState = { userUid: 'user-1' }
+        render(
+          <MemoryRouter initialEntries={[{ state: locationState }]}>
+            <SnackbarProvider>
+              <Dashboard />
+            </SnackbarProvider>
+          </MemoryRouter>,
+        )
+
+        const skipButton = await screen.findByRole('button', { name: 'Skip' })
+        userEvent.click(skipButton)
+
+        await waitFor(() => {
+          expect(fetchSpy).toHaveBeenCalledTimes(2)
+        })
+      })
     })
-    expect(saveButton).not.toHaveAttribute('disabled')
-    expect(invalidButton).not.toHaveAttribute('disabled')
   })
 })

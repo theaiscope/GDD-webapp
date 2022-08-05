@@ -25,7 +25,7 @@ const selectedImageInitialState: SelectedImageType = {
 
 export const Dashboard = (): ReactElement => {
   const [imagesState, setImagesState] = useState<Image[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
   const { showErrorMessage, showSuccessMessage } = useNotification()
@@ -33,17 +33,7 @@ export const Dashboard = (): ReactElement => {
   let canvas: CanvasDraw | null
 
   useEffect(() => {
-    const state = location.state as { userUid: string }
-    if (state?.userUid) {
-      setIsLoading(true)
-      fetchImages(state.userUid)
-        .then((data: Image[]) => {
-          setImagesState(data)
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
-    }
+    fetchImageToLabel()
   }, [])
 
   useEffect(() => {
@@ -56,6 +46,23 @@ export const Dashboard = (): ReactElement => {
       })
     }
   }, [imagesState])
+
+  const fetchImageToLabel = async (): Promise<void> => {
+    const state = location.state as { userUid: string }
+
+    setImagesState([])
+    setIsLoading(true)
+
+    if (state?.userUid) {
+      try {
+        const images = await fetchImages(state.userUid)
+        setImagesState(images)
+      } catch (error) {
+        showErrorMessage('Error fetching image')
+      }
+    }
+    setIsLoading(false)
+  }
 
   //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
   const saveAction = () => {
@@ -87,7 +94,9 @@ export const Dashboard = (): ReactElement => {
       if (imageId) {
         setIsLoading(true)
         await skipImage(imageId)
+
         showSuccessMessage('Image skipped with success.')
+        await fetchImageToLabel()
       }
     } catch (error) {
       showErrorMessage('Error skipping the image.')
@@ -102,7 +111,7 @@ export const Dashboard = (): ReactElement => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.canvasContainer}>
+      <div className={styles.canvasContainer} style={{ opacity: isLoading ? '0.5' : '1' }}>
         <ActionToolbar clearAction={clearAction} undoAction={undoAction} />
         <CanvasDraw
           lazyRadius={0}
@@ -113,6 +122,7 @@ export const Dashboard = (): ReactElement => {
           clampLinesToDocument={true}
           imgSrc={selectedImage.url}
           className={styles.canvas}
+          disabled={isLoading}
         />
       </div>
       <ImageToolbar
@@ -120,6 +130,7 @@ export const Dashboard = (): ReactElement => {
         invalidAction={invalidAction}
         skipAction={skipAction}
         disabled={isLoading}
+        showProgress={isLoading}
       />
     </div>
   )
