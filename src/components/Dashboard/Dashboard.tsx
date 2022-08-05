@@ -7,6 +7,7 @@ import { getImageUrl } from '../../services/ImageRepositoryService'
 import { fetchImages, skipImage } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
+import useNotification from '../../services/Notification/NotificationService'
 
 type SelectedImageType = {
   location: string
@@ -26,6 +27,7 @@ export const Dashboard = (): ReactElement => {
   const [imagesState, setImagesState] = useState<Image[]>([])
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
+  const { showErrorMessage, showSuccessMessage } = useNotification()
 
   let canvas: CanvasDraw | null
 
@@ -73,10 +75,15 @@ export const Dashboard = (): ReactElement => {
   }
 
   const skipAction = async () => {
-    const imageId = imagesState[0]?.id
+    try {
+      const imageId = imagesState[0].id
 
-    if (imageId) {
-      await skipImage(imageId)
+      if (imageId) {
+        await skipImage(imageId)
+        showSuccessMessage('Image skipped with success.')
+      }
+    } catch (error) {
+      showErrorMessage('Error skipping the image.')
     }
   }
 

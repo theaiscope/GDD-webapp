@@ -5,12 +5,15 @@ import { Dashboard } from './Dashboard'
 import * as ImagesService from '../../services/ImagesService/ImagesService'
 import userEvent from '@testing-library/user-event'
 import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi'
+import { SnackbarProvider } from 'notistack'
 
 describe('Dashboard', () => {
   it('should shown a canvas', () => {
     render(
       <BrowserRouter>
-        <Dashboard />
+        <SnackbarProvider>
+          <Dashboard />
+        </SnackbarProvider>
       </BrowserRouter>,
     )
 
@@ -28,7 +31,9 @@ describe('Dashboard', () => {
     const locationState = { userUid: 'user-1' }
     render(
       <MemoryRouter initialEntries={[{ state: locationState }]}>
-        <Dashboard />
+        <SnackbarProvider>
+          <Dashboard />
+        </SnackbarProvider>
       </MemoryRouter>,
     )
 
@@ -36,5 +41,43 @@ describe('Dashboard', () => {
     userEvent.click(skipButton)
 
     expect(skipImageSpy).toHaveBeenCalledWith(imageId)
+  })
+
+  it('should show a success message when skipping an image', async () => {
+    jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+    jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
+
+    const locationState = { userUid: 'user-1' }
+    render(
+      <MemoryRouter initialEntries={[{ state: locationState }]}>
+        <SnackbarProvider>
+          <Dashboard />
+        </SnackbarProvider>
+      </MemoryRouter>,
+    )
+
+    const skipButton = await screen.findByText('Skip')
+    userEvent.click(skipButton)
+
+    expect(await screen.findByText('Image skipped with success.')).toBeInTheDocument()
+  })
+
+  it('should show an error message when skipping an image fails', async () => {
+    jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+    jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
+
+    const locationState = { userUid: 'user-1' }
+    render(
+      <MemoryRouter initialEntries={[{ state: locationState }]}>
+        <SnackbarProvider>
+          <Dashboard />
+        </SnackbarProvider>
+      </MemoryRouter>,
+    )
+
+    const skipButton = await screen.findByText('Skip')
+    userEvent.click(skipButton)
+
+    expect(await screen.findByText('Error skipping the image.')).toBeInTheDocument()
   })
 })
