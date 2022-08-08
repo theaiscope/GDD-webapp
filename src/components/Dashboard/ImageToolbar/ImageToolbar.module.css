@@ -1,7 +1,8 @@
 .container {
   display: flex;
-  flex: 0 auto;
+  flex: 0 1 auto;
   align-content: center;
+  justify-content: flex-end;
   margin: 1.5rem 0;
   padding: 0.5rem 1.5rem;
   width: 100%;
@@ -12,13 +13,7 @@
   box-sizing: border-box;
 }
 
-.container > .buttons {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-}
-
-button {
+.container > button {
   outline: none;
   text-transform: uppercase;
   color: white;
@@ -28,6 +23,10 @@ button {
   height: 2.5rem;
   width: 10rem;
   border-radius: 4px;
+}
+
+button {
+  cursor: pointer;
 }
 
 button:hover {
