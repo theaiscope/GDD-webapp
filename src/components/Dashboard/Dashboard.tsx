@@ -111,7 +111,7 @@ export const Dashboard = (): ReactElement => {
         await skipImage(imageState.id)
 
         showSuccessMessage('Image skipped with success.')
-        await fetchImageToLabel()
+        await fetchImage()
       }
     } catch (error) {
       showErrorMessage('Error skipping the image.')

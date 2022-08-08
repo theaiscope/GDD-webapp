@@ -4,11 +4,11 @@ import Image from '../../model/image'
 import { functionsInstance } from '../firebaseService'
 import { SkipImageRequest, SkipImageResponse } from './api/SkipImageApi'
 
-export async function fetchImageToLabel(): Promise<Image> {
+export async function fetchImageToLabel(): Promise<Image | undefined> {
   const fetchImageToLabel = httpsCallable<unknown, Image>(functionsInstance, CloudFunctions.FETCH_IMAGE_TO_LABEL)
-  const result = await fetchImageToLabel()
+  const response = await fetchImageToLabel()
 
-  return result.data as Image
+  return response.data as Image
 }
 
 export async function skipImage(imageId: string): Promise<SkipImageResponse> {
