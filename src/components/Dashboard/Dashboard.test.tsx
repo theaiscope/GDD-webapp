@@ -151,4 +151,26 @@ describe('Dashboard', () => {
       })
     })
   })
+
+  describe('ProgressBar', () => {
+    it('should show a progressBar while isLoading', async () => {
+      jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+      jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
+
+      const locationState = { userUid: 'user-1' }
+      render(
+        <MemoryRouter initialEntries={[{ state: locationState }]}>
+          <SnackbarProvider>
+            <Dashboard />
+          </SnackbarProvider>
+        </MemoryRouter>,
+      )
+
+      // Before awaiting the fetchImages, the progressBar should be visible
+      expect(screen.getByLabelText('Progress Bar')).toBeVisible()
+
+      // After awaiting the fetchImages, the progressBar should be hidden
+      expect(await screen.findByLabelText('Progress Bar')).not.toBeVisible()
+    })
+  })
 })

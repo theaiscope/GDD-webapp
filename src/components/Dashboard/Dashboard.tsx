@@ -8,6 +8,7 @@ import { fetchImages, skipImage } from '../../services/ImagesService/ImagesServi
 import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
 import useNotification from '../../services/Notification/NotificationService'
+import { Backdrop, CircularProgress } from '@material-ui/core'
 
 type SelectedImageType = {
   location: string
@@ -130,8 +131,10 @@ export const Dashboard = (): ReactElement => {
         invalidAction={invalidAction}
         skipAction={skipAction}
         disabled={isLoading}
-        showProgress={isLoading}
       />
+      <Backdrop open={isLoading} className={styles.progressBackdrop} aria-label="Progress Bar">
+        <CircularProgress />
+      </Backdrop>
     </div>
   )
 }
