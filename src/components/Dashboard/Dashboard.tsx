@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
 import useNotification from '../../services/Notification/NotificationService'
 import { Backdrop, CircularProgress } from '@material-ui/core'
+import BlankImage from '../../assets/img/blank.png'
 
 type SelectedImageType = {
   location: string
@@ -19,7 +20,7 @@ type SelectedImageType = {
 
 const selectedImageInitialState: SelectedImageType = {
   location: '',
-  url: '',
+  url: BlankImage,
   width: 1000,
   height: 1000,
 }
@@ -38,14 +39,7 @@ export const Dashboard = (): ReactElement => {
   }, [])
 
   useEffect(() => {
-    if (imagesState.length > 0) {
-      getImageUrl(imagesState[0]).then((imageUrl) => {
-        setSelectedImage({
-          ...selectedImage,
-          url: imageUrl,
-        })
-      })
-    }
+    fetchImageUrl()
   }, [imagesState])
 
   const fetchImageToLabel = async (): Promise<void> => {
@@ -65,6 +59,28 @@ export const Dashboard = (): ReactElement => {
     setIsLoading(false)
   }
 
+  const fetchImageUrl = async (): Promise<void> => {
+    setSelectedImage(selectedImageInitialState)
+    clearCanvas()
+
+    if (imagesState.length > 0) {
+      setIsLoading(true)
+
+      try {
+        const imageUrl = await getImageUrl(imagesState[0])
+
+        setSelectedImage({
+          ...selectedImage,
+          url: imageUrl,
+        })
+      } catch (error) {
+        showErrorMessage('Error loading the image')
+      }
+
+      setIsLoading(false)
+    }
+  }
+
   //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
   const saveAction = () => {
     // if (canvas && sample) {
@@ -82,8 +98,8 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
-  const clearAction = () => {
-    if (canvas) {
+  const clearCanvas = () => {
+    if (canvas && canvas.clear) {
       canvas.clear()
     }
   }
@@ -101,19 +117,20 @@ export const Dashboard = (): ReactElement => {
       }
     } catch (error) {
       showErrorMessage('Error skipping the image.')
-    } finally {
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   const invalidAction = () => {
     console.log('invalid action')
   }
 
+  const isImageLoaded = imagesState?.length > 0 && selectedImage != selectedImageInitialState
+
   return (
     <div className={styles.container}>
       <div className={styles.canvasContainer} style={{ opacity: isLoading ? '0.5' : '1' }}>
-        <ActionToolbar clearAction={clearAction} undoAction={undoAction} />
+        <ActionToolbar clearAction={clearCanvas} undoAction={undoAction} />
         <CanvasDraw
           lazyRadius={0}
           ref={(canvasDraw) => (canvas = canvasDraw)}
@@ -123,14 +140,14 @@ export const Dashboard = (): ReactElement => {
           clampLinesToDocument={true}
           imgSrc={selectedImage.url}
           className={styles.canvas}
-          disabled={isLoading}
+          disabled={isLoading || !isImageLoaded}
         />
       </div>
       <ImageToolbar
         saveAction={saveAction}
         invalidAction={invalidAction}
         skipAction={skipAction}
-        disabled={isLoading}
+        disabled={isLoading || !isImageLoaded}
       />
       <Backdrop open={isLoading} className={styles.progressBackdrop} aria-label="Progress Bar">
         <CircularProgress />
