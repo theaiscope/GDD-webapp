@@ -32,7 +32,7 @@ describe('Dashboard', () => {
       it('should call the skip function when clicking the skip button', async () => {
         const imageId = 'image-1'
 
-        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: imageId }])
+        jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: imageId })
         jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
         const skipImageSpy = jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
 
@@ -54,7 +54,7 @@ describe('Dashboard', () => {
       })
 
       it('should show a success message when skip image succeed', async () => {
-        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' })
         jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
         jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
@@ -74,7 +74,7 @@ describe('Dashboard', () => {
       })
 
       it('should show an error message when skip image fails', async () => {
-        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' })
         jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
         jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
@@ -94,7 +94,7 @@ describe('Dashboard', () => {
       })
 
       it('should disable the buttons while skipping an image', async () => {
-        jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' })
         jest.spyOn(ImagesService, 'skipImage').mockRejectedValue('Error skipping the image.')
         jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
@@ -129,7 +129,7 @@ describe('Dashboard', () => {
       })
 
       it('should fetch the next image to label when skip image succeed', async () => {
-        const fetchSpy = jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+        const fetchSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' })
         jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
         jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
@@ -154,7 +154,7 @@ describe('Dashboard', () => {
 
   describe('ProgressBar', () => {
     it('should show a progressBar while isLoading', async () => {
-      jest.spyOn(ImagesService, 'fetchImages').mockResolvedValue([{ id: 'image-1' }])
+      jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' })
       jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue('http://image-url')
 
       const locationState = { userUid: 'user-1' }
@@ -166,10 +166,10 @@ describe('Dashboard', () => {
         </MemoryRouter>,
       )
 
-      // Before awaiting the fetchImages, the progressBar should be visible
+      // Before awaiting the fetchImage, the progressBar should be visible
       expect(screen.getByLabelText('Progress Bar')).toBeVisible()
 
-      // After awaiting the fetchImages, the progressBar should be hidden
+      // After awaiting the fetchImage, the progressBar should be hidden
       expect(await screen.findByLabelText('Progress Bar')).not.toBeVisible()
     })
   })

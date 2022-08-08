@@ -35,14 +35,14 @@ export const Dashboard = (): ReactElement => {
   let canvas: CanvasDraw | null
 
   useEffect(() => {
-    fetchImageToLabel()
+    fetchImage()
   }, [])
 
   useEffect(() => {
     fetchImageUrl()
   }, [imageState])
 
-  const fetchImageToLabel = async (): Promise<void> => {
+  const fetchImage = async (): Promise<void> => {
     const state = location.state as { userUid: string }
 
     setImageState(undefined)
@@ -50,7 +50,7 @@ export const Dashboard = (): ReactElement => {
 
     if (state?.userUid) {
       try {
-        const image = await fetchImageToLabel(state.userUid)
+        const image = await fetchImageToLabel()
         setImageState(image)
       } catch (error) {
         showErrorMessage('Error fetching image')
@@ -106,7 +106,7 @@ export const Dashboard = (): ReactElement => {
 
   const skipAction = async () => {
     try {
-      if (imageState) {
+      if (imageState?.id) {
         setIsLoading(true)
         await skipImage(imageState.id)
 

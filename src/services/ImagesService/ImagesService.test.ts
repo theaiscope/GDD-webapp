@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import * as functions from 'firebase/functions'
+import Image from '../../model/image'
 import { fetchImageToLabel, skipImage } from './ImagesService'
 jest.mock('firebase/functions')
 
@@ -21,27 +22,27 @@ describe('ImagesService', () => {
     })
   })
 
-  describe('fetchImages', () => {
-      const mockImage: Image = {
-        id: '1',
-        name: 'image_1.jpg',
-        sampleLocation: '1',
-        sampleReference: '1',
-        masks: [],
-        labellers: [],
-        markedAsInvalid: 0,
-        isCompleted: false,
-        createdOn: new Date(),
-      }
+  describe('fetchImageToLabel', () => {
+    const mockImage: Image = {
+      id: '1',
+      name: 'image_1.jpg',
+      sampleLocation: '1',
+      sampleReference: '1',
+      masks: [],
+      labellers: [],
+      markedAsInvalid: 0,
+      isCompleted: false,
+      createdOn: new Date(),
+    }
 
-      it('should call the fetchImageToLabel function and return the image ', async () => {
-        const functionCallSpy = jest.spyOn(functions, 'httpsCallable')
-        functionCallSpy.mockReturnValue(() => Promise.resolve({ data: mockImage }))
+    it('should call the fetchImageToLabel function and return the image ', async () => {
+      const functionCallSpy = jest.spyOn(functions, 'httpsCallable')
+      functionCallSpy.mockReturnValue(() => Promise.resolve({ data: mockImage }))
 
-        const result = await fetchImageToLabel()
+      const result = await fetchImageToLabel()
 
-        expect(result).toEqual(mockImage)
-        expect(functionCallSpy).toHaveBeenCalled()
-      })
+      expect(result).toEqual(mockImage)
+      expect(functionCallSpy).toHaveBeenCalled()
+    })
   })
 })
