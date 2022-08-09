@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom
 import { Dashboard, Navbar } from './components'
 import { LogIn, RequireAuth } from './Auth'
 import styles from './App.module.css'
+import { SnackbarProvider } from 'notistack'
 
 export const App = (): ReactElement => (
   <Routes>
@@ -16,13 +17,23 @@ export const App = (): ReactElement => (
   </Routes>
 )
 
-export const AppWithRouter = (): ReactElement => (
-  <div className={styles.app}>
-    <Router>
-      <App />
-    </Router>
-  </div>
-)
+export const AppWithRouter = (): ReactElement => {
+  return (
+    <div className={styles.app}>
+      <Router>
+        <SnackbarProvider
+          maxSnack={3}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <App />
+        </SnackbarProvider>
+      </Router>
+    </div>
+  )
+}
 
 const NotFound = (): ReactElement => (
   <>

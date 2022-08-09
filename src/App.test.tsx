@@ -9,6 +9,7 @@ import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
 import { assertLogInPresent } from './Auth/LogIn/LogIn.test.assertion'
 import { actionToolbarPresent } from './components/Dashboard/ActionToolbar/ActionToolbar.test.assertion'
 import { imageToolbarPresent } from './components/Dashboard/ImageToolbar/ImageToolbar.test.assertion'
+import { SnackbarProvider } from 'notistack'
 
 jest.mock('react-firebase-hooks/auth')
 jest.mock('react-canvas-draw')
@@ -82,7 +83,9 @@ describe(App, () => {
 
       render(
         <MemoryRouter initialEntries={['/dashboard']}>
-          <App />
+          <SnackbarProvider>
+            <App />
+          </SnackbarProvider>
         </MemoryRouter>,
       )
 

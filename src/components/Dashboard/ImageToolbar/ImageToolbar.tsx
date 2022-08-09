@@ -5,17 +5,18 @@ type Props = {
   saveAction: () => void
   skipAction: () => void
   invalidAction: () => void
+  disabled?: boolean
 }
 
-export const ImageToolbar = ({ saveAction, skipAction, invalidAction }: Props): ReactElement => (
+export const ImageToolbar = ({ saveAction, skipAction, invalidAction, disabled }: Props): ReactElement => (
   <div className={styles.container}>
-    <button className={styles.invalid} onClick={invalidAction}>
+    <button className={styles.invalid} onClick={invalidAction} disabled={disabled}>
       Invalid
     </button>
-    <button className={styles.skip} onClick={skipAction}>
+    <button className={styles.skip} onClick={skipAction} disabled={disabled}>
       Skip
     </button>
-    <button className={styles.save} onClick={saveAction}>
+    <button className={styles.save} onClick={saveAction} disabled={disabled}>
       Save
     </button>
   </div>

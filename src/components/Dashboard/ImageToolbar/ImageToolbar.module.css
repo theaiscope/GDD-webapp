@@ -33,6 +33,12 @@ button:hover {
   outline: #7e65a7 1px solid;
 }
 
+button:disabled {
+  cursor: unset;
+  opacity: 0.5;
+  outline: none;
+}
+
 .skip {
   background: #7e65a7;
 }

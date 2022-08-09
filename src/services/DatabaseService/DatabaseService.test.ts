@@ -2,21 +2,22 @@
 import { connectFirestoreEmulator, QueryConstraint, where } from 'firebase/firestore'
 import { signInWithEmailAndPassword, connectAuthEmulator } from 'firebase/auth'
 import { getDocuments } from './DatabaseService'
-import { firebaseService, databaseClient } from '../firebaseService'
+import { firebaseAuth, databaseClient } from '../firebaseService'
 
 describe('Database Service', () => {
   beforeAll(() => {
     connectFirestoreEmulator(databaseClient, 'localhost', 8080)
-    connectAuthEmulator(firebaseService, 'http://localhost:9099')
+    connectAuthEmulator(firebaseAuth, 'http://localhost:9099')
   })
 
   beforeEach(async () => {
-    await signInWithEmailAndPassword(firebaseService, 'some@user.com', 'someuser')
+    await signInWithEmailAndPassword(firebaseAuth, 'some@user.com', 'someuser')
   })
 
   describe('getDocuments', () => {
     const fakeDocuments = [
       {
+        id: 'Gbnfk091vAlhCrFE1RDA',
         markedAsInvalid: false,
         sampleLocation: '00ad4093-111e-4900-9dee-10abcc02abb7',
         name: 'image_0.jpg',
@@ -27,6 +28,7 @@ describe('Database Service', () => {
         sampleReference: 'samples/rGjt8jcwSQzGRVcViJbQ',
       },
       {
+        id: 'grNCSVza3SGlst1gigOb',
         markedAsInvalid: false,
         sampleLocation: '00ad4093-111e-4900-9dee-10abcc02abb7',
         name: 'image_1.jpg',

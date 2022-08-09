@@ -5,5 +5,10 @@ export async function getDocuments(collectionName: string, queryConstraints?: Qu
   const collectionInstance = collection(databaseClient, collectionName)
   const q = query(collectionInstance, ...(queryConstraints || []))
   const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => doc.data())
+  return snapshot.docs.map((doc) => {
+    return {
+      id: doc.id,
+      ...doc.data(),
+    }
+  })
 }

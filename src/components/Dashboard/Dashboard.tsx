@@ -1,11 +1,15 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import styles from './Dashboard.module.css'
-import CanvasDraw, { ImageCollection } from 'react-canvas-draw'
+import CanvasDraw from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageRepositoryService'
-import { fetchImages } from '../../services/ImagesService/ImagesService'
+import { fetchImages, skipImage } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
+import Image from '../../model/image'
+import useNotification from '../../services/Notification/NotificationService'
+import { Backdrop, CircularProgress } from '@material-ui/core'
+import BlankImage from '../../assets/img/blank.png'
 
 type SelectedImageType = {
   location: string
@@ -16,37 +20,66 @@ type SelectedImageType = {
 
 const selectedImageInitialState: SelectedImageType = {
   location: '',
-  url: '',
+  url: BlankImage,
   width: 1000,
   height: 1000,
 }
 
 export const Dashboard = (): ReactElement => {
-  const [imagesState, setImagesState] = useState<ImageCollection[]>([])
+  const [imagesState, setImagesState] = useState<Image[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
+  const { showErrorMessage, showSuccessMessage } = useNotification()
 
   let canvas: CanvasDraw | null
 
   useEffect(() => {
-    const state = location.state as { userUid: string }
-    if (state?.userUid) {
-      fetchImages(state.userUid).then((data: ImageCollection[]) => {
-        setImagesState(data)
-      })
-    }
+    fetchImageToLabel()
   }, [])
 
   useEffect(() => {
+    fetchImageUrl()
+  }, [imagesState])
+
+  const fetchImageToLabel = async (): Promise<void> => {
+    const state = location.state as { userUid: string }
+
+    setImagesState([])
+    setIsLoading(true)
+
+    if (state?.userUid) {
+      try {
+        const images = await fetchImages(state.userUid)
+        setImagesState(images)
+      } catch (error) {
+        showErrorMessage('Error fetching image')
+      }
+    }
+    setIsLoading(false)
+  }
+
+  const fetchImageUrl = async (): Promise<void> => {
+    setSelectedImage(selectedImageInitialState)
+    clearCanvas()
+
     if (imagesState.length > 0) {
-      getImageUrl(imagesState[0]).then((imageUrl) => {
+      setIsLoading(true)
+
+      try {
+        const imageUrl = await getImageUrl(imagesState[0])
+
         setSelectedImage({
           ...selectedImage,
           url: imageUrl,
         })
-      })
+      } catch (error) {
+        showErrorMessage('Error loading the image')
+      }
+
+      setIsLoading(false)
     }
-  }, [imagesState])
+  }
 
   //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
   const saveAction = () => {
@@ -65,24 +98,39 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
-  const clearAction = () => {
-    if (canvas) {
+  const clearCanvas = () => {
+    if (canvas && canvas.clear) {
       canvas.clear()
     }
   }
 
-  const skipAction = () => {
-    console.log('skip action')
+  const skipAction = async () => {
+    try {
+      const imageId = imagesState[0].id
+
+      if (imageId) {
+        setIsLoading(true)
+        await skipImage(imageId)
+
+        showSuccessMessage('Image skipped with success.')
+        await fetchImageToLabel()
+      }
+    } catch (error) {
+      showErrorMessage('Error skipping the image.')
+    }
+    setIsLoading(false)
   }
 
   const invalidAction = () => {
     console.log('invalid action')
   }
 
+  const isImageLoaded = imagesState?.length > 0 && selectedImage != selectedImageInitialState
+
   return (
     <div className={styles.container}>
-      <div className={styles.canvasContainer}>
-        <ActionToolbar clearAction={clearAction} undoAction={undoAction} />
+      <div className={styles.canvasContainer} style={{ opacity: isLoading ? '0.5' : '1' }}>
+        <ActionToolbar clearAction={clearCanvas} undoAction={undoAction} />
         <CanvasDraw
           lazyRadius={0}
           ref={(canvasDraw) => (canvas = canvasDraw)}
@@ -92,9 +140,18 @@ export const Dashboard = (): ReactElement => {
           clampLinesToDocument={true}
           imgSrc={selectedImage.url}
           className={styles.canvas}
+          disabled={isLoading || !isImageLoaded}
         />
       </div>
-      <ImageToolbar saveAction={saveAction} invalidAction={invalidAction} skipAction={skipAction} />
+      <ImageToolbar
+        saveAction={saveAction}
+        invalidAction={invalidAction}
+        skipAction={skipAction}
+        disabled={isLoading || !isImageLoaded}
+      />
+      <Backdrop open={isLoading} className={styles.progressBackdrop} aria-label="Progress Bar">
+        <CircularProgress />
+      </Backdrop>
     </div>
   )
 }
