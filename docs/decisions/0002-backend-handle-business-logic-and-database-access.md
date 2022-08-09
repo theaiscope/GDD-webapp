@@ -3,7 +3,7 @@
 - Status: accepted
 - Date: 2022-08-09
 
-Technical Story: Move the fetchImages business logic to the backend | https://trello.com/c/suGnAOV6/43-move-the-fetchimages-business-logic-to-the-backend
+Technical Story: Move the fetchImages business logic to the backend [Trello](https://trello.com/c/suGnAOV6/43-move-the-fetchimages-business-logic-to-the-backend)
 
 ## Context and Problem Statement
 

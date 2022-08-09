@@ -35,7 +35,7 @@ describe('ImagesService', () => {
       createdOn: new Date(),
     }
 
-    it('should call the fetchImageToLabel function and return the image ', async () => {
+    it('should call the fetchImageToLabel cloud function and return the image ', async () => {
       const functionCallSpy = jest.spyOn(functions, 'httpsCallable')
       functionCallSpy.mockReturnValue(() => Promise.resolve({ data: mockImage }))
 

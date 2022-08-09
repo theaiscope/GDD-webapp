@@ -5,8 +5,11 @@ import { functionsInstance } from '../firebaseService'
 import { SkipImageRequest, SkipImageResponse } from './api/SkipImageApi'
 
 export async function fetchImageToLabel(): Promise<Image | undefined> {
-  const fetchImageToLabel = httpsCallable<unknown, Image>(functionsInstance, CloudFunctions.FETCH_IMAGE_TO_LABEL)
-  const response = await fetchImageToLabel()
+  const fetchImageToLabelFunction = httpsCallable<unknown, Image>(
+    functionsInstance,
+    CloudFunctions.FETCH_IMAGE_TO_LABEL,
+  )
+  const response = await fetchImageToLabelFunction()
 
   return response.data as Image
 }
