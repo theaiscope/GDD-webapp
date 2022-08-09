@@ -1,22 +1,17 @@
-import { orderBy, QueryConstraint, where } from 'firebase/firestore'
 import { httpsCallable } from 'firebase/functions'
-import { CREATED_ON, IS_COMPLETED } from '../../assets/services/queryConstants'
-import Image from '../../model/image'
 import { CloudFunctions } from '../cloudFunctions'
-import { getDocuments } from '../DatabaseService/DatabaseService'
+import Image from '../../model/image'
 import { functionsInstance } from '../firebaseService'
 import { SkipImageRequest, SkipImageResponse } from './api/SkipImageApi'
 
-export async function fetchImages(userUid: string): Promise<Image[]> {
-  const imagesResult: Image[] = []
-  const queryConstraints: QueryConstraint[] = [where(IS_COMPLETED, '==', false), orderBy(CREATED_ON)]
-  const imageData = (await getDocuments('images', queryConstraints)) as Image[]
+export async function fetchImageToLabel(): Promise<Image | undefined> {
+  const fetchImageToLabelFunction = httpsCallable<unknown, Image>(
+    functionsInstance,
+    CloudFunctions.FETCH_IMAGE_TO_LABEL,
+  )
+  const response = await fetchImageToLabelFunction()
 
-  imageData?.forEach((image) => {
-    if (!image.labellers?.includes(userUid)) imagesResult.push(image)
-  })
-
-  return imagesResult
+  return response.data as Image
 }
 
 export async function skipImage(imageId: string): Promise<SkipImageResponse> {

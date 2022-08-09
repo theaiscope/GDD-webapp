@@ -4,7 +4,7 @@ import CanvasDraw from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageRepositoryService'
-import { fetchImages, skipImage } from '../../services/ImagesService/ImagesService'
+import { fetchImageToLabel, skipImage } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
 import useNotification from '../../services/Notification/NotificationService'
@@ -26,7 +26,7 @@ const selectedImageInitialState: SelectedImageType = {
 }
 
 export const Dashboard = (): ReactElement => {
-  const [imagesState, setImagesState] = useState<Image[]>([])
+  const [imageState, setImageState] = useState<Image>()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
@@ -35,23 +35,23 @@ export const Dashboard = (): ReactElement => {
   let canvas: CanvasDraw | null
 
   useEffect(() => {
-    fetchImageToLabel()
+    fetchImage()
   }, [])
 
   useEffect(() => {
     fetchImageUrl()
-  }, [imagesState])
+  }, [imageState])
 
-  const fetchImageToLabel = async (): Promise<void> => {
+  const fetchImage = async (): Promise<void> => {
     const state = location.state as { userUid: string }
 
-    setImagesState([])
+    setImageState(undefined)
     setIsLoading(true)
 
     if (state?.userUid) {
       try {
-        const images = await fetchImages(state.userUid)
-        setImagesState(images)
+        const image = await fetchImageToLabel()
+        setImageState(image)
       } catch (error) {
         showErrorMessage('Error fetching image')
       }
@@ -63,11 +63,11 @@ export const Dashboard = (): ReactElement => {
     setSelectedImage(selectedImageInitialState)
     clearCanvas()
 
-    if (imagesState.length > 0) {
+    if (imageState) {
       setIsLoading(true)
 
       try {
-        const imageUrl = await getImageUrl(imagesState[0])
+        const imageUrl = await getImageUrl(imageState)
 
         setSelectedImage({
           ...selectedImage,
@@ -106,14 +106,12 @@ export const Dashboard = (): ReactElement => {
 
   const skipAction = async () => {
     try {
-      const imageId = imagesState[0].id
-
-      if (imageId) {
+      if (imageState?.id) {
         setIsLoading(true)
-        await skipImage(imageId)
+        await skipImage(imageState.id)
 
         showSuccessMessage('Image skipped with success.')
-        await fetchImageToLabel()
+        await fetchImage()
       }
     } catch (error) {
       showErrorMessage('Error skipping the image.')
@@ -125,7 +123,7 @@ export const Dashboard = (): ReactElement => {
     console.log('invalid action')
   }
 
-  const isImageLoaded = imagesState?.length > 0 && selectedImage != selectedImageInitialState
+  const isImageLoaded = imageState && selectedImage != selectedImageInitialState
 
   return (
     <div className={styles.container}>

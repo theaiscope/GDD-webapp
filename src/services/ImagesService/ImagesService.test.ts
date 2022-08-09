@@ -1,9 +1,7 @@
 /** @jest-environment node */
-import { orderBy, QueryConstraint, where } from 'firebase/firestore'
 import * as functions from 'firebase/functions'
-import { CREATED_ON, IS_COMPLETED } from '../../assets/services/queryConstants'
-import * as DatabaseService from '../DatabaseService/DatabaseService'
-import { fetchImages, skipImage } from './ImagesService'
+import Image from '../../model/image'
+import { fetchImageToLabel, skipImage } from './ImagesService'
 jest.mock('firebase/functions')
 
 describe('ImagesService', () => {
@@ -24,65 +22,37 @@ describe('ImagesService', () => {
     })
   })
 
-  describe('fetchImages', () => {
-    const mockImages = [
-      {
-        markedAsInvalid: 0,
-        masks: [],
-        name: 'image_0.jpg',
-        skipped: 0,
-        labellers: ['1'],
-        createdOn: new Date('June 13, 2022, 12:00:00'),
-        isCompleted: false,
-        sampleLocation: '1',
-        sampleReference: '1',
-      },
-      {
-        markedAsInvalid: 0,
-        masks: [],
-        name: 'image_0.jpg',
-        skipped: 0,
-        labellers: ['1', '2'],
-        createdOn: new Date('June 01, 2022, 12:00:00'),
-        isCompleted: false,
-        sampleLocation: '1',
-        sampleReference: '1',
-      },
-    ]
+  describe('fetchImageToLabel', () => {
+    const mockImage: Image = {
+      id: '1',
+      name: 'image_1.jpg',
+      sampleLocation: '1',
+      sampleReference: '1',
+      masks: [],
+      labellers: [],
+      markedAsInvalid: 0,
+      isCompleted: false,
+      createdOn: new Date(),
+    }
 
-    const databaseSpy = jest.spyOn(DatabaseService, 'getDocuments')
+    it('should call the fetchImageToLabel cloud function and return the image ', async () => {
+      const functionCallSpy = jest.spyOn(functions, 'httpsCallable')
+      functionCallSpy.mockReturnValue(() => Promise.resolve({ data: mockImage }))
 
-    beforeEach(() => {
-      databaseSpy.mockReturnValue(Promise.resolve(mockImages))
+      const result = await fetchImageToLabel()
+
+      expect(result).toEqual(mockImage)
+      expect(functionCallSpy).toHaveBeenCalled()
     })
 
-    it('should query from images collection and filter by isCompleted false and order by createdOn', async () => {
-      const queryConstraints: QueryConstraint[] = [where(IS_COMPLETED, '==', false), orderBy(CREATED_ON)]
-      await fetchImages('1111')
-      expect(DatabaseService.getDocuments).toHaveBeenCalledWith('images', queryConstraints)
-    })
+    it('should call the fetchImageToLabel cloud function and return when there is no image ', async () => {
+      const functionCallSpy = jest.spyOn(functions, 'httpsCallable')
+      functionCallSpy.mockReturnValue(() => Promise.resolve({ data: undefined }))
 
-    it('should filter images by user id 2', async () => {
-      const result = await fetchImages('2')
-      const filteredImages = [
-        {
-          markedAsInvalid: 0,
-          masks: [],
-          name: 'image_0.jpg',
-          skipped: 0,
-          labellers: ['1'],
-          createdOn: new Date('June 13, 2022, 12:00:00'),
-          isCompleted: false,
-          sampleLocation: '1',
-          sampleReference: '1',
-        },
-      ]
-      expect(result).toEqual(filteredImages)
-    })
+      const result = await fetchImageToLabel()
 
-    it('should filter images by user id 1', async () => {
-      const result = await fetchImages('1')
-      expect(result).toEqual([])
+      expect(result).toBeUndefined()
+      expect(functionCallSpy).toHaveBeenCalled()
     })
   })
 })
