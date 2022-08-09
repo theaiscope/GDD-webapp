@@ -16,7 +16,7 @@ If three users mark an image as `INVALID`, this image won't be displayed to any 
 
 ## Architecture
 
-The app is a React application (using create-react-app and typescript). It uses the firebase client to authenticate users and to fetch and store images and their associated data.
+The app is a React application (using [create-react-app](https://create-react-app.dev/) and [TypeScript](https://www.typescriptlang.org/)). It uses the firebase client to authenticate users and to fetch and store images and their associated data.
 
 The app is hosted on firebase and can be found at `https://aiscope-labeling-app.web.app/`
 
@@ -50,25 +50,32 @@ To run the tests:
 yarn test
 ```
 
-> Setup and start the [Firebase Emulator](https://github.com/firebase/firebase-tools#deployment-and-local-emulation), uses [Jest](https://jestjs.io/) as the test runner and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for interacting with the DOM
+> Uses [Jest](https://jestjs.io/) as the test runner and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for interacting with the DOM
 
-To run linting:
 
-```shell
-yarn lint # uses https://eslint.org/
-```
-
-To auto format use prettier:
+To run the tests with [Firebase Emulators](https://firebase.google.com/docs/emulator-suite):
 
 ```shell
-yarn prettier # uses https://prettier.io/
+yarn test:emulator
 ```
 
-The project uses husky to run tests and lint before committing
+To run linting ([ESLint](https://eslint.org/)):
+
+```shell
+yarn lint
+```
+
+To auto format the code ([Prettier](https://prettier.io/)):
+
+```shell
+yarn prettier
+```
+
+The project uses [husky](https://github.com/typicode/husky) (Git Hooks) to run tests and lint before committing.
 
 ### Deploying
 
-The app is currently deployed in test environment, on every push in main branch.
+The app is currently deployed in test environment, on every push to `main` branch.
 Github actions are used to run automated tests, and if they are successful, a new version of the application is deployed using the firebase cli.
 
 When a new tag is generated, it is published on production environment.
