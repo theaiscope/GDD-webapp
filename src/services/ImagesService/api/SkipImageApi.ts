@@ -1,9 +1,5 @@
-export interface SkipImageRequest {
-  imageId: string
-}
+import { BaseApiRequest, BaseApiResponse } from './ActionsBaseApi'
 
-export interface SkipImageResponse {
-  message: string
-  imageId: string
-  labellerId: string
-}
+export type SkipImageRequest = BaseApiRequest
+
+export type SkipImageResponse = BaseApiResponse
