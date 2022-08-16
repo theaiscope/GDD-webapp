@@ -4,7 +4,7 @@ import CanvasDraw from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageRepositoryService'
-import { fetchImageToLabel, skipImage } from '../../services/ImagesService/ImagesService'
+import { fetchImageToLabel, markImageInvalid, skipImage } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
 import useNotification from '../../services/Notification/NotificationService'
@@ -119,8 +119,19 @@ export const Dashboard = (): ReactElement => {
     setIsLoading(false)
   }
 
-  const invalidAction = () => {
-    console.log('invalid action')
+  const invalidAction = async () => {
+    try {
+      if (imageState?.id) {
+        setIsLoading(true)
+        await markImageInvalid(imageState.id)
+
+        showSuccessMessage('Image marked as invalid with success.')
+        await fetchImage()
+      }
+    } catch (error) {
+      showErrorMessage('Error marking the image as invalid.')
+    }
+    setIsLoading(false)
   }
 
   const isImageLoaded = imageState && selectedImage != selectedImageInitialState
