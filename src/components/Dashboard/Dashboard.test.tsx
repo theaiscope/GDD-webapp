@@ -6,8 +6,8 @@ import { Dashboard } from './Dashboard'
 import * as ImagesService from '../../services/ImagesService/ImagesService'
 import * as ImageRepositoryService from '../../services/ImageRepositoryService'
 import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi'
-import { SnackbarProvider } from 'notistack'
 import { MarkImageInvalidResponse } from '../../services/ImagesService/api/MarkImageInvalidApi'
+import { SnackbarProvider } from 'notistack'
 
 describe('Dashboard', () => {
   describe('Canvas', () => {

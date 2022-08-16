@@ -25,7 +25,7 @@ describe('ImagesService', () => {
   describe('markImageInvalid', () => {
     it('should call the markImageInvalid cloud function with the imageId', async () => {
       const imageId = 'image-1'
-      const functionResponse = { message: 'Image Image marked as invalid', imageId, labellerId: 'labeller-1' }
+      const functionResponse = { message: 'Image marked as invalid', imageId, labellerId: 'labeller-1' }
 
       const functionsSpy = jest.spyOn(functions, 'httpsCallable')
       const markImageInvalidFunctionSpy = jest.fn(() => Promise.resolve({ data: functionResponse }))

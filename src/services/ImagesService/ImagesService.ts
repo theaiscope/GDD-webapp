@@ -28,13 +28,13 @@ export async function skipImage(imageId: string): Promise<SkipImageResponse> {
 }
 
 export async function markImageInvalid(imageId: string): Promise<MarkImageInvalidResponse> {
-  const skipImageFunction = httpsCallable<MarkImageInvalidRequest, MarkImageInvalidResponse>(
+  const markImageInvalidFunction = httpsCallable<MarkImageInvalidRequest, MarkImageInvalidResponse>(
     functionsInstance,
     CloudFunctions.MARK_IMAGE_INVALID,
   )
 
   const requestData = { imageId }
-  const response = await skipImageFunction(requestData)
+  const response = await markImageInvalidFunction(requestData)
 
   return response.data as SkipImageResponse
 }
