@@ -1,7 +1,7 @@
 /** @jest-environment node */
 import * as functions from 'firebase/functions'
 import Image from '../../model/image'
-import { fetchImageToLabel, skipImage } from './ImagesService'
+import { fetchImageToLabel, markImageInvalid, skipImage } from './ImagesService'
 jest.mock('firebase/functions')
 
 describe('ImagesService', () => {
@@ -19,6 +19,23 @@ describe('ImagesService', () => {
       expect(result).toEqual(functionResponse)
       expect(functionsSpy).toHaveBeenCalled()
       expect(skipImageFunctionSpy).toHaveBeenCalledWith({ imageId })
+    })
+  })
+
+  describe('markImageInvalid', () => {
+    it('should call the markImageInvalid cloud function with the imageId', async () => {
+      const imageId = 'image-1'
+      const functionResponse = { message: 'Image marked as invalid', imageId, labellerId: 'labeller-1' }
+
+      const functionsSpy = jest.spyOn(functions, 'httpsCallable')
+      const markImageInvalidFunctionSpy = jest.fn(() => Promise.resolve({ data: functionResponse }))
+      functionsSpy.mockReturnValue(markImageInvalidFunctionSpy)
+
+      const result = await markImageInvalid(imageId)
+
+      expect(result).toEqual(functionResponse)
+      expect(functionsSpy).toHaveBeenCalled()
+      expect(markImageInvalidFunctionSpy).toHaveBeenCalledWith({ imageId })
     })
   })
 
