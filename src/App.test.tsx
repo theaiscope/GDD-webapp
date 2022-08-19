@@ -7,9 +7,8 @@ import { User } from '@firebase/auth/dist/auth-public'
 import { mocked } from 'jest-mock'
 import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
 import { assertLogInPresent } from './Auth/LogIn/LogIn.test.assertion'
-import { assertActionToolbarPresent } from './components/Dashboard/ActionToolbar/ActionToolbar.test.assertion'
-import { assertImageToolbarPresent } from './components/Dashboard/ImageToolbar/ImageToolbar.test.assertion'
 import { SnackbarProvider } from 'notistack'
+import { assertDashboardPresent } from './components/Dashboard/Dashboard.test.assertion'
 
 jest.mock('react-firebase-hooks/auth')
 jest.mock('react-canvas-draw')
@@ -30,7 +29,7 @@ describe(App, () => {
       </MemoryRouter>,
     )
 
-    assertLogInPresent(screen)
+    assertLogInPresent()
   })
 
   it('should redirect to login page when not authenticated', async () => {
@@ -40,7 +39,7 @@ describe(App, () => {
       </MemoryRouter>,
     )
 
-    assertLogInPresent(screen)
+    assertLogInPresent()
     expect(screen.queryByText('Dashboard')).not.toBeInTheDocument()
   })
 
@@ -63,7 +62,7 @@ describe(App, () => {
         </MemoryRouter>,
       )
 
-      assertNavbarPresent(screen)
+      assertNavbarPresent()
     })
 
     it('should not show the navbar on 404', () => {
@@ -73,7 +72,7 @@ describe(App, () => {
         </MemoryRouter>,
       )
 
-      assertNavbarPresent(screen, false)
+      assertNavbarPresent(false)
     })
   })
 
@@ -89,11 +88,10 @@ describe(App, () => {
         </MemoryRouter>,
       )
 
-      assertActionToolbarPresent()
-      assertImageToolbarPresent()
-      expect(screen.queryByText('Login')).not.toBeInTheDocument()
+      assertDashboardPresent()
+      assertNavbarPresent()
 
-      assertNavbarPresent(screen)
+      expect(screen.queryByText('Login')).not.toBeInTheDocument()
     })
   })
 })

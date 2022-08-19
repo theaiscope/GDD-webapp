@@ -15,7 +15,6 @@ export async function uploadImage(
   imageIndex: number,
   maskIndex: number,
 ): Promise<void> {
-  console.log(file)
   const storage = getStorage()
 
   const reference: StorageReference = ref(storage, `${location}/mask_${imageIndex}_${maskIndex}`)
