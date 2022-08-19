@@ -1,6 +1,6 @@
-import { Screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
-export const imageToolbarPresent = (screen: Screen, present = true): void => {
+export const assertImageToolbarPresent = (present = true): void => {
   present
     ? expect(screen.getByRole('button', { name: 'Invalid' })).toBeInTheDocument()
     : expect(screen.queryByRole('button', { name: 'Invalid' })).not.toBeInTheDocument()

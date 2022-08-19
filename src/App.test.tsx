@@ -7,8 +7,8 @@ import { User } from '@firebase/auth/dist/auth-public'
 import { mocked } from 'jest-mock'
 import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
 import { assertLogInPresent } from './Auth/LogIn/LogIn.test.assertion'
-import { actionToolbarPresent } from './components/Dashboard/ActionToolbar/ActionToolbar.test.assertion'
-import { imageToolbarPresent } from './components/Dashboard/ImageToolbar/ImageToolbar.test.assertion'
+import { assertActionToolbarPresent } from './components/Dashboard/ActionToolbar/ActionToolbar.test.assertion'
+import { assertImageToolbarPresent } from './components/Dashboard/ImageToolbar/ImageToolbar.test.assertion'
 import { SnackbarProvider } from 'notistack'
 
 jest.mock('react-firebase-hooks/auth')
@@ -89,8 +89,8 @@ describe(App, () => {
         </MemoryRouter>,
       )
 
-      actionToolbarPresent(screen, true)
-      imageToolbarPresent(screen, true)
+      assertActionToolbarPresent()
+      assertImageToolbarPresent()
       expect(screen.queryByText('Login')).not.toBeInTheDocument()
 
       assertNavbarPresent(screen)

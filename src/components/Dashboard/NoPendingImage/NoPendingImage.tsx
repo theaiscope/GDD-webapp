@@ -7,10 +7,12 @@ type Props = {
   onCheckAgain?: () => void
 }
 
+export const noPendingImageMessage = 'No image for relabelling was found.'
+
 export const NoPendingImage = ({ onCheckAgain }: Props): ReactElement => {
   return (
     <Box className={styles.container}>
-      <p className={styles.message}>No image for relabelling was found.</p>
+      <p className={styles.message}>{noPendingImageMessage}</p>
       <Button
         variant="outlined"
         color="primary"
