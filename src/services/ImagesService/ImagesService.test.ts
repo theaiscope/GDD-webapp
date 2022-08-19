@@ -64,11 +64,12 @@ describe('ImagesService', () => {
 
     it('should call the fetchImageToLabel cloud function and return when there is no image ', async () => {
       const functionCallSpy = jest.spyOn(functions, 'httpsCallable')
-      functionCallSpy.mockReturnValue(() => Promise.resolve({ data: undefined }))
+      functionCallSpy.mockReturnValue(() => Promise.resolve({ data: null }))
 
       const result = await fetchImageToLabel()
 
-      expect(result).toBeUndefined()
+      expect(result).toBeDefined()
+      expect(result).toBeNull()
       expect(functionCallSpy).toHaveBeenCalled()
     })
   })
