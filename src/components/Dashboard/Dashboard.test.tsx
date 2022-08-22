@@ -64,14 +64,19 @@ describe('Dashboard', () => {
       assertNoPendingImagePresent(false)
     })
 
-    it('should render the progressbar and not the content whilst fetching the data', () => {
-      renderWithExistingImage()
+    it('should render the progressbar and not the content whilst fetching the data', async () => {
+      renderWithNoImageToLabel()
 
       assertProgressBarPresent()
       assertNoPendingImagePresent(false)
       assertActionToolbarPresent(false)
       assertCanvasPresent(false)
       assertImageToolbarPresent(false)
+
+      // Wait for the fetch to complete and check the progressbar is gone
+      await waitFor(() => {
+        assertProgressBarPresent(false)
+      })
     })
   })
 
@@ -120,17 +125,24 @@ describe('Dashboard', () => {
         const saveButton = await screen.findByRole('button', { name: 'Save' })
 
         // Check that the buttons are ENABLED
-        expect(skipButton).not.toHaveAttribute('disabled')
-        expect(saveButton).not.toHaveAttribute('disabled')
-        expect(invalidButton).not.toHaveAttribute('disabled')
+        expect(skipButton).toBeEnabled()
+        expect(invalidButton).toBeEnabled()
+        expect(saveButton).toBeEnabled()
 
         // Start skipping the image
         fireEvent.click(skipButton)
 
         // Check that the buttons are DISABLED
-        expect(skipButton).toHaveAttribute('disabled')
-        expect(saveButton).toHaveAttribute('disabled')
-        expect(invalidButton).toHaveAttribute('disabled')
+        expect(skipButton).toBeDisabled()
+        expect(invalidButton).toBeDisabled()
+        expect(saveButton).toBeDisabled()
+
+        // Wait for the skip image to complete and check that the buttons are ENABLED again
+        await waitFor(() => {
+          expect(screen.getByRole('button', { name: 'Skip' })).toBeEnabled()
+        })
+        expect(screen.getByRole('button', { name: 'Invalid' })).toBeEnabled()
+        expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
       })
 
       it('should fetch the next image to label when skip image succeed', async () => {
@@ -189,22 +201,29 @@ describe('Dashboard', () => {
       it('should disable the buttons while marking the image as invalid', async () => {
         renderWithExistingImage()
 
-        const skipButton = await screen.findByRole('button', { name: 'Skip' })
         const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
+        const skipButton = await screen.findByRole('button', { name: 'Skip' })
         const saveButton = await screen.findByRole('button', { name: 'Save' })
 
-        // Check that the buttons are DISABLED
-        expect(invalidButton).not.toHaveAttribute('disabled')
-        expect(skipButton).not.toHaveAttribute('disabled')
-        expect(saveButton).not.toHaveAttribute('disabled')
+        // Check that the buttons are ENABLED
+        expect(invalidButton).toBeEnabled()
+        expect(skipButton).toBeEnabled()
+        expect(saveButton).toBeEnabled()
 
-        // Start marking the image as invalid
-        userEvent.click(invalidButton)
+        // Start marking the image invalid
+        fireEvent.click(invalidButton)
 
         // Check that the buttons are DISABLED
-        expect(invalidButton).toHaveAttribute('disabled')
-        expect(skipButton).toHaveAttribute('disabled')
-        expect(saveButton).toHaveAttribute('disabled')
+        expect(invalidButton).toBeDisabled()
+        expect(skipButton).toBeDisabled()
+        expect(saveButton).toBeDisabled()
+
+        // Wait for the skip image to complete and check that the buttons are ENABLED again
+        await waitFor(() => {
+          expect(screen.getByRole('button', { name: 'Invalid' })).toBeEnabled()
+        })
+        expect(screen.getByRole('button', { name: 'Skip' })).toBeEnabled()
+        expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
       })
 
       it('should fetch the next image to label when markImageInvalid succeed', async () => {

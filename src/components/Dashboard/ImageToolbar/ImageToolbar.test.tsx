@@ -46,9 +46,9 @@ describe(ImageToolbar, () => {
     const saveButton = screen.getByRole('button', { name: 'Save' })
     const skipButton = screen.getByRole('button', { name: 'Skip' })
 
-    expect(invalidButton).toHaveAttribute('disabled')
-    expect(saveButton).toHaveAttribute('disabled')
-    expect(skipButton).toHaveAttribute('disabled')
+    expect(invalidButton).toBeDisabled()
+    expect(saveButton).toBeDisabled()
+    expect(skipButton).toBeDisabled()
   })
 
   it('should not disable the buttons when disabled is false', () => {
@@ -60,9 +60,9 @@ describe(ImageToolbar, () => {
     const saveButton = screen.getByRole('button', { name: 'Save' })
     const skipButton = screen.getByRole('button', { name: 'Skip' })
 
-    expect(invalidButton).not.toHaveAttribute('disabled')
-    expect(saveButton).not.toHaveAttribute('disabled')
-    expect(skipButton).not.toHaveAttribute('disabled')
+    expect(invalidButton).toBeEnabled()
+    expect(saveButton).toBeEnabled()
+    expect(skipButton).toBeEnabled()
   })
 
   it('should not disable the buttons when disabled is not specified', () => {
@@ -72,8 +72,8 @@ describe(ImageToolbar, () => {
     const saveButton = screen.getByRole('button', { name: 'Save' })
     const skipButton = screen.getByRole('button', { name: 'Skip' })
 
-    expect(invalidButton).not.toHaveAttribute('disabled')
-    expect(saveButton).not.toHaveAttribute('disabled')
-    expect(skipButton).not.toHaveAttribute('disabled')
+    expect(invalidButton).toBeEnabled()
+    expect(saveButton).toBeEnabled()
+    expect(skipButton).toBeEnabled()
   })
 })
