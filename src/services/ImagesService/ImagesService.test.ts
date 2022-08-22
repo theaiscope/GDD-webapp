@@ -1,10 +1,27 @@
 /** @jest-environment node */
 import * as functions from 'firebase/functions'
 import Image from '../../model/image'
-import { fetchImageToLabel, markImageInvalid, skipImage } from './ImagesService'
+import { fetchImageToLabel, markImageInvalid, saveValidImage, skipImage } from './ImagesService'
 jest.mock('firebase/functions')
 
 describe('ImagesService', () => {
+  describe('saveValidImage', () => {
+    it('should call the saveValidImage cloud function with the imageId', async () => {
+      const imageId = 'image-1'
+      const functionResponse = { message: 'Image saved`', imageId, labellerId: 'labeller-1' }
+
+      const functionsSpy = jest.spyOn(functions, 'httpsCallable')
+      const saveValidImageFunctionSpy = jest.fn(() => Promise.resolve({ data: functionResponse }))
+      functionsSpy.mockReturnValue(saveValidImageFunctionSpy)
+
+      const result = await saveValidImage(imageId)
+
+      expect(result).toEqual(functionResponse)
+      expect(functionsSpy).toHaveBeenCalled()
+      expect(saveValidImageFunctionSpy).toHaveBeenCalledWith({ imageId })
+    })
+  })
+
   describe('skipImage', () => {
     it('should call the skipImage cloud function with the imageId', async () => {
       const imageId = 'image-1'

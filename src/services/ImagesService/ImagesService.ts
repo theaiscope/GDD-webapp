@@ -15,6 +15,18 @@ export async function fetchImageToLabel(): Promise<Image | null> {
   return response.data as Image
 }
 
+export async function saveValidImage(imageId: string): Promise<SkipImageResponse> {
+  const skipImageFunction = httpsCallable<SkipImageRequest, SkipImageResponse>(
+    functionsInstance,
+    CloudFunctions.SAVE_VALID_IMAGE,
+  )
+
+  const requestData = { imageId }
+  const response = await skipImageFunction(requestData)
+
+  return response.data as SkipImageResponse
+}
+
 export async function skipImage(imageId: string): Promise<SkipImageResponse> {
   const skipImageFunction = httpsCallable<SkipImageRequest, SkipImageResponse>(
     functionsInstance,
