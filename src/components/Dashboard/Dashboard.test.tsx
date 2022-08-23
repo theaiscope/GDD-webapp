@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router-dom'
 import * as ImageStorageService from '../../services/ImageStorageService/ImageStorageService'
 import { MarkImageInvalidResponse } from '../../services/ImagesService/api/MarkImageInvalidApi'
 import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi'
+import { SaveValidImageResponse } from '../../services/ImagesService/api/SaveValidImageApi'
 import * as ImagesService from '../../services/ImagesService/ImagesService'
 import { assertActionToolbarPresent } from './ActionToolbar/ActionToolbar.test.assertion'
 import { Dashboard } from './Dashboard'
@@ -235,6 +236,85 @@ describe('Dashboard', () => {
 
         const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
         userEvent.click(invalidButton)
+
+        await waitFor(() => {
+          expect(fetchSpy).toHaveBeenCalledTimes(2)
+        })
+      })
+    })
+
+    describe('SaveValidImage', () => {
+      it('should call the saveValidImage function when clicking the Save button', async () => {
+        const saveImageSpy = jest.spyOn(ImagesService, 'saveValidImage').mockResolvedValue({} as SaveValidImageResponse)
+
+        renderWithExistingImage()
+
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        userEvent.click(saveButton)
+
+        await waitFor(() => {
+          expect(saveImageSpy).toHaveBeenCalled()
+        })
+      })
+
+      it('should show a success message when Save image succeed', async () => {
+        jest.spyOn(ImagesService, 'saveValidImage').mockResolvedValue({} as SaveValidImageResponse)
+
+        renderWithExistingImage()
+
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        userEvent.click(saveButton)
+
+        expect(await screen.findByText('Image saved with success.')).toBeInTheDocument()
+      })
+
+      it('should show an error message when Save image fails', async () => {
+        jest.spyOn(ImagesService, 'saveValidImage').mockRejectedValue('Error saving the image.')
+
+        renderWithExistingImage()
+
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        userEvent.click(saveButton)
+
+        expect(await screen.findByText('Error saving the image.')).toBeInTheDocument()
+      })
+
+      it('should disable the buttons while saving the image', async () => {
+        renderWithExistingImage()
+
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        const skipButton = await screen.findByRole('button', { name: 'Skip' })
+        const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
+
+        // Check that the buttons are ENABLED
+        expect(saveButton).toBeEnabled()
+        expect(skipButton).toBeEnabled()
+        expect(invalidButton).toBeEnabled()
+
+        // Start saving the image
+        fireEvent.click(saveButton)
+
+        // Check that the buttons are DISABLED
+        expect(saveButton).toBeDisabled()
+        expect(skipButton).toBeDisabled()
+        expect(invalidButton).toBeDisabled()
+
+        // Wait for the save image to complete and check that the buttons are ENABLED again
+        await waitFor(() => {
+          expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+        })
+        expect(screen.getByRole('button', { name: 'Skip' })).toBeEnabled()
+        expect(screen.getByRole('button', { name: 'Invalid' })).toBeEnabled()
+      })
+
+      it('should fetch the next image to label when save image succeed', async () => {
+        const fetchSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
+        jest.spyOn(ImagesService, 'saveValidImage').mockResolvedValue({} as SaveValidImageResponse)
+
+        renderWithExistingImage()
+
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        userEvent.click(saveButton)
 
         await waitFor(() => {
           expect(fetchSpy).toHaveBeenCalledTimes(2)

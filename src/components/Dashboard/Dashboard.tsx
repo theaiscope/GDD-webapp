@@ -4,7 +4,12 @@ import CanvasDraw from 'react-canvas-draw'
 import { ActionToolbar } from './ActionToolbar/ActionToolbar'
 import { ImageToolbar } from './ImageToolbar/ImageToolbar'
 import { getImageUrl } from '../../services/ImageStorageService/ImageStorageService'
-import { fetchImageToLabel, markImageInvalid, skipImage } from '../../services/ImagesService/ImagesService'
+import {
+  fetchImageToLabel,
+  markImageInvalid,
+  saveValidImage,
+  skipImage,
+} from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
 import useNotification from '../../services/Notification/NotificationService'
@@ -82,18 +87,7 @@ export const Dashboard = (): ReactElement => {
     }
   }
 
-  //TODO: Canvas is working fine but zoom in and zoom out miss don't keep image at center, workable but not great UX.
-  const saveAction = () => {
-    // if (canvas && sample) {
-    //   const dataUri = canvas.getDataURL('png', false)
-    //   await uploadImage(dataUri, sample.location, sample?.imageId, sample.maskId)
-    //   getNewImage()
-    //   clearAction()
-    // }
-    console.log('save action')
-  }
-
-  const undoAction = () => {
+  const undoCanvasAction = () => {
     if (canvas) {
       canvas.undo()
     }
@@ -103,6 +97,23 @@ export const Dashboard = (): ReactElement => {
     if (canvas && canvas.clear) {
       canvas.clear()
     }
+  }
+
+  const saveAction = async () => {
+    try {
+      if (imageState && canvas) {
+        setIsLoading(true)
+
+        const maskImageData = canvas.getDataURL('png', false)
+        await saveValidImage(imageState, maskImageData)
+
+        showSuccessMessage('Image saved with success.')
+        await fetchImage()
+      }
+    } catch (error) {
+      showErrorMessage('Error saving the image.')
+    }
+    setIsLoading(false)
   }
 
   const skipAction = async () => {
@@ -145,7 +156,7 @@ export const Dashboard = (): ReactElement => {
         {isImageLoaded && (
           <>
             <div className={styles.canvasContainer}>
-              <ActionToolbar clearAction={clearCanvas} undoAction={undoAction} />
+              <ActionToolbar clearAction={clearCanvas} undoAction={undoCanvasAction} />
               <CanvasDraw
                 lazyRadius={0}
                 ref={(canvasDraw) => (canvas = canvasDraw)}
