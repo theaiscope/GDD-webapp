@@ -5,7 +5,7 @@ import { MarkImageInvalidResponse } from './api/MarkImageInvalidApi'
 import { SaveValidImageResponse } from './api/SaveValidImageApi'
 import { SkipImageResponse } from './api/SkipImageApi'
 import { fetchImageToLabel, markImageInvalid, saveValidImage, skipImage } from './ImagesService'
-import * as ImageRepositoryService from '../ImageRepositoryService'
+import * as ImageRepositoryService from '../ImagesRepositoryService/ImagesRepositoryService'
 import { UploadResult } from 'firebase/storage'
 jest.mock('firebase/functions')
 

@@ -1,7 +1,7 @@
 // TODO: rename file to clarify the functionallity that contains
 import { getStorage, ref, getDownloadURL, uploadString, StorageReference, UploadResult } from 'firebase/storage'
 import { ImageDimensions } from 'react-canvas-draw'
-import Image from '../model/image'
+import Image from '../../model/image'
 
 export const getImageUrl = async (image: Image): Promise<string> => {
   const storage = getStorage()
