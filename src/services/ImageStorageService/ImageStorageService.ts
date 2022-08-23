@@ -12,11 +12,11 @@ export async function getImageUrl(image: Image): Promise<string> {
 export async function uploadMaskImage(image: Image, maskImageFileContent: string): Promise<MaskUploadResult> {
   const storage = getStorage()
 
-  const { id: imageId, sampleLocation } = image
   const maskIndex = image.masks?.length ?? 0
-  const fileName = `mask_${imageId}_${maskIndex}.png`
+  const fileName = `mask_${maskIndex}.png`
+  const fileLocation = image.sampleLocation
 
-  const reference: StorageReference = ref(storage, `${sampleLocation}/${fileName}`)
+  const reference: StorageReference = ref(storage, `${fileLocation}/${fileName}`)
   const uploadResult = await uploadString(reference, maskImageFileContent, 'data_url')
 
   const maskUploadResult = {
