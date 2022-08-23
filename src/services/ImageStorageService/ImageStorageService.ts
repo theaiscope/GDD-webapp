@@ -3,10 +3,10 @@ import { ImageDimensions } from 'react-canvas-draw'
 import Image from '../../model/image'
 import { MaskUploadResult } from './api/MaskUploadResult'
 
-export const getImageUrl = async (image: Image): Promise<string> => {
+export async function getImageUrl(image: Image): Promise<string> {
   const storage = getStorage()
   const reference: StorageReference = ref(storage, image.sampleLocation + '/' + image.name)
-  return await getDownloadURL(reference)
+  return getDownloadURL(reference)
 }
 
 export async function uploadMaskImage(image: Image, maskImageFileContent: string): Promise<MaskUploadResult> {
