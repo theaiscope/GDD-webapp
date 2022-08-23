@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { SnackbarProvider } from 'notistack'
 import { MemoryRouter } from 'react-router-dom'
-import * as ImageRepositoryService from '../../services/ImagesRepositoryService/ImagesRepositoryService'
+import * as ImageStorageService from '../../services/ImageStorageService/ImageStorageService'
 import { MarkImageInvalidResponse } from '../../services/ImagesService/api/MarkImageInvalidApi'
 import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi'
 import * as ImagesService from '../../services/ImagesService/ImagesService'
@@ -12,11 +12,12 @@ import { Dashboard } from './Dashboard'
 import { assertCanvasPresent, assertProgressBarPresent } from './Dashboard.test.assertion'
 import { assertImageToolbarPresent } from './ImageToolbar/ImageToolbar.test.assertion'
 import { assertNoPendingImagePresent } from './NoPendingImage/NoPendingImage.test.assertion'
+import Image from '../../model/image'
 
 describe('Dashboard', () => {
   const renderWithExistingImage = (imageId = 'image-1') => {
-    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: imageId })
-    jest.spyOn(ImageRepositoryService, 'getImageUrl').mockResolvedValue(`http://image-url/${imageId}`)
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: imageId } as Image)
+    jest.spyOn(ImageStorageService, 'getImageUrl').mockResolvedValue(`http://image-url/${imageId}`)
 
     const locationState = { userUid: 'user-1' }
     return render(
@@ -146,7 +147,7 @@ describe('Dashboard', () => {
       })
 
       it('should fetch the next image to label when skip image succeed', async () => {
-        const fetchSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' })
+        const fetchSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
         jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
 
         renderWithExistingImage()
@@ -227,7 +228,7 @@ describe('Dashboard', () => {
       })
 
       it('should fetch the next image to label when markImageInvalid succeed', async () => {
-        const fetchSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' })
+        const fetchSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
         jest.spyOn(ImagesService, 'markImageInvalid').mockResolvedValue({} as MarkImageInvalidResponse)
 
         renderWithExistingImage()

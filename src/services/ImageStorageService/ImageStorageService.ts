@@ -1,7 +1,7 @@
-// TODO: rename file to clarify the functionallity that contains
-import { getStorage, ref, getDownloadURL, uploadString, StorageReference, UploadResult } from 'firebase/storage'
+import { getDownloadURL, getStorage, ref, StorageReference, uploadString } from 'firebase/storage'
 import { ImageDimensions } from 'react-canvas-draw'
 import Image from '../../model/image'
+import { MaskUploadResult } from './api/MaskUploadResult'
 
 export const getImageUrl = async (image: Image): Promise<string> => {
   const storage = getStorage()
@@ -9,11 +9,22 @@ export const getImageUrl = async (image: Image): Promise<string> => {
   return await getDownloadURL(reference)
 }
 
-export async function uploadImage(file: string, fileLocation: string, fileName: string): Promise<UploadResult> {
+export async function uploadMaskImage(image: Image, maskImageFileContent: string): Promise<MaskUploadResult> {
   const storage = getStorage()
 
-  const reference: StorageReference = ref(storage, `${location}/${fileName}`)
-  return uploadString(reference, file, 'data_url')
+  const { id: imageId, sampleLocation } = image
+  const maskIndex = image.masks?.length ?? 0
+  const fileName = `mask_${imageId}_${maskIndex}.png`
+
+  const reference: StorageReference = ref(storage, `${sampleLocation}/${fileName}`)
+  const uploadResult = await uploadString(reference, maskImageFileContent, 'data_url')
+
+  const maskUploadResult = {
+    fileName: uploadResult.ref.name,
+    fullPath: uploadResult.ref.fullPath,
+  }
+
+  return maskUploadResult
 }
 
 export async function getImageDimensions(url: string): Promise<ImageDimensions> {

@@ -1,6 +1,6 @@
 export default interface Image {
   id: string
-  name?: string
+  name: string
   sampleLocation: string
   sampleReference?: string
   masks?: Mask[]

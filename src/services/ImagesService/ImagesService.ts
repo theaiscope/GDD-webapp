@@ -5,7 +5,7 @@ import { functionsInstance } from '../firebaseService'
 import { SkipImageRequest, SkipImageResponse } from './api/SkipImageApi'
 import { SaveValidImageRequest, SaveValidImageResponse } from './api/SaveValidImageApi'
 import { MarkImageInvalidRequest, MarkImageInvalidResponse } from './api/MarkImageInvalidApi'
-import { uploadImage } from '../ImagesRepositoryService/ImagesRepositoryService'
+import { uploadMaskImage } from '../ImageStorageService/ImageStorageService'
 
 export async function fetchImageToLabel(): Promise<Image | null> {
   const fetchImageToLabelFunction = httpsCallable<unknown, Image>(
@@ -41,33 +41,20 @@ export async function markImageInvalid(imageId: string): Promise<MarkImageInvali
   return response.data as SkipImageResponse
 }
 
-export async function saveValidImage(image: Image, maskDataUri: string): Promise<SaveValidImageResponse> {
+export async function saveValidImage(image: Image, maskImageFileContent: string): Promise<SaveValidImageResponse> {
   const saveValidImageFunction = httpsCallable<SaveValidImageRequest, SaveValidImageResponse>(
     functionsInstance,
     CloudFunctions.SAVE_VALID_IMAGE,
   )
 
-  const uploadedMaskName = await uploadImageMask(image, maskDataUri)
+  const uploadResult = await uploadMaskImage(image, maskImageFileContent)
+  const maskName = uploadResult.fileName
 
   const requestData: SaveValidImageRequest = {
     imageId: image.id,
-    maskName: uploadedMaskName,
+    maskName,
   }
-  const response = await saveValidImageFunction(requestData)
+  const saveResponse = await saveValidImageFunction(requestData)
 
-  return response.data as SaveValidImageResponse
-}
-
-async function uploadImageMask(image: Image, maskDataUri: string): Promise<string> {
-  if (!image.sampleLocation) {
-    throw new Error('Invalid sample location')
-  }
-
-  const { id: imageId, sampleLocation } = image
-  const maskIndex = image.masks?.length ?? 0
-
-  const fileName = `mask_${imageId}_${maskIndex}.png`
-
-  const uploadResult = await uploadImage(maskDataUri, sampleLocation, fileName)
-  return uploadResult.ref.name
+  return saveResponse.data as SaveValidImageResponse
 }

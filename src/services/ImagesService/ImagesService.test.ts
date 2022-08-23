@@ -5,19 +5,19 @@ import { MarkImageInvalidResponse } from './api/MarkImageInvalidApi'
 import { SaveValidImageResponse } from './api/SaveValidImageApi'
 import { SkipImageResponse } from './api/SkipImageApi'
 import { fetchImageToLabel, markImageInvalid, saveValidImage, skipImage } from './ImagesService'
-import * as ImageRepositoryService from '../ImagesRepositoryService/ImagesRepositoryService'
-import { UploadResult } from 'firebase/storage'
+import * as ImageStorageService from '../ImageStorageService/ImageStorageService'
+import { MaskUploadResult } from '../ImageStorageService/api/MaskUploadResult'
 jest.mock('firebase/functions')
 
 describe('ImagesService', () => {
   describe('saveValidImage', () => {
     it('should save a valid image', async () => {
-      // Given a successful image upload
+      // Given a successful image mask upload
       const imageId = 'image-1'
       const maskName = `mask_${imageId}_0.png`
-      const imageRepositorySpy = jest
-        .spyOn(ImageRepositoryService, 'uploadImage')
-        .mockResolvedValue({ ref: { name: maskName } } as UploadResult)
+      const imageStorageSpy = jest
+        .spyOn(ImageStorageService, 'uploadMaskImage')
+        .mockResolvedValue({ fileName: maskName, fullPath: `sample_location/${maskName}` } as MaskUploadResult)
 
       // And CloudFunction call
       const mockResponse: SaveValidImageResponse = {
@@ -31,22 +31,23 @@ describe('ImagesService', () => {
       // When calling saveValidImage
       const image: Image = {
         id: imageId,
+        name: 'image_1.jpg',
         sampleLocation: '095a46-sample-location',
       }
       const canvasMaskDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+...'
 
       const result = await saveValidImage(image, canvasMaskDataUrl)
 
-      // Then the uploadImage and the CloudFunction should have been called
+      // Then the uploadMaskImage and the CloudFunction should have been called
       expect(result).toEqual(mockResponse)
-      expect(imageRepositorySpy).toHaveBeenCalled()
+      expect(imageStorageSpy).toHaveBeenCalled()
       expect(saveValidImageFunctionSpy).toHaveBeenCalledWith({ imageId, maskName })
     })
 
     it('should fail and not call the saveValidImage cloud function if the mask upload fails', async () => {
-      // Given a failed imageUpload
+      // Given a failed mask image upload
       const error = new Error('Upload Image error')
-      jest.spyOn(ImageRepositoryService, 'uploadImage').mockRejectedValue(error)
+      jest.spyOn(ImageStorageService, 'uploadMaskImage').mockRejectedValue(error)
 
       const saveValidImageFunctionSpy = jest.fn()
       jest.spyOn(functions, 'httpsCallable').mockReturnValue(saveValidImageFunctionSpy)
@@ -54,6 +55,7 @@ describe('ImagesService', () => {
       // When calling saveValidImage
       const image: Image = {
         id: 'image-1',
+        name: 'image_1.jpg',
         sampleLocation: '095a46-sample-location',
       }
       const canvasMaskDataUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+...'
