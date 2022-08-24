@@ -10,6 +10,7 @@ import Image from '../../model/image'
 import useNotification from '../../services/Notification/NotificationService'
 import { Backdrop, CircularProgress } from '@material-ui/core'
 import BlankImage from '../../assets/img/blank.png'
+import { NoPendingImage } from './NoPendingImage/NoPendingImage'
 
 type SelectedImageType = {
   location: string
@@ -26,7 +27,7 @@ const selectedImageInitialState: SelectedImageType = {
 }
 
 export const Dashboard = (): ReactElement => {
-  const [imageState, setImageState] = useState<Image>()
+  const [imageState, setImageState] = useState<Image | null>()
   const [isLoading, setIsLoading] = useState(false)
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
@@ -137,30 +138,39 @@ export const Dashboard = (): ReactElement => {
   const isImageLoaded = imageState && selectedImage != selectedImageInitialState
 
   return (
-    <div className={styles.container}>
-      <div className={styles.canvasContainer} style={{ opacity: isLoading ? '0.5' : '1' }}>
-        <ActionToolbar clearAction={clearCanvas} undoAction={undoAction} />
-        <CanvasDraw
-          lazyRadius={0}
-          ref={(canvasDraw) => (canvas = canvasDraw)}
-          canvasWidth={selectedImage.width}
-          canvasHeight={selectedImage.height}
-          enablePanAndZoom={true}
-          clampLinesToDocument={true}
-          imgSrc={selectedImage.url}
-          className={styles.canvas}
-          disabled={isLoading || !isImageLoaded}
-        />
+    <>
+      <div className={styles.dashboardContainer}>
+        {!isLoading && imageState === null && <NoPendingImage onCheckAgain={fetchImage} />}
+
+        {isImageLoaded && (
+          <>
+            <div className={styles.canvasContainer}>
+              <ActionToolbar clearAction={clearCanvas} undoAction={undoAction} />
+              <CanvasDraw
+                lazyRadius={0}
+                ref={(canvasDraw) => (canvas = canvasDraw)}
+                canvasWidth={selectedImage.width}
+                canvasHeight={selectedImage.height}
+                enablePanAndZoom={true}
+                clampLinesToDocument={true}
+                imgSrc={selectedImage.url}
+                className={styles.canvas}
+                disabled={isLoading}
+              />
+            </div>
+            <ImageToolbar
+              saveAction={saveAction}
+              invalidAction={invalidAction}
+              skipAction={skipAction}
+              disabled={isLoading}
+            />
+          </>
+        )}
       </div>
-      <ImageToolbar
-        saveAction={saveAction}
-        invalidAction={invalidAction}
-        skipAction={skipAction}
-        disabled={isLoading || !isImageLoaded}
-      />
+
       <Backdrop open={isLoading} className={styles.progressBackdrop} aria-label="Progress Bar">
         <CircularProgress />
       </Backdrop>
-    </div>
+    </>
   )
 }

@@ -19,7 +19,7 @@ describe(Navbar, () => {
   it('should have link back to main aiscope page', () => {
     render(<Navbar />)
 
-    assertNavbarPresent(screen)
+    assertNavbarPresent()
   })
 
   it(' link should display the aiscope logo', () => {

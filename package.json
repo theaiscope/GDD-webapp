@@ -57,6 +57,7 @@
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@testing-library/react-hooks": "^8.0.1",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",

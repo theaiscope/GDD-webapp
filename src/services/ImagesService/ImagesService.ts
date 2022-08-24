@@ -5,7 +5,7 @@ import { functionsInstance } from '../firebaseService'
 import { SkipImageRequest, SkipImageResponse } from './api/SkipImageApi'
 import { MarkImageInvalidRequest, MarkImageInvalidResponse } from './api/MarkImageInvalidApi'
 
-export async function fetchImageToLabel(): Promise<Image | undefined> {
+export async function fetchImageToLabel(): Promise<Image | null> {
   const fetchImageToLabelFunction = httpsCallable<unknown, Image>(
     functionsInstance,
     CloudFunctions.FETCH_IMAGE_TO_LABEL,
