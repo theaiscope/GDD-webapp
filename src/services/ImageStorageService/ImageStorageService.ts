@@ -1,6 +1,7 @@
 import { getDownloadURL, getStorage, ref, StorageReference, uploadString } from 'firebase/storage'
 import { ImageDimensions } from 'react-canvas-draw'
 import Image from '../../model/image'
+import { getImageIndexFromName } from '../../util/image-util'
 import { MaskUploadResult } from './api/MaskUploadResult'
 
 export async function getImageUrl(image: Image): Promise<string> {
@@ -12,14 +13,15 @@ export async function getImageUrl(image: Image): Promise<string> {
 export async function uploadMaskImage(image: Image, maskImageFileContent: string): Promise<MaskUploadResult> {
   const storage = getStorage()
 
+  const imageIndex = getImageIndexFromName(image.name)
   const maskIndex = image.masks?.length ?? 0
-  const fileName = `mask_${maskIndex}.png`
-  const fileLocation = image.sampleLocation
+  const fileName = `mask_${imageIndex}_${maskIndex}.png`
 
-  const reference: StorageReference = ref(storage, `${fileLocation}/${fileName}`)
+  const referencePath = `${image.sampleLocation}/${fileName}`
+  const reference = ref(storage, referencePath)
   const uploadResult = await uploadString(reference, maskImageFileContent, 'data_url')
 
-  const maskUploadResult = {
+  const maskUploadResult: MaskUploadResult = {
     fileName: uploadResult.ref.name,
     fullPath: uploadResult.ref.fullPath,
   }
