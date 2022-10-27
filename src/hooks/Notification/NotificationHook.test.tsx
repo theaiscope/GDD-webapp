@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks'
 import * as notistack from 'notistack'
-import useNotification from './NotificationService'
+import useNotification from './NotificationHook'
 
-describe('NotificationService', () => {
+describe('NotificationHook', () => {
   const enqueueSpy = jest.fn()
 
   beforeEach(() => {

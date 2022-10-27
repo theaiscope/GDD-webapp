@@ -12,7 +12,7 @@ import {
 } from '../../services/ImagesService/ImagesService'
 import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
-import useNotification from '../../services/Notification/NotificationService'
+import useNotification from '../../hooks/Notification/NotificationHook'
 import { Backdrop, CircularProgress } from '@material-ui/core'
 import BlankImage from '../../assets/img/blank.png'
 import { NoPendingImage } from './NoPendingImage/NoPendingImage'
