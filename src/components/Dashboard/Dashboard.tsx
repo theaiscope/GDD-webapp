@@ -185,3 +185,9 @@ export const Dashboard = (): ReactElement => {
     </>
   )
 }
+
+// TODO: - Move the progressbar to the application level
+// TODO: - Create a ImageLabeller component
+// TODO: - Update the Dashboard to use ImageLabeller
+// TODO: - Move the image being labelled to a Context
+// TODO: - Create a 'pages' folder
