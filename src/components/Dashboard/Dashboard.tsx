@@ -13,9 +13,9 @@ import {
 import { useLocation } from 'react-router-dom'
 import Image from '../../model/image'
 import useNotification from '../../hooks/Notification/NotificationHook'
-import { Backdrop, CircularProgress } from '@material-ui/core'
 import BlankImage from '../../assets/img/blank.png'
 import { NoPendingImage } from './NoPendingImage/NoPendingImage'
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner'
 
 type SelectedImageType = {
   location: string
@@ -179,9 +179,7 @@ export const Dashboard = (): ReactElement => {
         )}
       </div>
 
-      <Backdrop open={isLoading} className={styles.progressBackdrop} aria-label="Progress Bar">
-        <CircularProgress />
-      </Backdrop>
+      <LoadingSpinner open={isLoading} />
     </>
   )
 }

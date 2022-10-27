@@ -21,7 +21,3 @@
   display: flex !important;
   position: relative;
 }
-
-.progressBackdrop {
-  z-index: 1300 !important;
-}
