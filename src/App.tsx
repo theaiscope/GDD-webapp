@@ -4,6 +4,7 @@ import { Dashboard, Navbar } from './components'
 import { LogIn, RequireAuth } from './Auth'
 import styles from './App.module.css'
 import { SnackbarProvider } from 'notistack'
+import { LoadingSpinnerProvider } from './components/LoadingSpinner/LoadingSpinnerContext'
 
 export const App = (): ReactElement => (
   <Routes>
@@ -28,7 +29,9 @@ export const AppWithRouter = (): ReactElement => {
             horizontal: 'right',
           }}
         >
-          <App />
+          <LoadingSpinnerProvider>
+            <App />
+          </LoadingSpinnerProvider>
         </SnackbarProvider>
       </Router>
     </div>

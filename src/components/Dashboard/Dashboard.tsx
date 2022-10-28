@@ -15,7 +15,7 @@ import Image from '../../model/image'
 import useNotification from '../../hooks/Notification/NotificationHook'
 import BlankImage from '../../assets/img/blank.png'
 import { NoPendingImage } from './NoPendingImage/NoPendingImage'
-import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner'
+import { useLoadingSpinner } from '../LoadingSpinner/LoadingSpinnerContext'
 
 type SelectedImageType = {
   location: string
@@ -33,10 +33,10 @@ const selectedImageInitialState: SelectedImageType = {
 
 export const Dashboard = (): ReactElement => {
   const [imageState, setImageState] = useState<Image | null>()
-  const [isLoading, setIsLoading] = useState(false)
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
   const { showErrorMessage, showSuccessMessage } = useNotification()
+  const { isLoading, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner()
 
   let canvas: CanvasDraw | null
 
@@ -52,7 +52,7 @@ export const Dashboard = (): ReactElement => {
     const state = location.state as { userUid: string }
 
     setImageState(undefined)
-    setIsLoading(true)
+    showLoadingSpinner()
 
     if (state?.userUid) {
       try {
@@ -62,7 +62,7 @@ export const Dashboard = (): ReactElement => {
         showErrorMessage('Error fetching image')
       }
     }
-    setIsLoading(false)
+    hideLoadingSpinner()
   }
 
   const fetchImageUrl = async (): Promise<void> => {
@@ -70,7 +70,7 @@ export const Dashboard = (): ReactElement => {
     clearCanvas()
 
     if (imageState) {
-      setIsLoading(true)
+      showLoadingSpinner()
 
       try {
         const imageUrl = await getImageUrl(imageState)
@@ -83,7 +83,7 @@ export const Dashboard = (): ReactElement => {
         showErrorMessage('Error loading the image')
       }
 
-      setIsLoading(false)
+      hideLoadingSpinner()
     }
   }
 
@@ -102,7 +102,7 @@ export const Dashboard = (): ReactElement => {
   const saveAction = async () => {
     try {
       if (imageState && canvas) {
-        setIsLoading(true)
+        showLoadingSpinner()
 
         const maskImageData = canvas.getDataURL('png', false)
         await saveValidImage(imageState, maskImageData)
@@ -113,13 +113,13 @@ export const Dashboard = (): ReactElement => {
     } catch (error) {
       showErrorMessage('Error saving the image.')
     }
-    setIsLoading(false)
+    hideLoadingSpinner()
   }
 
   const skipAction = async () => {
     try {
       if (imageState?.id) {
-        setIsLoading(true)
+        showLoadingSpinner()
         await skipImage(imageState.id)
 
         showSuccessMessage('Image skipped with success.')
@@ -128,13 +128,13 @@ export const Dashboard = (): ReactElement => {
     } catch (error) {
       showErrorMessage('Error skipping the image.')
     }
-    setIsLoading(false)
+    hideLoadingSpinner()
   }
 
   const invalidAction = async () => {
     try {
       if (imageState?.id) {
-        setIsLoading(true)
+        showLoadingSpinner()
         await markImageInvalid(imageState.id)
 
         showSuccessMessage('Image marked as invalid with success.')
@@ -143,7 +143,7 @@ export const Dashboard = (): ReactElement => {
     } catch (error) {
       showErrorMessage('Error marking the image as invalid.')
     }
-    setIsLoading(false)
+    hideLoadingSpinner()
   }
 
   const isImageLoaded = imageState && selectedImage != selectedImageInitialState
@@ -178,8 +178,6 @@ export const Dashboard = (): ReactElement => {
           </>
         )}
       </div>
-
-      <LoadingSpinner open={isLoading} />
     </>
   )
 }

@@ -10,10 +10,11 @@ import { SaveValidImageResponse } from '../../services/ImagesService/api/SaveVal
 import * as ImagesService from '../../services/ImagesService/ImagesService'
 import { assertActionToolbarPresent } from './ActionToolbar/ActionToolbar.test.assertion'
 import { Dashboard } from './Dashboard'
-import { assertCanvasPresent, assertProgressBarPresent } from './Dashboard.test.assertion'
+import { assertCanvasPresent, assertProgressBarPresent as assertLoadingPresent } from './Dashboard.test.assertion'
 import { assertImageToolbarPresent } from './ImageToolbar/ImageToolbar.test.assertion'
 import { assertNoPendingImagePresent } from './NoPendingImage/NoPendingImage.test.assertion'
 import Image from '../../model/image'
+import { LoadingSpinnerProvider } from '../LoadingSpinner/LoadingSpinnerContext'
 
 describe('Dashboard', () => {
   const renderWithExistingImage = (imageId = 'image-1') => {
@@ -24,7 +25,9 @@ describe('Dashboard', () => {
     return render(
       <MemoryRouter initialEntries={[{ state: locationState }]}>
         <SnackbarProvider>
-          <Dashboard />
+          <LoadingSpinnerProvider>
+            <Dashboard />
+          </LoadingSpinnerProvider>
         </SnackbarProvider>
       </MemoryRouter>,
     )
@@ -37,7 +40,9 @@ describe('Dashboard', () => {
     return render(
       <MemoryRouter initialEntries={[{ state: locationState }]}>
         <SnackbarProvider>
-          <Dashboard />
+          <LoadingSpinnerProvider>
+            <Dashboard />
+          </LoadingSpinnerProvider>
         </SnackbarProvider>
       </MemoryRouter>,
     )
@@ -66,10 +71,10 @@ describe('Dashboard', () => {
       assertNoPendingImagePresent(false)
     })
 
-    it('should render the progressbar and not the content whilst fetching the data', async () => {
+    it('should render the Loading Spinner and not the content whilst fetching the data', async () => {
       renderWithNoImageToLabel()
 
-      assertProgressBarPresent()
+      assertLoadingPresent()
       assertNoPendingImagePresent(false)
       assertActionToolbarPresent(false)
       assertCanvasPresent(false)
@@ -77,7 +82,7 @@ describe('Dashboard', () => {
 
       // Wait for the fetch to complete and check the progressbar is gone
       await waitFor(() => {
-        assertProgressBarPresent(false)
+        assertLoadingPresent(false)
       })
     })
   })

@@ -18,6 +18,6 @@ export const assertCanvasPresent = (present = true): void => {
 
 export const assertProgressBarPresent = (present = true): void => {
   present
-    ? expect(screen.getByLabelText('Progress Bar')).toBeVisible()
-    : expect(screen.queryByLabelText('Progress Bar')).not.toBeVisible()
+    ? expect(screen.getByLabelText('Loading Spinner')).toBeVisible()
+    : expect(screen.queryByLabelText('Loading Spinner')).not.toBeVisible()
 }

@@ -1,13 +1,14 @@
 import React, { ReactElement } from 'react'
 import { Backdrop, CircularProgress } from '@material-ui/core'
 import styles from './LoadingSpinner.module.css'
+import { useLoadingSpinner } from './LoadingSpinnerContext'
 
-type Props = {
-  open: boolean
+export const LoadingSpinner = (): ReactElement => {
+  const { isLoading } = useLoadingSpinner()
+
+  return (
+    <Backdrop open={isLoading} className={styles.progressBackdrop} aria-label="Loading Spinner">
+      <CircularProgress />
+    </Backdrop>
+  )
 }
-
-export const LoadingSpinner = (props: Props): ReactElement => (
-  <Backdrop open={props.open} className={styles.progressBackdrop} aria-label="Progress Bar">
-    <CircularProgress />
-  </Backdrop>
-)
