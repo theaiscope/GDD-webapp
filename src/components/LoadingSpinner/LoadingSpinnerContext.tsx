@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react'
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 import { LoadingSpinner } from './LoadingSpinner'
 
 type State = {
@@ -9,7 +9,7 @@ type LoadingSpinnerProviderProps = {
   children: React.ReactNode
 }
 
-const LoadingSpinnerStateContext = createContext<
+export const LoadingSpinnerStateContext = createContext<
   { state: State; dispatch: Dispatch<SetStateAction<boolean>> } | undefined
 >(undefined)
 
@@ -30,25 +30,4 @@ function LoadingSpinnerProvider({ children }: LoadingSpinnerProviderProps) {
   )
 }
 
-const useLoadingSpinner = () => {
-  const context = useContext(LoadingSpinnerStateContext)
-  if (context === undefined) {
-    throw new Error('useLoadingSpinner must be used within a LoadingSpinnerProvider')
-  }
-
-  const showLoadingSpinner = () => {
-    context.dispatch(true)
-  }
-
-  const hideLoadingSpinner = () => {
-    context.dispatch(false)
-  }
-
-  return {
-    isLoading: context.state.open,
-    showLoadingSpinner,
-    hideLoadingSpinner,
-  }
-}
-
-export { LoadingSpinnerProvider, useLoadingSpinner }
+export { LoadingSpinnerProvider }

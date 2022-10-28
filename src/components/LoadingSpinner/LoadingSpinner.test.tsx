@@ -1,46 +1,30 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { LoadingSpinnerProvider, useLoadingSpinner } from './LoadingSpinnerContext'
+import React from 'react'
+import { LoadingSpinner } from './LoadingSpinner'
+import * as LoadingHook from '../../hooks/Loading/LoadingHook'
 
 describe('LoadingSpinner', () => {
-  it('should not display a Loading Spinner by default', () => {
-    render(<LoadingSpinnerProvider>Loading</LoadingSpinnerProvider>)
+  it('should display a ProgressBar when is loading', () => {
+    jest.spyOn(LoadingHook, 'useLoading').mockReturnValue({
+      isLoading: true,
+      showLoading: () => jest.fn(),
+      hideLoading: () => jest.fn,
+    })
 
-    expect(screen.getByLabelText('Loading Spinner')).not.toBeVisible()
+    render(<LoadingSpinner></LoadingSpinner>)
+
+    expect(screen.getByRole('progressbar', { hidden: true })).toBeVisible()
   })
 
-  it('should display a Loading Spinner when show is invoked', async () => {
-    const { useLoadingSpinner } = renderLoadingSpinner()
+  it('should not display a ProgressBar when is not loading', () => {
+    jest.spyOn(LoadingHook, 'useLoading').mockReturnValue({
+      isLoading: false,
+      showLoading: () => jest.fn(),
+      hideLoading: () => jest.fn,
+    })
 
-    useLoadingSpinner.showLoadingSpinner()
+    render(<LoadingSpinner></LoadingSpinner>)
 
-    expect(await screen.findByLabelText('Loading Spinner')).toBeVisible()
+    expect(screen.getByRole('progressbar', { hidden: true })).not.toBeVisible()
   })
-
-  it('should hide the Loading Spinner when hide is invoked', async () => {
-    const { useLoadingSpinner } = renderLoadingSpinner()
-
-    useLoadingSpinner.showLoadingSpinner()
-    expect(await screen.findByLabelText('Loading Spinner')).toBeVisible()
-
-    useLoadingSpinner.hideLoadingSpinner()
-    expect(await screen.findByLabelText('Loading Spinner')).not.toBeVisible()
-  })
-
-  const renderLoadingSpinner = () => {
-    let useLoadingSpinnerHook = {} as ReturnType<typeof useLoadingSpinner>
-    const Component: React.FC = () => {
-      useLoadingSpinnerHook = useLoadingSpinner()
-      return null
-    }
-    const { container } = render(
-      <LoadingSpinnerProvider>
-        <Component />
-      </LoadingSpinnerProvider>,
-    )
-    return {
-      container,
-      useLoadingSpinner: useLoadingSpinnerHook,
-    }
-  }
 })
