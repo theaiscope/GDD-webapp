@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import { LoadingSpinnerStateContext } from '../../components/LoadingSpinner/LoadingSpinnerContext'
+import { LoadingContext } from '../../providers/Loading/LoadingContext'
 
 export const useLoading = () => {
-  const context = useContext(LoadingSpinnerStateContext)
+  const context = useContext(LoadingContext)
   if (context === undefined) {
     throw new Error('useLoading must be used within a LoadingProvider')
   }
@@ -16,7 +16,7 @@ export const useLoading = () => {
   }
 
   return {
-    isLoading: context.state.open,
+    isLoading: context.state.isLoading,
     showLoading,
     hideLoading,
   }

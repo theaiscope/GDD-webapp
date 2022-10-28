@@ -14,7 +14,7 @@ import { assertCanvasPresent, assertProgressBarPresent as assertLoadingPresent }
 import { assertImageToolbarPresent } from './ImageToolbar/ImageToolbar.test.assertion'
 import { assertNoPendingImagePresent } from './NoPendingImage/NoPendingImage.test.assertion'
 import Image from '../../model/image'
-import { LoadingSpinnerProvider } from '../LoadingSpinner/LoadingSpinnerContext'
+import { LoadingProvider } from '../../providers/Loading/LoadingProvider'
 
 describe('Dashboard', () => {
   const renderWithExistingImage = (imageId = 'image-1') => {
@@ -25,9 +25,9 @@ describe('Dashboard', () => {
     return render(
       <MemoryRouter initialEntries={[{ state: locationState }]}>
         <SnackbarProvider>
-          <LoadingSpinnerProvider>
+          <LoadingProvider>
             <Dashboard />
-          </LoadingSpinnerProvider>
+          </LoadingProvider>
         </SnackbarProvider>
       </MemoryRouter>,
     )
@@ -40,9 +40,9 @@ describe('Dashboard', () => {
     return render(
       <MemoryRouter initialEntries={[{ state: locationState }]}>
         <SnackbarProvider>
-          <LoadingSpinnerProvider>
+          <LoadingProvider>
             <Dashboard />
-          </LoadingSpinnerProvider>
+          </LoadingProvider>
         </SnackbarProvider>
       </MemoryRouter>,
     )

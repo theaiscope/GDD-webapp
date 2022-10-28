@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { LoadingSpinnerProvider } from '../../components/LoadingSpinner/LoadingSpinnerContext'
 import { useLoading } from './LoadingHook'
+import { LoadingProvider } from '../../providers/Loading/LoadingProvider'
 
 describe('LoadingHook', () => {
   it('should show the Loading Spinner', async () => {
@@ -29,9 +29,9 @@ describe('LoadingHook', () => {
       return null
     }
     const { container } = render(
-      <LoadingSpinnerProvider>
+      <LoadingProvider>
         <Component />
-      </LoadingSpinnerProvider>,
+      </LoadingProvider>,
     )
     return {
       container,

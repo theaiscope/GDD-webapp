@@ -9,7 +9,7 @@ import { assertNavbarPresent } from './components/Navbar/Navbar.test.assertion'
 import { assertLogInPresent } from './Auth/LogIn/LogIn.test.assertion'
 import { SnackbarProvider } from 'notistack'
 import { assertDashboardPresent } from './components/Dashboard/Dashboard.test.assertion'
-import { LoadingSpinnerProvider } from './components/LoadingSpinner/LoadingSpinnerContext'
+import { LoadingProvider } from './providers/Loading/LoadingProvider'
 
 jest.mock('react-firebase-hooks/auth')
 jest.mock('react-canvas-draw')
@@ -84,9 +84,9 @@ describe(App, () => {
       render(
         <MemoryRouter initialEntries={['/dashboard']}>
           <SnackbarProvider>
-            <LoadingSpinnerProvider>
+            <LoadingProvider>
               <App />
-            </LoadingSpinnerProvider>
+            </LoadingProvider>
           </SnackbarProvider>
         </MemoryRouter>,
       )
