@@ -27,10 +27,7 @@ describe(Navbar, () => {
 
     const homeLink = screen.getByRole('link')
 
-    expect(within(homeLink).getByRole('img')).toHaveAttribute(
-      'src',
-      'https://aiscope.net/wp-content/uploads/2019/11/Logo_AiScope-1.png',
-    )
+    expect(within(homeLink).getByRole('img')).toHaveAttribute('src', 'Logo_AiScope.png')
   })
 
   describe('when logged in', () => {
