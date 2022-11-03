@@ -7,19 +7,17 @@ type LoadingProviderProps = {
 }
 
 export const LoadingProvider = ({ children }: LoadingProviderProps): ReactElement => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const contextValue: LoadingContextValue = {
-    state: {
-      isLoading,
-    },
+    isLoading,
     dispatch: setIsLoading,
   }
 
   return (
     <LoadingContext.Provider value={contextValue}>
       {children}
-      <LoadingSpinner />
+      <LoadingSpinner isLoading={isLoading} />
     </LoadingContext.Provider>
   )
 }

@@ -1,11 +1,7 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
 
-export type LoadingState = {
-  isLoading: boolean
-}
-
 export type LoadingContextValue = {
-  state: LoadingState
+  isLoading: boolean
   dispatch: Dispatch<SetStateAction<boolean>>
 }
 

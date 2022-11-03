@@ -36,7 +36,7 @@ export const Dashboard = (): ReactElement => {
   const [selectedImage, setSelectedImage] = useState(selectedImageInitialState)
   const location = useLocation()
   const { showErrorMessage, showSuccessMessage } = useNotification()
-  const { isLoading, showLoading, hideLoading } = useLoading()
+  const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
 
   let canvas: CanvasDraw | null
 
@@ -52,7 +52,7 @@ export const Dashboard = (): ReactElement => {
     const state = location.state as { userUid: string }
 
     setImageState(undefined)
-    showLoading()
+    setIsLoading()
 
     if (state?.userUid) {
       try {
@@ -62,7 +62,7 @@ export const Dashboard = (): ReactElement => {
         showErrorMessage('Error fetching image')
       }
     }
-    hideLoading()
+    setLoadingCompleted()
   }
 
   const fetchImageUrl = async (): Promise<void> => {
@@ -70,7 +70,7 @@ export const Dashboard = (): ReactElement => {
     clearCanvas()
 
     if (imageState) {
-      showLoading()
+      setIsLoading()
 
       try {
         const imageUrl = await getImageUrl(imageState)
@@ -83,7 +83,7 @@ export const Dashboard = (): ReactElement => {
         showErrorMessage('Error loading the image')
       }
 
-      hideLoading()
+      setLoadingCompleted()
     }
   }
 
@@ -102,7 +102,7 @@ export const Dashboard = (): ReactElement => {
   const saveAction = async () => {
     try {
       if (imageState && canvas) {
-        showLoading()
+        setIsLoading()
 
         const maskImageData = canvas.getDataURL('png', false)
         await saveValidImage(imageState, maskImageData)
@@ -113,13 +113,13 @@ export const Dashboard = (): ReactElement => {
     } catch (error) {
       showErrorMessage('Error saving the image.')
     }
-    hideLoading()
+    setLoadingCompleted()
   }
 
   const skipAction = async () => {
     try {
       if (imageState?.id) {
-        showLoading()
+        setIsLoading()
         await skipImage(imageState.id)
 
         showSuccessMessage('Image skipped with success.')
@@ -128,13 +128,13 @@ export const Dashboard = (): ReactElement => {
     } catch (error) {
       showErrorMessage('Error skipping the image.')
     }
-    hideLoading()
+    setLoadingCompleted()
   }
 
   const invalidAction = async () => {
     try {
       if (imageState?.id) {
-        showLoading()
+        setIsLoading()
         await markImageInvalid(imageState.id)
 
         showSuccessMessage('Image marked as invalid with success.')
@@ -143,7 +143,7 @@ export const Dashboard = (): ReactElement => {
     } catch (error) {
       showErrorMessage('Error marking the image as invalid.')
     }
-    hideLoading()
+    setLoadingCompleted()
   }
 
   const isImageLoaded = imageState && selectedImage != selectedImageInitialState

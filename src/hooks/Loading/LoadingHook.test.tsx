@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { useLoading } from './LoadingHook'
 import { LoadingProvider } from '../../providers/Loading/LoadingProvider'
 
@@ -7,19 +7,27 @@ describe('LoadingHook', () => {
   it('should show the Loading Spinner', async () => {
     const { useLoading } = renderLoadingHook()
 
-    useLoading.showLoading()
+    act(() => {
+      useLoading.setIsLoading()
+    })
 
     expect(await screen.findByLabelText('Loading Spinner')).toBeVisible()
   })
 
-  it('should hide the Loading Spinner', async () => {
+  it('should hide the Loading Spinner', () => {
     const { useLoading } = renderLoadingHook()
 
-    useLoading.showLoading()
-    expect(await screen.findByLabelText('Loading Spinner')).toBeVisible()
+    // Set is loading
+    act(() => {
+      useLoading.setIsLoading()
+    })
+    expect(screen.getByLabelText('Loading Spinner')).toBeVisible()
 
-    useLoading.hideLoading()
-    expect(await screen.findByLabelText('Loading Spinner')).not.toBeVisible()
+    // Set loading completed
+    act(() => {
+      useLoading.setLoadingCompleted()
+    })
+    expect(screen.getByLabelText('Loading Spinner')).not.toBeVisible()
   })
 
   const renderLoadingHook = () => {

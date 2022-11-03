@@ -7,17 +7,13 @@ export const useLoading = () => {
     throw new Error('useLoading must be used within a LoadingProvider')
   }
 
-  const showLoading = () => {
-    context.dispatch(true)
-  }
+  const setIsLoading = () => context.dispatch(true)
 
-  const hideLoading = () => {
-    context.dispatch(false)
-  }
+  const setLoadingCompleted = () => context.dispatch(false)
 
   return {
-    isLoading: context.state.isLoading,
-    showLoading,
-    hideLoading,
+    isLoading: context.isLoading,
+    setIsLoading,
+    setLoadingCompleted,
   }
 }
