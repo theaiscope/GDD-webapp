@@ -1,0 +1,9 @@
+.imageDrawContainer {
+  width: 100%;
+  overflow: auto;
+}
+
+.canvas {
+  display: flex !important;
+  position: relative;
+}

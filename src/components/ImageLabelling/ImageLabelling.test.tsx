@@ -9,11 +9,10 @@ import { MemoryRouter } from 'react-router-dom'
 import Image from '../../model/image'
 
 describe('ImageLabelling', () => {
-  it('should fetch the image and display the id', async () => {
-    const imageId = 'image-1'
-    renderWithExistingImage(imageId)
+  it('should render the ImageDraw when a image to label is available', async () => {
+    renderWithExistingImage()
 
-    expect(await screen.findByText(imageId)).toBeInTheDocument()
+    await assertImageDrawIsPresent()
   })
 
   const renderWithExistingImage = (imageId = 'image-1') => {
@@ -31,5 +30,12 @@ describe('ImageLabelling', () => {
         </SnackbarProvider>
       </MemoryRouter>,
     )
+  }
+
+  const assertImageDrawIsPresent = async (): Promise<void> => {
+    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
+
+    const canvasTagMatcher = (_content: string, element: Element | null) => element?.tagName.toLowerCase() === 'canvas'
+    expect(screen.getAllByText(canvasTagMatcher).length).toBeGreaterThan(0)
   }
 })

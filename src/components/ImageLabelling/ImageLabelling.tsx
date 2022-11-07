@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { useLoading } from '../../hooks/Loading/LoadingHook'
 import useNotification from '../../hooks/Notification/NotificationHook'
 import { fetchImageToLabel } from '../../services/ImagesService/ImagesService'
+import { ImageDraw } from './ImageDraw/ImageDraw'
 import { ImageLabellingContext, ImageLabellingContextValue } from './ImageLabellingContext'
 
 export const ImageLabelling = (): ReactElement => {
@@ -32,7 +33,7 @@ export const ImageLabelling = (): ReactElement => {
     setLoadingCompleted()
   }
 
-  return <div>{image?.id}</div>
+  return <ImageDraw image={image} />
 }
 
 const useLabellingContext = (): ImageLabellingContextValue => {

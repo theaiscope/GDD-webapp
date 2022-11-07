@@ -1,0 +1,33 @@
+.tools > button,
+.tools > button > img {
+  height: 1.5rem;
+  outline: none;
+  border: none;
+}
+
+.tools > button:active {
+  outline: #7e65a7;
+}
+
+.tools > button {
+  background: transparent;
+}
+
+.tools {
+  width: 100%;
+  background: rgba(244, 244, 244, 0.9);
+  height: 4rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+  align-content: center;
+  align-items: center;
+  z-index: 1000;
+  justify-content: flex-end;
+  display: flex;
+}
+
+.redo,
+.edit {
+  visibility: hidden;
+}

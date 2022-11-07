@@ -16,8 +16,6 @@ import useNotification from '../../hooks/Notification/NotificationHook'
 import BlankImage from '../../assets/img/blank.png'
 import { NoPendingImage } from './NoPendingImage/NoPendingImage'
 import { useLoading } from '../../hooks/Loading/LoadingHook'
-import { ImageLabelling } from '../ImageLabelling/ImageLabelling'
-import { ImageLabellingProvider } from '../ImageLabelling/ImageLabellingContext'
 
 type SelectedImageType = {
   location: string
@@ -153,10 +151,6 @@ export const Dashboard = (): ReactElement => {
   return (
     <>
       <div className={styles.dashboardContainer}>
-        <ImageLabellingProvider>
-          <ImageLabelling />
-        </ImageLabellingProvider>
-
         {!isLoading && imageState === undefined && <NoPendingImage onCheckAgain={fetchImage} />}
 
         {isImageLoaded && (
