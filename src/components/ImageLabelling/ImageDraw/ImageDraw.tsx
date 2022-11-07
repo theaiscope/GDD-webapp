@@ -20,7 +20,7 @@ type Props = {
 
 export const ImageDraw = ({ image, disabled = false }: Props): ReactElement => {
   const [imageUrl, setImageUrl] = useState<string>()
-  const { setIsLoading, setLoadingCompleted } = useLoading()
+  const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage } = useNotification()
 
   let canvas: CanvasDraw | undefined
@@ -46,9 +46,11 @@ export const ImageDraw = ({ image, disabled = false }: Props): ReactElement => {
     }
   }
 
+  const disableControls = disabled || isLoading
+
   return (
     <div className={styles.imageDrawContainer}>
-      <DrawToolbar canvas={canvas} />
+      <DrawToolbar canvas={canvas} disabled={disableControls} />
       <CanvasDraw
         lazyRadius={0}
         ref={(canvasDraw: CanvasDraw) => (canvas = canvasDraw)}

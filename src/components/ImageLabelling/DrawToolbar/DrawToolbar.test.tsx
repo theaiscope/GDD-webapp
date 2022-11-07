@@ -6,15 +6,29 @@ import CanvasDraw from 'react-canvas-draw'
 
 describe('DrawToolbar', () => {
   it('should render the clear button', () => {
-    render(<DrawToolbar canvas={undefined} />)
+    render(<DrawToolbar canvas={new CanvasDraw({})} />)
 
     expect(screen.getByRole('button', { name: 'clear' })).toBeInTheDocument()
   })
 
   it('should render the undo button', () => {
-    render(<DrawToolbar canvas={undefined} />)
+    render(<DrawToolbar canvas={new CanvasDraw({})} />)
 
     expect(screen.getByRole('button', { name: 'undo' })).toBeInTheDocument()
+  })
+
+  it('should keep the buttons enabled by default', () => {
+    render(<DrawToolbar canvas={new CanvasDraw({})} />)
+
+    expect(screen.getByRole('button', { name: 'clear' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'undo' })).toBeEnabled()
+  })
+
+  it('should disable the buttons', () => {
+    render(<DrawToolbar canvas={new CanvasDraw({})} disabled={true} />)
+
+    expect(screen.getByRole('button', { name: 'clear' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'undo' })).toBeDisabled()
   })
 
   it('should clear the canvas when the clear button is clicked', () => {
