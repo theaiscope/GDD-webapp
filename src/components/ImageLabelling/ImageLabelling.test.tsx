@@ -8,7 +8,7 @@ import * as ImagesService from '../../services/ImagesService/ImagesService'
 import { MemoryRouter } from 'react-router-dom'
 import Image from '../../model/image'
 
-describe('ImageLabelling', () => {
+describe(ImageLabelling, () => {
   it('should render the ImageDraw when an image to label is available', async () => {
     renderWithExistingImage()
 

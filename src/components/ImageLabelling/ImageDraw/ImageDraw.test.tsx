@@ -6,7 +6,7 @@ import Image from '../../../model/image'
 import { LoadingProvider } from '../../../providers/Loading/LoadingProvider'
 import { SnackbarProvider } from 'notistack'
 
-describe('ImageDraw', () => {
+describe(ImageDraw, () => {
   it('should render the canvas', () => {
     renderImageDraw()
 

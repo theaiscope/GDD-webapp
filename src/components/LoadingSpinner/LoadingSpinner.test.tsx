@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { LoadingSpinner } from './LoadingSpinner'
 
-describe('LoadingSpinner', () => {
+describe(LoadingSpinner, () => {
   it('should display a ProgressBar when is loading', () => {
     render(<LoadingSpinner isLoading={true}></LoadingSpinner>)
 

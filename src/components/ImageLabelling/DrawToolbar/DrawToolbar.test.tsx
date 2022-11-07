@@ -4,7 +4,7 @@ import { DrawToolbar } from './DrawToolbar'
 import userEvent from '@testing-library/user-event'
 import CanvasDraw from 'react-canvas-draw'
 
-describe('DrawToolbar', () => {
+describe(DrawToolbar, () => {
   it('should render the clear button', () => {
     render(<DrawToolbar canvas={new CanvasDraw({})} />)
 
