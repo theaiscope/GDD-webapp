@@ -34,7 +34,7 @@ describe('Dashboard', () => {
   }
 
   const renderWithNoImageToLabel = () => {
-    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue(null)
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue(undefined)
 
     const locationState = { userUid: 'user-1' }
     return render(

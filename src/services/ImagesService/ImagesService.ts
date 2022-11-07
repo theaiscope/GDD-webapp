@@ -7,7 +7,7 @@ import { SaveValidImageRequest, SaveValidImageResponse } from './api/SaveValidIm
 import { MarkImageInvalidRequest, MarkImageInvalidResponse } from './api/MarkImageInvalidApi'
 import { uploadMaskImage } from '../ImageStorageService/ImageStorageService'
 
-export async function fetchImageToLabel(): Promise<Image | null> {
+export async function fetchImageToLabel(): Promise<Image | undefined> {
   const fetchImageToLabelFunction = httpsCallable<unknown, Image>(
     functionsInstance,
     CloudFunctions.FETCH_IMAGE_TO_LABEL,
