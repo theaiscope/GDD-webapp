@@ -9,10 +9,18 @@ import { MemoryRouter } from 'react-router-dom'
 import Image from '../../model/image'
 
 describe('ImageLabelling', () => {
-  it('should render the ImageDraw when a image to label is available', async () => {
+  it('should render the ImageDraw when an image to label is available', async () => {
     renderWithExistingImage()
 
     await assertImageDrawIsPresent()
+  })
+
+  it('should render the actions bar when an image to label is available', async () => {
+    renderWithExistingImage()
+
+    expect(await screen.findByRole('button', { name: 'Skip' })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: 'Invalid' })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: 'Save' })).toBeInTheDocument()
   })
 
   const renderWithExistingImage = (imageId = 'image-1') => {

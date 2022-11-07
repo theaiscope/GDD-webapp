@@ -5,10 +5,11 @@ import useNotification from '../../hooks/Notification/NotificationHook'
 import { fetchImageToLabel } from '../../services/ImagesService/ImagesService'
 import { ImageDraw } from './ImageDraw/ImageDraw'
 import { ImageLabellingContext, ImageLabellingContextValue } from './ImageLabellingContext'
+import { ActionsBar } from './ActionsBar/ActionsBar'
 
 export const ImageLabelling = (): ReactElement => {
   const { image, setImage } = useLabellingContext()
-  const { setIsLoading, setLoadingCompleted } = useLoading()
+  const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage } = useNotification()
   const location = useLocation()
 
@@ -33,7 +34,12 @@ export const ImageLabelling = (): ReactElement => {
     setLoadingCompleted()
   }
 
-  return <ImageDraw image={image} />
+  return (
+    <>
+      <ImageDraw image={image} disabled={isLoading} />
+      <ActionsBar disabled={isLoading} />
+    </>
+  )
 }
 
 const useLabellingContext = (): ImageLabellingContextValue => {

@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex: 0 1 auto;
+  align-content: center;
+  justify-content: flex-end;
+  margin: 1.5rem 0;
+  padding: 0.5rem 1.5rem;
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.container > button {
+  outline: none;
+  text-transform: uppercase;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-left: 0.75rem;
+  height: 2.5rem;
+  width: 10rem;
+  border-radius: 4px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  outline: #7e65a7 1px solid;
+}
+
+button:disabled {
+  cursor: unset;
+  opacity: 0.5;
+  outline: none;
+}
+
+.skip {
+  background: #7e65a7;
+}
+
+.save {
+  background: #65c3ca;
+}
+
+.invalid {
+  background: #b11818;
+}
