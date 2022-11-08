@@ -16,14 +16,14 @@ enum DEFAULT_PARAMS {
 type Props = {
   image?: Image
   disabled?: boolean
+  onChange?: (drawMaskDataURL: string) => void
 }
 
-export const ImageDraw = ({ image, disabled = false }: Props): ReactElement => {
+export const ImageDraw = ({ image, disabled = false, onChange }: Props): ReactElement => {
   const [imageUrl, setImageUrl] = useState<string>()
+  const [canvas, setCanvas] = useState<CanvasDraw>()
   const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage } = useNotification()
-
-  let canvas: CanvasDraw | undefined
 
   useEffect(() => {
     fetchImageUrl()
@@ -48,12 +48,14 @@ export const ImageDraw = ({ image, disabled = false }: Props): ReactElement => {
 
   const disableControls = disabled || isLoading
 
+  const onChangeCanvasDraw = (canvas: CanvasDraw) => onChange?.(canvas?.getDataURL('png', false))
+
   return (
     <div className={styles.imageDrawContainer}>
       <DrawToolbar canvas={canvas} disabled={disableControls} />
       <CanvasDraw
         lazyRadius={0}
-        ref={(canvasDraw: CanvasDraw) => (canvas = canvasDraw)}
+        ref={(canvasDraw: CanvasDraw) => setCanvas(canvasDraw)}
         canvasWidth={DEFAULT_PARAMS.CANVAS_WIDTH}
         canvasHeight={DEFAULT_PARAMS.CANVAS_HEIGHT}
         enablePanAndZoom={true}
@@ -61,6 +63,7 @@ export const ImageDraw = ({ image, disabled = false }: Props): ReactElement => {
         imgSrc={imageUrl}
         className={styles.canvas}
         disabled={disabled}
+        onChange={onChangeCanvasDraw}
       />
     </div>
   )

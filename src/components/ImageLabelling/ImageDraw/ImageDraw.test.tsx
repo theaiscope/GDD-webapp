@@ -5,6 +5,7 @@ import * as ImageStorageService from '../../../services/ImageStorageService/Imag
 import Image from '../../../model/image'
 import { LoadingProvider } from '../../../providers/Loading/LoadingProvider'
 import { SnackbarProvider } from 'notistack'
+import userEvent from '@testing-library/user-event'
 
 describe(ImageDraw, () => {
   it('should render the canvas', () => {
@@ -21,15 +22,12 @@ describe(ImageDraw, () => {
   })
 
   it('should fetch the ImageUrl', async () => {
-    const imageId = 'image-1'
     const image: Image = {
-      id: imageId,
+      id: 'image-1',
       name: 'name',
       sampleLocation: 'sample-location',
     }
-    const getImageUrlSpy = jest
-      .spyOn(ImageStorageService, 'getImageUrl')
-      .mockResolvedValue(`http://image-url/${imageId}`)
+    const getImageUrlSpy = jest.spyOn(ImageStorageService, 'getImageUrl').mockResolvedValue(`http://image-url/image-1`)
 
     renderImageDraw(image)
 
@@ -38,11 +36,27 @@ describe(ImageDraw, () => {
     })
   })
 
-  const renderImageDraw = (image?: Image) =>
+  it.only('should call onChange callback when canvas is changed', async () => {
+    const image: Image = {
+      id: 'image-1',
+      name: 'name',
+      sampleLocation: 'sample-location',
+    }
+    const onChangeSpy = jest.fn()
+
+    renderImageDraw(image, onChangeSpy)
+
+    const undoButton = await screen.findByRole('button', { name: 'undo' })
+    userEvent.click(undoButton)
+
+    expect(onChangeSpy).toHaveBeenCalled()
+  })
+
+  const renderImageDraw = (image?: Image, onChange?: (drawMaskDataURL: string) => void) =>
     render(
       <SnackbarProvider>
         <LoadingProvider>
-          <ImageDraw image={image} />
+          <ImageDraw image={image} onChange={onChange} />
         </LoadingProvider>
       </SnackbarProvider>,
     )
