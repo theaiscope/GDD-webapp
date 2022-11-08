@@ -14,7 +14,7 @@ enum DEFAULT_PARAMS {
 }
 
 type Props = {
-  image: Image | undefined
+  image?: Image
   disabled?: boolean
 }
 

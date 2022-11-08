@@ -3,7 +3,7 @@ import { createContext, ReactElement, useState } from 'react'
 import Image from '../../model/image'
 
 export type ImageLabellingContextValue = {
-  image: Image | undefined
+  image?: Image
   setImage: Dispatch<SetStateAction<Image | undefined>>
 }
 

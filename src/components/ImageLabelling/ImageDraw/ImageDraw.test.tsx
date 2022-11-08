@@ -38,7 +38,7 @@ describe(ImageDraw, () => {
     })
   })
 
-  const renderImageDraw = (image: Image | undefined = undefined) =>
+  const renderImageDraw = (image?: Image) =>
     render(
       <SnackbarProvider>
         <LoadingProvider>
