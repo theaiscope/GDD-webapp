@@ -12,6 +12,8 @@ import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi
 
 describe(ImageLabelling, () => {
   it('should render the ImageDraw when an image to label is available', async () => {
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({} as Image)
+
     renderImageLabelling()
 
     expect(await screen.findByRole('toolbar')).toBeInTheDocument()
@@ -21,6 +23,8 @@ describe(ImageLabelling, () => {
   })
 
   it('should render the actions bar when an image to label is available', async () => {
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({} as Image)
+
     renderImageLabelling()
 
     expect(await screen.findByRole('button', { name: 'Skip' })).toBeInTheDocument()
@@ -33,10 +37,13 @@ describe(ImageLabelling, () => {
 
     renderImageLabelling()
 
-    expect(fetchImageSpy).toHaveBeenCalled()
+    await waitFor(() => {
+      expect(fetchImageSpy).toHaveBeenCalled()
+    })
   })
 
   it('should display a loading progressbar whilst fetching image', async () => {
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({} as Image)
     renderImageLabelling()
 
     expect(screen.getByRole('progressbar', { hidden: true })).toBeVisible()

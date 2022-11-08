@@ -8,17 +8,17 @@ import { SnackbarProvider } from 'notistack'
 import userEvent from '@testing-library/user-event'
 
 describe(ImageDraw, () => {
-  it('should render the canvas', () => {
+  it('should render the canvas', async () => {
     renderImageDraw()
 
     const canvasTagMatcher = (_content: string, element: Element | null) => element?.tagName.toLowerCase() === 'canvas'
-    expect(screen.getAllByText(canvasTagMatcher).length).toBeGreaterThan(0)
+    expect((await screen.findAllByText(canvasTagMatcher)).length).toBeGreaterThan(0)
   })
 
-  it('should render the draw toolbar', () => {
+  it('should render the draw toolbar', async () => {
     renderImageDraw()
 
-    expect(screen.getByRole('toolbar')).toBeInTheDocument()
+    expect(await screen.findByRole('toolbar')).toBeInTheDocument()
   })
 
   it('should fetch the ImageUrl', async () => {
@@ -49,7 +49,9 @@ describe(ImageDraw, () => {
     const undoButton = await screen.findByRole('button', { name: 'undo' })
     userEvent.click(undoButton)
 
-    expect(onChangeSpy).toHaveBeenCalled()
+    await waitFor(() => {
+      expect(onChangeSpy).toHaveBeenCalled()
+    })
   })
 
   const renderImageDraw = (image?: Image, onChange?: (drawMaskDataURL: string) => void) =>
