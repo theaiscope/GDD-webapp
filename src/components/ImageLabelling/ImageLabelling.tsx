@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect } from 'react'
+import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useLoading } from '../../hooks/Loading/LoadingHook'
 import useNotification from '../../hooks/Notification/NotificationHook'
@@ -9,6 +9,7 @@ import { ActionsBar } from './ActionsBar/ActionsBar'
 
 export const ImageLabelling = (): ReactElement => {
   const { image, setImage } = useLabellingContext()
+  const [drawMaskDataURL, setDrawMaskDataURL] = useState<string>()
   const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage } = useNotification()
   const location = useLocation()
@@ -34,10 +35,12 @@ export const ImageLabelling = (): ReactElement => {
     setLoadingCompleted()
   }
 
+  const onImageDrawChange = (drawMaskDataURL: string) => setDrawMaskDataURL(drawMaskDataURL)
+
   return (
     <>
-      <ImageDraw image={image} disabled={isLoading} />
-      <ActionsBar image={image} disabled={isLoading} />
+      <ImageDraw image={image} disabled={isLoading} onChange={onImageDrawChange} />
+      <ActionsBar image={image} drawMaskDataURL={drawMaskDataURL} disabled={isLoading} />
     </>
   )
 }

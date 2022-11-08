@@ -2,15 +2,16 @@ import React, { ReactElement } from 'react'
 import { useLoading } from '../../../hooks/Loading/LoadingHook'
 import useNotification from '../../../hooks/Notification/NotificationHook'
 import Image from '../../../model/image'
-import { skipImage } from '../../../services/ImagesService/ImagesService'
+import { saveValidImage, skipImage } from '../../../services/ImagesService/ImagesService'
 import styles from './ActionsBar.module.css'
 
 type Props = {
   image?: Image
+  drawMaskDataURL?: string
   disabled?: boolean
 }
 
-export const ActionsBar = ({ image = undefined, disabled = false }: Props): ReactElement => {
+export const ActionsBar = ({ image, drawMaskDataURL, disabled = false }: Props): ReactElement => {
   const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage, showSuccessMessage } = useNotification()
 
@@ -31,8 +32,19 @@ export const ActionsBar = ({ image = undefined, disabled = false }: Props): Reac
     }
   }
 
-  const saveImage = (): void => {
-    console.log('saveImage')
+  const onSaveImage = async (): Promise<void> => {
+    if (image && drawMaskDataURL) {
+      setIsLoading()
+
+      try {
+        await saveValidImage(image, drawMaskDataURL)
+
+        showSuccessMessage('Image saved with success.')
+      } catch (error) {
+        showErrorMessage('Error saving the image.')
+      }
+      setLoadingCompleted()
+    }
   }
 
   const disableButtons = disabled || isLoading
@@ -44,7 +56,7 @@ export const ActionsBar = ({ image = undefined, disabled = false }: Props): Reac
       <button className={styles.skip} onClick={onSkipImage} disabled={disableButtons}>
         Skip
       </button>
-      <button className={styles.save} onClick={saveImage} disabled={disableButtons}>
+      <button className={styles.save} onClick={onSaveImage} disabled={disableButtons}>
         Save
       </button>
     </div>
