@@ -36,7 +36,7 @@ describe(ImageDraw, () => {
     })
   })
 
-  it.only('should call onChange callback when canvas is changed', async () => {
+  it('should call onChange callback when canvas is changed', async () => {
     const image: Image = {
       id: 'image-1',
       name: 'name',

@@ -9,23 +9,27 @@ type Props = {
   image?: Image
   drawMaskDataURL?: string
   disabled?: boolean
+  onActionExecuted?: () => void
 }
 
-export const ActionsBar = ({ image, drawMaskDataURL, disabled = false }: Props): ReactElement => {
+export const ActionsBar = ({ image, drawMaskDataURL, disabled = false, onActionExecuted }: Props): ReactElement => {
   const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage, showSuccessMessage } = useNotification()
 
   const onSkipImage = async (): Promise<void> => {
     if (image?.id) {
       setIsLoading()
+
       try {
         await skipImage(image.id)
+        onActionExecuted?.()
+
         showSuccessMessage('Image skipped with success.')
       } catch (error) {
         showErrorMessage('Error skipping the image.')
-      } finally {
-        setLoadingCompleted()
       }
+
+      setLoadingCompleted()
     }
   }
 
@@ -35,21 +39,24 @@ export const ActionsBar = ({ image, drawMaskDataURL, disabled = false }: Props):
 
       try {
         await saveValidImage(image, drawMaskDataURL)
+        onActionExecuted?.()
 
         showSuccessMessage('Image saved with success.')
       } catch (error) {
         showErrorMessage('Error saving the image.')
-      } finally {
-        setLoadingCompleted()
       }
+
+      setLoadingCompleted()
     }
   }
 
   const onMarkImageInvalid = async (): Promise<void> => {
     if (image?.id) {
+      setIsLoading()
+
       try {
-        setIsLoading()
         await markImageInvalid(image.id)
+        onActionExecuted?.()
 
         showSuccessMessage('Image marked as invalid with success.')
       } catch (error) {

@@ -86,6 +86,18 @@ describe(ActionsBar, () => {
       expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
       expect(screen.getByRole('progressbar', { hidden: true })).not.toBeVisible()
     })
+
+    it('should call the onExecuted callback when image is skipped', async () => {
+      const onExecutedSpy = jest.fn()
+      renderActionsBarWithImage(onExecutedSpy)
+
+      const skipButton = screen.getByRole('button', { name: 'Skip' })
+      userEvent.click(skipButton)
+
+      await waitFor(() => {
+        expect(onExecutedSpy).toHaveBeenCalled()
+      })
+    })
   })
 
   describe('SaveValidImage', () => {
@@ -161,6 +173,18 @@ describe(ActionsBar, () => {
       expect(screen.getByRole('button', { name: 'Invalid' })).toBeEnabled()
       expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
       expect(screen.getByRole('progressbar', { hidden: true })).not.toBeVisible()
+    })
+
+    it('should call the onExecuted callback when image is saved', async () => {
+      const onExecutedSpy = jest.fn()
+      renderActionsBarWithImage(onExecutedSpy)
+
+      const saveButton = screen.getByRole('button', { name: 'Save' })
+      userEvent.click(saveButton)
+
+      await waitFor(() => {
+        expect(onExecutedSpy).toHaveBeenCalled()
+      })
     })
   })
 
@@ -240,9 +264,21 @@ describe(ActionsBar, () => {
       expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
       expect(screen.getByRole('progressbar', { hidden: true })).not.toBeVisible()
     })
+
+    it('should call the onExecuted callback when image is marked as invalid', async () => {
+      const onExecutedSpy = jest.fn()
+      renderActionsBarWithImage(onExecutedSpy)
+
+      const invalidButton = screen.getByRole('button', { name: 'Invalid' })
+      userEvent.click(invalidButton)
+
+      await waitFor(() => {
+        expect(onExecutedSpy).toHaveBeenCalled()
+      })
+    })
   })
 
-  const renderActionsBarWithImage = () =>
+  const renderActionsBarWithImage = (onActionExecuted?: () => void) =>
     renderActionsBar({
       image: {
         id: 'image-id',
@@ -250,17 +286,29 @@ describe(ActionsBar, () => {
         sampleLocation: 'sample-location',
       },
       drawMaskDataURL: 'png://draw-mask-data-url',
+      onActionExecuted,
     })
 
   const renderActionsBar = ({
     image,
     drawMaskDataURL,
     disabled = false,
-  }: { image?: Image; drawMaskDataURL?: string; disabled?: boolean } = {}) =>
+    onActionExecuted,
+  }: {
+    image?: Image
+    drawMaskDataURL?: string
+    disabled?: boolean
+    onActionExecuted?: () => void
+  } = {}) =>
     render(
       <SnackbarProvider>
         <LoadingProvider>
-          <ActionsBar image={image} drawMaskDataURL={drawMaskDataURL} disabled={disabled} />
+          <ActionsBar
+            image={image}
+            drawMaskDataURL={drawMaskDataURL}
+            disabled={disabled}
+            onActionExecuted={onActionExecuted}
+          />
         </LoadingProvider>
       </SnackbarProvider>,
     )
