@@ -37,7 +37,7 @@ export const ImageLabelling = (): ReactElement => {
   return (
     <>
       <ImageDraw image={image} disabled={isLoading} />
-      <ActionsBar disabled={isLoading} />
+      <ActionsBar image={image} disabled={isLoading} />
     </>
   )
 }
