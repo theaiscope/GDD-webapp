@@ -37,10 +37,17 @@ export const ImageLabelling = (): ReactElement => {
 
   const onImageDrawChange = (drawMaskDataURL: string) => setDrawMaskDataURL(drawMaskDataURL)
 
+  const onActionExecuted = () => fetchImage()
+
   return (
     <>
       <ImageDraw image={image} disabled={isLoading} onChange={onImageDrawChange} />
-      <ActionsBar image={image} drawMaskDataURL={drawMaskDataURL} disabled={isLoading} />
+      <ActionsBar
+        image={image}
+        drawMaskDataURL={drawMaskDataURL}
+        disabled={isLoading}
+        onActionExecuted={onActionExecuted}
+      />
     </>
   )
 }
