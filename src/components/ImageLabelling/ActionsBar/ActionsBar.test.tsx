@@ -4,10 +4,11 @@ import userEvent from '@testing-library/user-event'
 import { SnackbarProvider } from 'notistack'
 import Image from '../../../model/image'
 import { LoadingProvider } from '../../../providers/Loading/LoadingProvider'
+import { MarkImageInvalidResponse } from '../../../services/ImagesService/api/MarkImageInvalidApi'
+import { SaveValidImageResponse } from '../../../services/ImagesService/api/SaveValidImageApi'
 import { SkipImageResponse } from '../../../services/ImagesService/api/SkipImageApi'
 import * as ImagesService from '../../../services/ImagesService/ImagesService'
 import { ActionsBar } from './ActionsBar'
-import { SaveValidImageResponse } from '../../../services/ImagesService/api/SaveValidImageApi'
 
 describe(ActionsBar, () => {
   describe('Skip', () => {
@@ -87,7 +88,7 @@ describe(ActionsBar, () => {
     })
   })
 
-  describe('Save', () => {
+  describe('SaveValidImage', () => {
     it('should render the Save button', () => {
       renderActionsBar()
 
@@ -174,6 +175,70 @@ describe(ActionsBar, () => {
       renderActionsBar({ disabled: true })
 
       expect(screen.getByRole('button', { name: 'Invalid' })).toBeDisabled()
+    })
+
+    it('should call the markImageInvalid function when clicking the Invalid button', async () => {
+      const markImageInvalidSpy = jest
+        .spyOn(ImagesService, 'markImageInvalid')
+        .mockResolvedValue({} as MarkImageInvalidResponse)
+      renderActionsBarWithImage()
+
+      const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
+      userEvent.click(invalidButton)
+
+      await waitFor(() => {
+        expect(markImageInvalidSpy).toHaveBeenCalled()
+      })
+    })
+
+    it('should show a success message when markImageInvalid succeed', async () => {
+      jest.spyOn(ImagesService, 'markImageInvalid').mockResolvedValue({} as MarkImageInvalidResponse)
+
+      renderActionsBarWithImage()
+
+      const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
+      userEvent.click(invalidButton)
+
+      expect(await screen.findByText('Image marked as invalid with success.')).toBeInTheDocument()
+    })
+
+    it('should show an error message when markImageInvalid fails', async () => {
+      jest.spyOn(ImagesService, 'markImageInvalid').mockRejectedValue('Error marking the image as invalid.')
+
+      renderActionsBarWithImage()
+
+      const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
+      userEvent.click(invalidButton)
+
+      expect(await screen.findByText('Error marking the image as invalid.')).toBeInTheDocument()
+    })
+
+    it('should disable and show a progressbar while marking the image as invalid', async () => {
+      renderActionsBarWithImage()
+
+      const skipButton = await screen.findByRole('button', { name: 'Skip' })
+      const invalidButton = await screen.findByRole('button', { name: 'Invalid' })
+      const saveButton = await screen.findByRole('button', { name: 'Save' })
+
+      // Start marking the image as invalid
+      userEvent.click(invalidButton)
+
+      // Check that the buttons are DISABLED
+      expect(skipButton).toBeDisabled()
+      expect(invalidButton).toBeDisabled()
+      expect(saveButton).toBeDisabled()
+
+      // Check that the ProgressBar is displayed
+      expect(screen.getByRole('progressbar', { hidden: true })).toBeVisible()
+
+      // Wait for the markImageInvalid to complete and check that the buttons are ENABLED again
+      // and the progressbar is not displayed
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Skip' })).toBeEnabled()
+      })
+      expect(screen.getByRole('button', { name: 'Invalid' })).toBeEnabled()
+      expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+      expect(screen.getByRole('progressbar', { hidden: true })).not.toBeVisible()
     })
   })
 

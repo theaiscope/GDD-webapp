@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { useLoading } from '../../../hooks/Loading/LoadingHook'
 import useNotification from '../../../hooks/Notification/NotificationHook'
 import Image from '../../../model/image'
-import { saveValidImage, skipImage } from '../../../services/ImagesService/ImagesService'
+import { markImageInvalid, saveValidImage, skipImage } from '../../../services/ImagesService/ImagesService'
 import styles from './ActionsBar.module.css'
 
 type Props = {
@@ -15,10 +15,6 @@ export const ActionsBar = ({ image, drawMaskDataURL, disabled = false }: Props):
   const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage, showSuccessMessage } = useNotification()
 
-  const markImageInvalid = (): void => {
-    console.log('markImageInvalid')
-  }
-
   const onSkipImage = async (): Promise<void> => {
     if (image?.id) {
       setIsLoading()
@@ -27,12 +23,13 @@ export const ActionsBar = ({ image, drawMaskDataURL, disabled = false }: Props):
         showSuccessMessage('Image skipped with success.')
       } catch (error) {
         showErrorMessage('Error skipping the image.')
+      } finally {
+        setLoadingCompleted()
       }
-      setLoadingCompleted()
     }
   }
 
-  const onSaveImage = async (): Promise<void> => {
+  const onSaveValidImage = async (): Promise<void> => {
     if (image && drawMaskDataURL) {
       setIsLoading()
 
@@ -42,21 +39,37 @@ export const ActionsBar = ({ image, drawMaskDataURL, disabled = false }: Props):
         showSuccessMessage('Image saved with success.')
       } catch (error) {
         showErrorMessage('Error saving the image.')
+      } finally {
+        setLoadingCompleted()
       }
-      setLoadingCompleted()
+    }
+  }
+
+  const onMarkImageInvalid = async (): Promise<void> => {
+    if (image?.id) {
+      try {
+        setIsLoading()
+        await markImageInvalid(image.id)
+
+        showSuccessMessage('Image marked as invalid with success.')
+      } catch (error) {
+        showErrorMessage('Error marking the image as invalid.')
+      } finally {
+        setLoadingCompleted()
+      }
     }
   }
 
   const disableButtons = disabled || isLoading
   return (
     <div className={styles.container}>
-      <button className={styles.invalid} onClick={markImageInvalid} disabled={disableButtons}>
+      <button className={styles.invalid} onClick={onMarkImageInvalid} disabled={disableButtons}>
         Invalid
       </button>
       <button className={styles.skip} onClick={onSkipImage} disabled={disableButtons}>
         Skip
       </button>
-      <button className={styles.save} onClick={onSaveImage} disabled={disableButtons}>
+      <button className={styles.save} onClick={onSaveValidImage} disabled={disableButtons}>
         Save
       </button>
     </div>
