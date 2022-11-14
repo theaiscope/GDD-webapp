@@ -42,7 +42,7 @@ export const ImageLabelling = (): ReactElement => {
 
   return (
     <>
-      {!imageFound && <NoPendingImage />}
+      {imageFound === false && <NoPendingImage />}
 
       {image && (
         <>

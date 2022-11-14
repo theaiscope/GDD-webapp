@@ -25,7 +25,9 @@ describe(ImageLabelling, () => {
     jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
 
     renderImageLabelling()
-    expect(await screen.findByText(noPendingImageMessage)).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText(noPendingImageMessage)).not.toBeInTheDocument()
+    })
   })
 
   it('should render the ImageDraw when an image to label is available', async () => {
@@ -47,7 +49,7 @@ describe(ImageLabelling, () => {
     expect(await screen.findByRole('button', { name: 'Save' })).toBeInTheDocument()
   })
 
-  it('should fetch a image', async () => {
+  it('should fetch an image', async () => {
     const fetchImageSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
 
     renderImageLabelling()
@@ -61,7 +63,13 @@ describe(ImageLabelling, () => {
     jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
     renderImageLabelling()
 
+    // Check that the progress is visible
     expect(screen.getByRole('progressbar', { hidden: true })).toBeVisible()
+
+    // and the content is not visible
+    expect(screen.queryAllByText(canvasTagMatcher).length).toEqual(0)
+    expect(screen.queryByRole('button', { name: 'Save' })).not.toBeInTheDocument()
+    expect(screen.queryByText(noPendingImageMessage)).not.toBeInTheDocument()
 
     // Wait for the fetch to complete and check that the progress is not visible
     await waitFor(() => {

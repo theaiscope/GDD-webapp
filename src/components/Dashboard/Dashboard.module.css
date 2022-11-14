@@ -11,13 +11,3 @@
   gap: 0;
   overflow: hidden;
 }
-
-.canvasContainer {
-  width: 100%;
-  overflow: auto;
-}
-
-.canvas {
-  display: flex !important;
-  position: relative;
-}
