@@ -6,9 +6,11 @@ import { fetchImageToLabel } from '../../services/ImagesService/ImagesService'
 import { ImageDraw } from './ImageDraw/ImageDraw'
 import { ImageLabellingContext, ImageLabellingContextValue } from './ImageLabellingContext'
 import { ActionsBar } from './ActionsBar/ActionsBar'
+import { NoPendingImage } from '../Dashboard/NoPendingImage/NoPendingImage'
 
 export const ImageLabelling = (): ReactElement => {
   const { image, setImage } = useLabellingContext()
+  const [imageFound, setImageFound] = useState<boolean>()
   const [drawMaskDataURL, setDrawMaskDataURL] = useState<string>()
   const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
   const { showErrorMessage } = useNotification()
@@ -28,6 +30,7 @@ export const ImageLabelling = (): ReactElement => {
       try {
         const image = await fetchImageToLabel()
         setImage(image)
+        setImageFound(image !== null && image !== undefined)
       } catch (error) {
         showErrorMessage('Error fetching image')
       }
@@ -37,17 +40,21 @@ export const ImageLabelling = (): ReactElement => {
 
   const onImageDrawChange = (drawMaskDataURL: string) => setDrawMaskDataURL(drawMaskDataURL)
 
-  const onActionExecuted = () => fetchImage()
-
   return (
     <>
-      <ImageDraw image={image} disabled={isLoading} onChange={onImageDrawChange} />
-      <ActionsBar
-        image={image}
-        drawMaskDataURL={drawMaskDataURL}
-        disabled={isLoading}
-        onActionExecuted={onActionExecuted}
-      />
+      {!imageFound && <NoPendingImage />}
+
+      {image && (
+        <>
+          <ImageDraw image={image} disabled={isLoading} onChange={onImageDrawChange} />
+          <ActionsBar
+            image={image}
+            drawMaskDataURL={drawMaskDataURL}
+            disabled={isLoading}
+            onActionExecuted={fetchImage}
+          />
+        </>
+      )}
     </>
   )
 }

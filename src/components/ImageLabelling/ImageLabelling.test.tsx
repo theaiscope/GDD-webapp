@@ -9,21 +9,36 @@ import { MemoryRouter } from 'react-router-dom'
 import Image from '../../model/image'
 import userEvent from '@testing-library/user-event'
 import { SkipImageResponse } from '../../services/ImagesService/api/SkipImageApi'
+import { noPendingImageMessage } from '../Dashboard/NoPendingImage/NoPendingImage'
 
 describe(ImageLabelling, () => {
+  const canvasTagMatcher = (_content: string, element: Element | null) => element?.tagName.toLowerCase() === 'canvas'
+
+  it('should render a NoPendingImage message when no image is available', async () => {
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue(undefined)
+    renderImageLabelling()
+
+    expect(await screen.findByText(noPendingImageMessage)).toBeInTheDocument()
+  })
+
+  it('should not render a NoPendingImage message when an image to label is available', async () => {
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
+
+    renderImageLabelling()
+    expect(await screen.findByText(noPendingImageMessage)).not.toBeInTheDocument()
+  })
+
   it('should render the ImageDraw when an image to label is available', async () => {
-    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({} as Image)
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
 
     renderImageLabelling()
 
     expect(await screen.findByRole('toolbar')).toBeInTheDocument()
-
-    const canvasTagMatcher = (_content: string, element: Element | null) => element?.tagName.toLowerCase() === 'canvas'
-    expect(screen.getAllByText(canvasTagMatcher).length).toBeGreaterThan(0)
+    expect((await screen.findAllByText(canvasTagMatcher)).length).toBeGreaterThan(0)
   })
 
-  it('should render the actions bar when an image to label is available', async () => {
-    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({} as Image)
+  it('should render the ActionsBar when an image to label is available', async () => {
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
 
     renderImageLabelling()
 
@@ -33,7 +48,7 @@ describe(ImageLabelling, () => {
   })
 
   it('should fetch a image', async () => {
-    const fetchImageSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({} as Image)
+    const fetchImageSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
 
     renderImageLabelling()
 
@@ -43,7 +58,7 @@ describe(ImageLabelling, () => {
   })
 
   it('should display a loading progressbar whilst fetching image', async () => {
-    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({} as Image)
+    jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
     renderImageLabelling()
 
     expect(screen.getByRole('progressbar', { hidden: true })).toBeVisible()
