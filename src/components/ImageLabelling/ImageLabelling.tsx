@@ -1,15 +1,15 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useLoading } from '../../hooks/Loading/LoadingHook'
 import useNotification from '../../hooks/Notification/NotificationHook'
 import { fetchImageToLabel } from '../../services/ImagesService/ImagesService'
 import { ImageDraw } from './ImageDraw/ImageDraw'
-import { ImageLabellingContext, ImageLabellingContextValue } from './ImageLabellingContext'
 import { ActionsBar } from './ActionsBar/ActionsBar'
 import { NoPendingImage } from '../Dashboard/NoPendingImage/NoPendingImage'
+import Image from '../../model/image'
 
 export const ImageLabelling = (): ReactElement => {
-  const { image, setImage } = useLabellingContext()
+  const [image, setImage] = useState<Image>()
   const [imageFound, setImageFound] = useState<boolean>()
   const [drawMaskDataURL, setDrawMaskDataURL] = useState<string>()
   const { isLoading, setIsLoading, setLoadingCompleted } = useLoading()
@@ -57,14 +57,4 @@ export const ImageLabelling = (): ReactElement => {
       )}
     </>
   )
-}
-
-const useLabellingContext = (): ImageLabellingContextValue => {
-  const labellingContext = useContext(ImageLabellingContext)
-
-  if (labellingContext === undefined) {
-    throw new Error('Must be used within a ImageLabellingProvider')
-  }
-
-  return labellingContext
 }

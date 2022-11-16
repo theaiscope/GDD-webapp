@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, RenderResult, screen, waitFor } from '@testing-library/react'
 import { ImageLabelling } from './ImageLabelling'
-import { ImageLabellingProvider } from './ImageLabellingContext'
 import { LoadingProvider } from '../../providers/Loading/LoadingProvider'
 import { SnackbarProvider } from 'notistack'
 import * as ImagesService from '../../services/ImagesService/ImagesService'
@@ -106,9 +105,7 @@ describe(ImageLabelling, () => {
       <MemoryRouter initialEntries={[{ state: locationState }]}>
         <SnackbarProvider>
           <LoadingProvider>
-            <ImageLabellingProvider>
-              <ImageLabelling />
-            </ImageLabellingProvider>
+            <ImageLabelling />
           </LoadingProvider>
         </SnackbarProvider>
       </MemoryRouter>,
