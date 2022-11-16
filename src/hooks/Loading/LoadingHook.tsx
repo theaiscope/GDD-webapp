@@ -7,12 +7,14 @@ export const useLoading = () => {
     throw new Error('useLoading must be used within a LoadingProvider')
   }
 
-  const setIsLoading = () => context.dispatch(true)
+  const isLoading = context.loadingCount > 0
 
-  const setLoadingCompleted = () => context.dispatch(false)
+  const setIsLoading = () => context.setLoadingCount((previous) => previous + 1)
+
+  const setLoadingCompleted = () => context.setLoadingCount((previous) => previous - 1)
 
   return {
-    isLoading: context.isLoading,
+    isLoading,
     setIsLoading,
     setLoadingCompleted,
   }

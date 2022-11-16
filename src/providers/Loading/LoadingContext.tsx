@@ -1,8 +1,8 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
 
 export type LoadingContextValue = {
-  isLoading: boolean
-  dispatch: Dispatch<SetStateAction<boolean>>
+  loadingCount: number
+  setLoadingCount: Dispatch<SetStateAction<number>>
 }
 
 export const LoadingContext = createContext<LoadingContextValue | undefined>(undefined)

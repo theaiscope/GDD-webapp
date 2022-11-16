@@ -30,6 +30,28 @@ describe('LoadingHook', () => {
     expect(screen.getByLabelText('Loading Spinner')).not.toBeVisible()
   })
 
+  it('should show the Loading Spinner until all the enqueued loadings are completed', () => {
+    const { useLoading } = renderLoadingHook()
+
+    act(() => {
+      // Set first loading
+      useLoading.setIsLoading()
+      // Set second loading
+      useLoading.setIsLoading()
+    })
+
+    // Check the spinner is visible
+    expect(screen.getByLabelText('Loading Spinner')).toBeVisible()
+
+    // Complete the first loading and check the spinner is still visible
+    act(() => useLoading.setLoadingCompleted())
+    expect(screen.getByLabelText('Loading Spinner')).toBeVisible()
+
+    // Complete the second loading and check the spinner is not visible
+    act(() => useLoading.setLoadingCompleted())
+    expect(screen.queryByLabelText('Loading Spinner')).not.toBeVisible()
+  })
+
   const renderLoadingHook = () => {
     let useLoadingHook = {} as ReturnType<typeof useLoading>
     const Component: React.FC = () => {

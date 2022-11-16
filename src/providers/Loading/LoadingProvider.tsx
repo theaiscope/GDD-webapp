@@ -7,11 +7,13 @@ type LoadingProviderProps = {
 }
 
 export const LoadingProvider = ({ children }: LoadingProviderProps): ReactElement => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [loadingCount, setLoadingCount] = useState<number>(0)
+
+  const isLoading = loadingCount > 0
 
   const contextValue: LoadingContextValue = {
-    isLoading,
-    dispatch: setIsLoading,
+    loadingCount,
+    setLoadingCount,
   }
 
   return (

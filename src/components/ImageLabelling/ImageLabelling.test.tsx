@@ -5,6 +5,7 @@ import { ImageLabellingProvider } from './ImageLabellingContext'
 import { LoadingProvider } from '../../providers/Loading/LoadingProvider'
 import { SnackbarProvider } from 'notistack'
 import * as ImagesService from '../../services/ImagesService/ImagesService'
+import * as ImageStorageService from '../../services/ImageStorageService/ImageStorageService'
 import { MemoryRouter } from 'react-router-dom'
 import Image from '../../model/image'
 import userEvent from '@testing-library/user-event'
@@ -80,6 +81,7 @@ describe(ImageLabelling, () => {
   it('should fetch a new image when an action is executed', async () => {
     const fetchImageSpy = jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
     jest.spyOn(ImagesService, 'skipImage').mockResolvedValue({} as SkipImageResponse)
+    jest.spyOn(ImageStorageService, 'getImageUrl').mockResolvedValue(`http://image-url/image-1`)
 
     renderImageLabelling()
 
