@@ -1,71 +1,58 @@
-import React from 'react'
-import { act, render, screen } from '@testing-library/react'
 import { useLoading } from './LoadingHook'
 import { LoadingProvider } from '../../providers/Loading/LoadingProvider'
+import { renderHook } from '@testing-library/react-hooks'
+import { act } from 'react-dom/test-utils'
 
 describe('LoadingHook', () => {
-  it('should show the Loading Spinner', async () => {
-    const { useLoading } = renderLoadingHook()
+  it('should set is loading', async () => {
+    const { result } = renderHook(() => useLoading(), { wrapper: LoadingProvider })
 
     act(() => {
-      useLoading.setIsLoading()
+      result.current.setIsLoading()
     })
 
-    expect(await screen.findByLabelText('Loading Spinner')).toBeVisible()
+    expect(result.current.isLoading).toBeTruthy()
   })
 
-  it('should hide the Loading Spinner', () => {
-    const { useLoading } = renderLoadingHook()
+  it('should set as loading completed', () => {
+    const { result } = renderHook(() => useLoading(), { wrapper: LoadingProvider })
 
     // Set is loading
     act(() => {
-      useLoading.setIsLoading()
+      result.current.setIsLoading()
     })
-    expect(screen.getByLabelText('Loading Spinner')).toBeVisible()
+    expect(result.current.isLoading).toBeTruthy()
 
     // Set loading completed
     act(() => {
-      useLoading.setLoadingCompleted()
+      result.current.setLoadingCompleted()
     })
-    expect(screen.getByLabelText('Loading Spinner')).not.toBeVisible()
+    expect(result.current.isLoading).toBeFalsy()
   })
 
   it('should show the Loading Spinner until all the enqueued loadings are completed', () => {
-    const { useLoading } = renderLoadingHook()
+    const { result } = renderHook(() => useLoading(), { wrapper: LoadingProvider })
 
     act(() => {
       // Set first loading
-      useLoading.setIsLoading()
+      result.current.setIsLoading()
       // Set second loading
-      useLoading.setIsLoading()
+      result.current.setIsLoading()
     })
 
-    // Check the spinner is visible
-    expect(screen.getByLabelText('Loading Spinner')).toBeVisible()
+    // Check it is loading
+    expect(result.current.isLoading).toBeTruthy()
 
-    // Complete the first loading and check the spinner is still visible
-    act(() => useLoading.setLoadingCompleted())
-    expect(screen.getByLabelText('Loading Spinner')).toBeVisible()
+    // Complete the first loading and check it is still loading
+    act(() => {
+      result.current.setLoadingCompleted()
+    })
+    expect(result.current.isLoading).toBeTruthy()
 
-    // Complete the second loading and check the spinner is not visible
-    act(() => useLoading.setLoadingCompleted())
-    expect(screen.queryByLabelText('Loading Spinner')).not.toBeVisible()
+    // Complete the second loading and check it is not loading anymore
+    act(() => {
+      result.current.setLoadingCompleted()
+    })
+    expect(result.current.isLoading).toBeFalsy()
   })
-
-  const renderLoadingHook = () => {
-    let useLoadingHook = {} as ReturnType<typeof useLoading>
-    const Component: React.FC = () => {
-      useLoadingHook = useLoading()
-      return null
-    }
-    const { container } = render(
-      <LoadingProvider>
-        <Component />
-      </LoadingProvider>,
-    )
-    return {
-      container,
-      useLoading: useLoadingHook,
-    }
-  }
 })
