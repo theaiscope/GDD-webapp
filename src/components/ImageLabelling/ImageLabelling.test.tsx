@@ -23,11 +23,12 @@ describe(ImageLabelling, () => {
 
   it('should not render a NoPendingImage message when an image to label is available', async () => {
     jest.spyOn(ImagesService, 'fetchImageToLabel').mockResolvedValue({ id: 'image-1' } as Image)
+    jest.spyOn(ImageStorageService, 'getImageUrl').mockResolvedValue('http://image-url/image-1')
 
     renderImageLabelling()
-    await waitFor(() => {
-      expect(screen.queryByText(noPendingImageMessage)).not.toBeInTheDocument()
-    })
+
+    expect((await screen.findAllByText(canvasTagMatcher)).length).toBeGreaterThan(0)
+    expect(screen.queryByText(noPendingImageMessage)).not.toBeInTheDocument()
   })
 
   it('should render the ImageDraw when an image to label is available', async () => {
